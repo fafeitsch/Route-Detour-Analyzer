@@ -1,1 +1,12 @@
-<app-map></app-map>
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
+  -->
+<mat-sidenav-container class="h-100">
+  <mat-sidenav class="h-100" mode="side" opened>
+    <div class="w-100 banner d-flex align-items-flex-center justify-content-flex-center mb-5">Route Detour Analyzer</div>
+    <app-controls></app-controls>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-map></app-map>
+  </mat-sidenav-content>
+</mat-sidenav-container>

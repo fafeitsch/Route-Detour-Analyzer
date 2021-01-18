@@ -1,0 +1,12 @@
+<svg [matTooltip]="info" xmlns="http://www.w3.org/2000/svg" [attr.width]="size" [attr.height]="size"
+     version="1.1">
+  <style>
+    .heavy {
+      font: bold 1em Roboto,sans-serif;
+    }
+  </style>
+  <circle [attr.cx]="size/2" [attr.cy]="size/2" [attr.r]="size/2-1" stroke="#000000" stroke-width="2"></circle>
+  <circle [attr.cx]="size/2" [attr.cy]="size/2" [attr.r]="size/2-2" fill="#FFFFFF"></circle>
+  <!-- currently, the position of the "i" does not depend on the size. Maybe that could be changed in the future -->
+  <text [attr.x]="13" [attr.y]="20" class="heavy">i</text>
+</svg>

@@ -1,0 +1,8 @@
+/*!
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
+ */
+@import "theme";
+
+$theme-primary: mat-palette($mat-primary, main, lighter, darker);
+$theme-accent: mat-palette($mat-accent, main, lighter, darker);
+$theme-warn: mat-palette($mat-warn, main, lighter, darker);

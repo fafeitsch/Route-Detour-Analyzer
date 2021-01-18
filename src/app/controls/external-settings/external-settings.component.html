@@ -1,0 +1,20 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
+  -->
+<div class="d-flex align-items-flex-center w-100">
+  <mat-form-field class="flex-grow-1">
+    <mat-label>Tile Server URL</mat-label>
+    <input matInput matTooltip="test" [formControl]="tileServerControl"/>
+  </mat-form-field>
+  <info-button class="ml-2"
+               info="I do not suggest a default OSM Tile Server to avoid conflicts with the usage policy of any free tile server. You can click the link for a list of public, available tile servers. Most of them are free for personal use. Or you can host your own tile server."></info-button>
+</div>
+<a href="https://wiki.openstreetmap.org/wiki/Tile_servers" target="_blank" rel="noopener">List of public OSM Tile Severs ⬈</a>
+<div class="d-flex align-items-flex-center w-100">
+  <mat-form-field class="flex-grow-1">
+    <mat-label>OSRM Server URL</mat-label>
+    <input matInput matTooltip="test" [formControl]="osrmServerControl"/>
+  </mat-form-field>
+  <info-button class="ml-2"
+               info="OSRM is needed for routing. You can either host a personal OSRM server or find a free one on the internet."></info-button>
+</div>

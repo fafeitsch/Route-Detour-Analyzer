@@ -1,3 +1,13 @@
+/*!
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
+ */
+
 /* You can add global styles to this file, and also import other style files */
 @import "~leaflet/dist/leaflet.css";
+@import "assets/styles/dimensions";
+@import "assets/styles/flex";
+@import "assets/styles/space";
+@import "assets/styles/common";
 
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
