@@ -12,6 +12,10 @@
     align-items: center;
   }
 
+  &.align-items-stretch {
+    align-items: stretch;
+  }
+
 }
 
 .flex-grow-1 {

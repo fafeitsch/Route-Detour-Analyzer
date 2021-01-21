@@ -15,7 +15,10 @@ import {ExternalSettingsModule} from './controls/external-settings/external-sett
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {ControlsModule} from './controls/controls.module';
 import {environment} from '../environments/environment';
-import {osrmServerReducer, tileServerReducer} from './+reducers';
+import {lineReducer, osrmServerReducer, tileServerReducer} from './+reducers';
+import {HttpClientModule} from '@angular/common/http';
+import {EffectsModule} from '@ngrx/effects';
+import {LineEffects} from './+effects/line.effects';
 
 @NgModule({
   declarations: [
@@ -30,12 +33,14 @@ import {osrmServerReducer, tileServerReducer} from './+reducers';
     CustomThemeModule,
     ExternalSettingsModule,
     MatSidenavModule,
+    HttpClientModule,
     ControlsModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
-    StoreModule.forRoot({ tileServer: tileServerReducer, osrmServer: osrmServerReducer }),
+    StoreModule.forRoot({ tileServer: tileServerReducer, osrmServer: osrmServerReducer, line: lineReducer }),
+    EffectsModule.forRoot([LineEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [],

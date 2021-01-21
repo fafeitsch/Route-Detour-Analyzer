@@ -1,6 +1,31 @@
 /*!
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
+@import "src/app/custom-theme/variables";
+
 .d-block {
   display: block;
+}
+
+.primary-background {
+  color: mat-color($theme-primary, default-contrast);
+  background: mat-color($theme-primary);
+}
+
+.primary-light-background {
+  color: mat-color($theme-primary, lighter-contrast);
+  background: mat-color($theme-primary, lighter);
+}
+
+.grab-cursor {
+  cursor: grab;
+}
+
+.pointer-cursor {
+  cursor: pointer;
+}
+
+
+.disabled {
+  opacity: 0.5;
 }

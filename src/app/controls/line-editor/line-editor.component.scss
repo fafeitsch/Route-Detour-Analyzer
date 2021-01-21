@@ -1,0 +1,30 @@
+/*!
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
+ */
+@import "src/app/custom-theme/variables";
+
+.stop-list {
+  border: solid 2px;
+  border-radius: 2px;
+}
+
+.accent-bar {
+  width: 8px;
+}
+
+.cdk-drop-list-dragging .cdk-drag {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  cursor: grabbing;
+}
+
+.cdk-drag-animating {
+  transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.trash .cdk-drag-placeholder {
+  display: none;
+}

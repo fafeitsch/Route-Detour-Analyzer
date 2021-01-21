@@ -9,7 +9,7 @@ import {Subject} from 'rxjs';
 import {map, takeUntil, tap} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-external-settings',
+  selector: 'external-settings',
   templateUrl: './external-settings.component.html',
   styleUrls: ['./external-settings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

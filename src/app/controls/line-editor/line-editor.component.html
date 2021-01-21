@@ -1,0 +1,21 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
+  -->
+<div cdkDropListGroup class="stop-list p-3">
+  <div cdkDropList (cdkDropListDropped)="drop($event)">
+    <div cdkDrag  *ngFor="let stop of line$ | async; index as i" [cdkDragDisabled]="editedStops !== 0" >
+      <stop-editor
+                   [ngClass]="editedStops === 0?'grab-cursor':''"
+                   [stopName]="stop.name"
+                   (enterEditMode)="editedStops = editedStops + 1"
+                   (leaveEditMode)="editedStops = editedStops - 1"
+                   (changeName)="changeName(i, $event)"
+      >
+      </stop-editor>
+    </div>
+  </div>
+  <div cdkDropList class="trash d-flex align-items-stretch disabled mt-2" (cdkDropListDropped)="dropOnTrash($event)">
+    <div class="accent-bar primary-background"></div>
+    <div class="primary-light-background w-100 pl-2 pt-2 pb-2">Click on the map to add a stop.</div>
+  </div>
+</div>
