@@ -9,6 +9,7 @@ import {takeUntil} from 'rxjs/operators';
 import {Stop} from '../+reducers';
 import {addUnamedStopToLine} from '../+actions/actions';
 import {MapStore} from './map.store';
+import {LatLng} from 'leaflet';
 
 @Component({
   selector: 'app-map',
@@ -30,6 +31,7 @@ export class MapComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initMap();
+    this.store.getCenter$.pipe(takeUntil(this.destroy$)).subscribe(c => this.map.setView(new LatLng(c.lat, c.lng), c.zoom))
     this.globalStore.pipe(select('tileServer'), takeUntil(this.destroy$)).subscribe(
       url => {
         if (this.tileLayer) {
