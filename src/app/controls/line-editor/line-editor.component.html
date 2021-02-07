@@ -7,9 +7,13 @@
       <stop-editor
                    [ngClass]="editedStops === 0?'grab-cursor':''"
                    [stopName]="stop.name"
+                   [isRealStop]="stop.realStop"
                    (enterEditMode)="editedStops = editedStops + 1"
                    (leaveEditMode)="editedStops = editedStops - 1"
                    (changeName)="changeName(i, $event)"
+                   (toggleRealStop)="toggleRealStop(i)"
+                   (mouseenter)="setFocusedStop(stop)"
+                   (mouseleave)="unsetFocusedStop()"
       >
       </stop-editor>
     </div>

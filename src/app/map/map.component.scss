@@ -18,3 +18,16 @@
 #map {
   height: 100%;
 }
+
+.leaflet-clickable {
+  cursor: grabbing !important;
+}
+
+.leaflet-container {
+  cursor: pointer !important;
+}
+
+.leaflet-map-pane {
+  cursor: grabbing;
+}
+

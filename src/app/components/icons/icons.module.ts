@@ -5,17 +5,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PencilComponent } from './pencil.component';
 import { CrossComponent } from './cross.component';
-import {CheckmarkComponent} from '@rda/components/icons/checkmark.component';
+import { CheckmarkComponent } from '@rda/components/icons/checkmark.component';
+import { StopIconComponent } from './stop-icon.component';
 
 @NgModule({
-  declarations: [PencilComponent, CrossComponent, CheckmarkComponent],
-  exports: [
-    PencilComponent,
-    CrossComponent,
-    CheckmarkComponent,
-  ],
-  imports: [
-    CommonModule
-  ]
+  declarations: [PencilComponent, CrossComponent, CheckmarkComponent, StopIconComponent],
+  exports: [PencilComponent, CrossComponent, CheckmarkComponent, StopIconComponent],
+  imports: [CommonModule],
 })
-export class IconsModule { }
+export class IconsModule {}

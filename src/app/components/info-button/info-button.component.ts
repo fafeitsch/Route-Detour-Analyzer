@@ -1,11 +1,11 @@
-import {ChangeDetectionStrategy, Component, Input, Output} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'info-button',
   templateUrl: './info-button.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InfoButtonComponent  {
+export class InfoButtonComponent {
   size = 30;
   @Input() info = '';
 }

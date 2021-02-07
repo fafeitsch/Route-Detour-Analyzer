@@ -4,7 +4,9 @@
 <div class="min-height d-flex mt-2 align-items-stretch">
   <div class="accent-bar primary-background"></div>
   <div class="primary-light-background flex-grow-1 pl-2 d-flex align-items-flex-center">
-    <span *ngIf="!editMode" class="flex-grow-1">{{stopName}}</span>
+    <button mat-icon-button class="mr-2" (click)="toggleRealStop.emit()"><icon-stop class="pointer-cursor" [disabled]="!isRealStop"></icon-stop></button>
+    <span *ngIf="!editMode && stopName" class="flex-grow-1">{{stopName}}</span>
+    <span *ngIf="!editMode && !stopName" class="flex-grow-1 flex-grow-1 "><i>Unnamed Stop</i></span>
     <mat-form-field *ngIf="editMode" class="flex-grow-1 mr-2"><input matInput [value]="stopName" [formControl]="nameFormControl" (keyup)="inputKeyPressed($event)"/></mat-form-field>
     <button mat-icon-button *ngIf="!editMode" (click)="toggleEdit()"><icon-pencil class="primary-light-background mr-2 pt-2 pointer-cursor"></icon-pencil></button>
     <button mat-icon-button *ngIf="editMode" (click)="commit()"><icon-checkmark class="primary-light-background mr-2 pt-2 pointer-cursor"></icon-checkmark></button>
