@@ -3,9 +3,11 @@
  */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { StoreModule } from '@ngrx/store';
+import { focusedStopReducer } from './reducers';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule],
+  imports: [CommonModule, StoreModule.forFeature('focusedStop', focusedStopReducer)],
 })
-export class ComponentsModule {}
+export class FocusStateModule {}

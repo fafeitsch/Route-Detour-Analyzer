@@ -6,10 +6,12 @@ import { CommonModule } from '@angular/common';
 import { ControlsComponent } from './controls.component';
 import { ExternalSettingsModule } from './external-settings/external-settings.module';
 import { LineEditorModule } from './line-editor/line-editor.module';
+import { StatisticsViewerComponent } from './statistics-viewer/statistics-viewer.component';
+import { EvaluationRangeCapModule } from './evaluation-range-cap/evaluation-range-cap.module';
 
 @NgModule({
-  declarations: [ControlsComponent],
+  declarations: [ControlsComponent, StatisticsViewerComponent],
   exports: [ControlsComponent],
-  imports: [CommonModule, ExternalSettingsModule, LineEditorModule],
+  imports: [CommonModule, ExternalSettingsModule, LineEditorModule, EvaluationRangeCapModule],
 })
 export class ControlsModule {}

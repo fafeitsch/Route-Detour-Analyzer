@@ -1,15 +1,16 @@
 /*
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
-import {AfterViewInit, ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import * as L from 'leaflet';
-import {LatLng} from 'leaflet';
-import {select, Store} from '@ngrx/store';
-import {Subject} from 'rxjs';
-import {take, takeUntil} from 'rxjs/operators';
-import {Stop} from '../+reducers/reducers';
-import {addRawStopToLine, changeStopLatLng} from '../+actions/actions';
-import {MapStore} from './map.store';
+import { LatLng } from 'leaflet';
+import { select, Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { pluck, takeUntil } from 'rxjs/operators';
+import { MapStore } from './map.store';
+import { addRawStopToLine, changeStopLatLng } from '../+store/line';
+import { Options, tileServerSelector } from '../+store/options';
+import { Stop } from '../+store/types';
 
 @Component({
   selector: 'app-map',
@@ -28,17 +29,16 @@ export class MapComponent implements AfterViewInit {
   private focusMarker: any;
 
   constructor(
-    private readonly globalStore: Store<{ tileServer: string; line: Stop[]; focusedStop: Stop | undefined }>,
+    private readonly globalStore: Store<{ options: Options; line: Stop[]; focusedStop: Stop | undefined }>,
     private readonly store: MapStore
-  ) {
-  }
+  ) {}
 
   ngAfterViewInit(): void {
     this.initMap();
     this.store.getCenter$
       .pipe(takeUntil(this.destroy$))
       .subscribe((c) => this.map.setView(new LatLng(c.lat, c.lng), c.zoom));
-    this.globalStore.pipe(select('tileServer'), takeUntil(this.destroy$)).subscribe((url) => {
+    this.globalStore.pipe(pluck('options'), select(tileServerSelector), takeUntil(this.destroy$)).subscribe((url) => {
       if (this.tileLayer) {
         this.map.removeLayer(this.tileLayer);
       }
@@ -53,27 +53,26 @@ export class MapComponent implements AfterViewInit {
         this.map.removeLayer(this.markerLayer);
       }
       this.markerLayer = L.layerGroup(
-        line.filter(icon => icon.realStop).map((stop, i) =>
-          L.marker([stop.lat, stop.lng], {
-            icon: this.createIcon(stop.realStop, false),
-            draggable: true,
-          }).on('dragend', ($event) => {
-            this.globalStore.dispatch(
-              changeStopLatLng({i, lat: $event.target.getLatLng().lat, lng: $event.target.getLatLng().lng})
-            );
-          })
-        )
+        line
+          .filter((icon) => icon.realStop)
+          .map((stop, i) =>
+            L.marker([stop.lat, stop.lng], {
+              icon: this.createIcon(stop.realStop, false),
+              draggable: true,
+            }).on('dragend', ($event) => {
+              this.globalStore.dispatch(
+                changeStopLatLng({ i, lat: $event.target.getLatLng().lat, lng: $event.target.getLatLng().lng })
+              );
+            })
+          )
       ).addTo(this.map);
     });
-    this.store.getOrignalPath$.pipe(takeUntil(this.destroy$)).subscribe(
-      (path) => {
-        if (this.pathLayer) {
-          this.map.removeLayer(this.pathLayer);
-        }
-        this.drawPath(path);
-      },
-      (err) => console.log(err)
-    );
+    this.store.getOrignalPath$.pipe(takeUntil(this.destroy$)).subscribe((path) => {
+      if (this.pathLayer) {
+        this.map.removeLayer(this.pathLayer);
+      }
+      this.drawPath(path);
+    });
     this.globalStore
       .select('focusedStop')
       .pipe(takeUntil(this.destroy$))
@@ -100,7 +99,7 @@ export class MapComponent implements AfterViewInit {
             <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="currentColor"/>
             </svg>`,
         iconSize: [size, size],
-        iconAnchor: [size/2, size/2]
+        iconAnchor: [size / 2, size / 2],
       });
     } else {
       const size = enlarged ? 30 : 20;
@@ -113,7 +112,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   private drawPath(path: [number, number][]) {
-    this.pathLayer = L.polyline(path, {className: 'themed'}).addTo(this.map);
+    this.pathLayer = L.polyline(path, { className: 'themed' }).addTo(this.map);
   }
 
   private initMap(): void {
@@ -122,11 +121,11 @@ export class MapComponent implements AfterViewInit {
       zoom: 3,
     });
     const store = this.globalStore;
-    this.map.on('click', function(e: any) {
+    this.map.on('click', function (e: any) {
       const lat: number = Math.round(e.latlng.lat * 100000) / 100000;
       const lng: number = Math.round(e.latlng.lng * 100000) / 100000;
-      const stop = {name: lat + ', ' + lng, lat, lng, realStop: true};
-      store.dispatch(addRawStopToLine({stop}));
+      const stop = { name: lat + ', ' + lng, lat, lng, realStop: true };
+      store.dispatch(addRawStopToLine({ stop }));
     });
   }
 }

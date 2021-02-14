@@ -2,18 +2,11 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
 import { Component, OnInit } from '@angular/core';
-import { Stop } from '../../+reducers/reducers';
 import { Store } from '@ngrx/store';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import {
-  removeStop,
-  renameStop,
-  moveStop,
-  toggleRealStop,
-  setFocusedStop,
-  unsetFocusedStop,
-} from '../../+actions/actions';
-import { tap } from 'rxjs/operators';
+import { setFocusedStop, unsetFocusedStop } from '../../+store/focus/actions';
+import { moveStop, renameStop, toggleRealStop, removeStop } from '../../+store/line';
+import { Stop } from '../../+store/types';
 
 @Component({
   selector: 'line-editor',

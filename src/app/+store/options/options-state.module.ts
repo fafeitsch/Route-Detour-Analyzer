@@ -3,9 +3,11 @@
  */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { StoreModule } from '@ngrx/store';
+import { optionsReducer } from './reducers';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule],
+  imports: [CommonModule, StoreModule.forFeature('options', optionsReducer)],
 })
-export class ComponentsModule {}
+export class OptionsStateModule {}

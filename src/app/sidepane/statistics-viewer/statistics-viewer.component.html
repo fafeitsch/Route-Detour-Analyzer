@@ -1,0 +1,28 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
+  -->
+<div class="statistics">
+  <div>Distance: {{ originalDistance$ | async | number: '1.2-2' }} m</div>
+  <div>Average Detour: {{ averageDetour$ | async | number: '1.5-5' }}</div>
+  <div>
+    Minimal Detour:
+    <span *ngIf="smallestDetour$ | async as min">
+      between {{ min.sourceName }} and {{ min.targetName }} – {{ min.relative | number: '1.5-5' }} (
+      {{ min.absolute | number: '1.2-2' }} m)</span
+    >
+  </div>
+  <div>
+    Median Detour:
+    <span *ngIf="medianDetour$ | async as median">
+      between {{ median.sourceName }} and {{ median.targetName }} – {{ median.relative | number: '1.5-5' }} (
+      {{ median.absolute | number: '1.2-2' }} m)</span
+    >
+  </div>
+  <div>
+    Maximal Detour:
+    <span *ngIf="biggestDetour$ | async as max">
+      between {{ max.sourceName }} and {{ max.targetName }} – {{ max.relative | number: '1.5-5' }} (
+      {{ max.absolute | number: '1.2-2' }} m)</span
+    >
+  </div>
+</div>

@@ -2,11 +2,11 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { updateOsrmServerUrl, updateTileServerUrl } from '../../+actions/actions';
+import { select, Store } from '@ngrx/store';
 import { AbstractControl, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { map, takeUntil, tap } from 'rxjs/operators';
+import { Options, updateOsrmServerUrl, updateTileServerUrl } from '../../+store/options';
 
 @Component({
   selector: 'external-settings',
@@ -19,13 +19,7 @@ export class ExternalSettingsComponent implements OnDestroy {
   osrmServerControl: AbstractControl;
   private destroy$ = new Subject<boolean>();
 
-  constructor(
-    private readonly globalStore: Store<{
-      tileServer: string;
-      osrmServer: string;
-    }>,
-    private readonly formBuilder: FormBuilder
-  ) {
+  constructor(private readonly store: Store<{ options: Options }>, private readonly formBuilder: FormBuilder) {
     const form = this.formBuilder.group({
       tileServerUrl: '',
       osrmServerUrl: '',
@@ -37,18 +31,14 @@ export class ExternalSettingsComponent implements OnDestroy {
         takeUntil(this.destroy$),
         map((value) => value.replace('$', ''))
       )
-      .subscribe((value) => this.globalStore.dispatch(updateTileServerUrl({ url: value })));
+      .subscribe((value) => this.store.dispatch(updateTileServerUrl({ tileServer: value })));
     this.osrmServerControl.valueChanges
       .pipe(takeUntil(this.destroy$))
-      .subscribe((value) => this.globalStore.dispatch(updateOsrmServerUrl({ url: value })));
-    this.globalStore
-      .select('tileServer')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((url) => this.tileServerControl.patchValue(url, { emitEvent: false }));
-    this.globalStore
-      .select('osrmServer')
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((url) => this.osrmServerControl.patchValue(url, { emitEvent: false }));
+      .subscribe((value) => this.store.dispatch(updateOsrmServerUrl({ osrmServer: value })));
+    this.store.pipe(select('options'), takeUntil(this.destroy$)).subscribe((state) => {
+      this.tileServerControl.patchValue(state.tileServer, { emitEvent: false });
+      this.osrmServerControl.patchValue(state.osrmServer, { emitEvent: false });
+    });
   }
 
   ngOnDestroy(): void {

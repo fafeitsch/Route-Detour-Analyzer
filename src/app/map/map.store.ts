@@ -3,11 +3,12 @@
  */
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { Store } from '@ngrx/store';
-import { LatLng, Stop } from '../+reducers/reducers';
-import { RouteService } from '../route.service';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { filter, map, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { QueriedPath } from '../+store/paths/types';
+import { LatLng } from '../+store/types';
+import { getOriginalPath } from '../+store/paths';
 
 export interface LatLngWithZoom extends LatLng {
   zoom: number;
@@ -23,17 +24,17 @@ export class MapStore extends ComponentStore<State> {
   readonly getOrignalPath$ = super.select((state) => state.originalPath);
   readonly getCenter$ = super.select((state) => state.center);
 
-  readonly setOriginalPath$ = super.updater((state, path: [number, number][]) => ({ ...state, originalPath: path }));
   readonly setCenter$ = super.updater((state, center: LatLngWithZoom) => ({
     ...state,
     center: center,
   }));
 
   readonly updateOriginalPath$ = super.effect(() =>
-    this.globalStore.select('line').pipe(
-      switchMap((line) => this.routeService.queryOsrmRoute(line)),
-      map((arr) => arr.map<[number, number]>((latlng) => [latlng.lat, latlng.lng])),
-      tap((coords) => this.setOriginalPath$(coords))
+    this.globalStore.pipe(
+      select(getOriginalPath),
+      filter((path) => !!path),
+      map((path) => path!.waypoints),
+      tap((originalPath) => super.patchState({ originalPath }))
     )
   );
 
@@ -49,11 +50,7 @@ export class MapStore extends ComponentStore<State> {
     )
   );
 
-  constructor(
-    private readonly globalStore: Store<{ line: Stop[] }>,
-    private readonly routeService: RouteService,
-    private readonly route: ActivatedRoute
-  ) {
+  constructor(private readonly globalStore: Store<{ paths: QueriedPath[][] }>, private readonly route: ActivatedRoute) {
     super({
       originalPath: [],
       center: { lat: 49.7932, lng: 9.9286, zoom: 14 },

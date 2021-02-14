@@ -12,6 +12,6 @@ import { InfoButtonModule } from '@rda/components/info-button/info-button.module
 @NgModule({
   declarations: [ExternalSettingsComponent],
   exports: [ExternalSettingsComponent],
-  imports: [CommonModule, MatInputModule, ReactiveFormsModule, MatTooltipModule, InfoButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatTooltipModule, InfoButtonModule],
 })
 export class ExternalSettingsModule {}
