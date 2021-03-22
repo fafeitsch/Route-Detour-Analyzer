@@ -8,10 +8,11 @@ import { ExternalSettingsModule } from './external-settings/external-settings.mo
 import { LineEditorModule } from './line-editor/line-editor.module';
 import { StatisticsViewerComponent } from './statistics-viewer/statistics-viewer.component';
 import { EvaluationRangeCapModule } from './evaluation-range-cap/evaluation-range-cap.module';
+import { NotificationModule } from './notification/notification.module';
 
 @NgModule({
   declarations: [ControlsComponent, StatisticsViewerComponent],
   exports: [ControlsComponent],
-  imports: [CommonModule, ExternalSettingsModule, LineEditorModule, EvaluationRangeCapModule],
+  imports: [CommonModule, ExternalSettingsModule, LineEditorModule, EvaluationRangeCapModule, NotificationModule],
 })
 export class ControlsModule {}

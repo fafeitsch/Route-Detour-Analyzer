@@ -11,6 +11,8 @@ import { MapStore } from './map.store';
 import { addRawStopToLine, changeStopLatLng } from '../+store/line';
 import { Options, tileServerSelector } from '../+store/options';
 import { Stop } from '../+store/types';
+import { raiseNotification } from '../+store/notification';
+import { NotificationService } from '../notification.service';
 
 @Component({
   selector: 'app-map',
@@ -29,8 +31,13 @@ export class MapComponent implements AfterViewInit {
   private focusMarker: any;
 
   constructor(
-    private readonly globalStore: Store<{ options: Options; line: Stop[]; focusedStop: Stop | undefined }>,
-    private readonly store: MapStore
+    private readonly globalStore: Store<{
+      options: Options;
+      line: Stop[];
+      focusedStop: Stop | undefined;
+    }>,
+    private readonly store: MapStore,
+    private readonly notificationService: NotificationService
   ) {}
 
   ngAfterViewInit(): void {
@@ -47,6 +54,11 @@ export class MapComponent implements AfterViewInit {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       });
       this.tileLayer.addTo(this.map);
+      this.tileLayer.on('tileerror', () =>
+        this.notificationService.raiseNotification(
+          `There was a problem fetching map tiles. Is your tile server URL configured correctly?`
+        )
+      );
     });
     this.globalStore.pipe(select('line'), takeUntil(this.destroy$)).subscribe((line) => {
       if (this.markerLayer) {
@@ -61,7 +73,11 @@ export class MapComponent implements AfterViewInit {
               draggable: true,
             }).on('dragend', ($event) => {
               this.globalStore.dispatch(
-                changeStopLatLng({ i, lat: $event.target.getLatLng().lat, lng: $event.target.getLatLng().lng })
+                changeStopLatLng({
+                  i,
+                  lat: $event.target.getLatLng().lat,
+                  lng: $event.target.getLatLng().lng,
+                })
               );
             })
           )

@@ -1,7 +1,7 @@
 /*!
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
-@import "src/app/custom-theme/variables";
+@import 'src/app/custom-theme/variables';
 
 .d-block {
   display: block;
@@ -19,6 +19,16 @@
 .primary-light-background {
   color: mat-color($theme-primary, lighter-contrast);
   background: mat-color($theme-primary, lighter);
+}
+
+.warn-background {
+  color: mat-color($theme-warn, default-contrast);
+  background: mat-color($theme-warn);
+}
+
+.warn-light-background {
+  color: mat-color($theme-warn, lighter-contrast);
+  background: mat-color($theme-warn, lighter);
 }
 
 .grab-cursor {

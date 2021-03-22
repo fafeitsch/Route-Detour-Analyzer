@@ -1,10 +1,13 @@
 <!--
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
   -->
-<article class="d-block p-3">
-  Welcome to the Route Detour Analyzer. First, select a tile server and an OSRM server you want to use:
-</article>
-<external-settings class="d-block p-3"></external-settings>
-<evaluation-range-cap class="d-block p-3"></evaluation-range-cap>
-<statistics-viewer class="d-block p-3"></statistics-viewer>
-<line-editor class="d-block p-3"></line-editor>
+<app-notification></app-notification>
+<external-settings *ngIf="settingsMode"></external-settings>
+<ng-container *ngIf="!settingsMode">
+  <evaluation-range-cap></evaluation-range-cap>
+  <statistics-viewer></statistics-viewer>
+  <line-editor></line-editor>
+</ng-container>
+<div class="flex-grow-1"></div>
+<a *ngIf="!settingsMode" class="settings" (click)="switchToSettingsMode()">Settings</a>
+<a *ngIf="settingsMode" class="settings" (click)="switchToNormalMode()">Back</a>

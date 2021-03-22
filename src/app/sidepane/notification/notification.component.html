@@ -1,0 +1,11 @@
+<div *ngFor="let notification of notifications$ | async; index as i" class="mb-5 panel warn-light-background p-3">
+  <div>{{ notification.message }}</div>
+  <div class="w-100 d-flex justify-content-flex-end">
+    <mat-chip-list>
+      <mat-chip *ngIf="notification.counter > 1" class="small-font" color="accent" selected="true"
+        >{{ notification.counter }} times
+      </mat-chip>
+    </mat-chip-list>
+    <button mat-flat-button class="ml-2" color="warn" (click)="dismissNotification(i)">Dismiss</button>
+  </div>
+</div>

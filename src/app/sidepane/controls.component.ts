@@ -8,9 +8,16 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   templateUrl: './controls.component.html',
   styleUrls: ['./controls.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'd-flex flex-column p-3' },
 })
-export class ControlsComponent implements OnInit {
-  constructor() {}
+export class ControlsComponent {
+  settingsMode: boolean = false;
 
-  ngOnInit(): void {}
+  switchToSettingsMode() {
+    this.settingsMode = true;
+  }
+
+  switchToNormalMode() {
+    this.settingsMode = false;
+  }
 }

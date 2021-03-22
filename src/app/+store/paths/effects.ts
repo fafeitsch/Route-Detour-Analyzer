@@ -3,14 +3,16 @@
  */
 import { Injectable } from '@angular/core';
 import { createEffect } from '@ngrx/effects';
-import { map, mergeAll, pluck, startWith, switchMap } from 'rxjs/operators';
+import { catchError, map, mergeAll, pluck, startWith, switchMap } from 'rxjs/operators';
 import { Stop } from '../types';
 import { RouteService } from '../../route.service';
 import { addSubPath, resetSubPaths, setPaths } from './actions';
 import { Store } from '@ngrx/store';
-import { combineLatest, merge } from 'rxjs';
+import { combineLatest, EMPTY, merge } from 'rxjs';
 import { Options } from '../options';
 import { DetourService } from '../../detour.service';
+import { tapResponse } from '@ngrx/component-store';
+import { NotificationService } from '../../notification.service';
 
 @Injectable()
 export class Effects {
@@ -26,12 +28,24 @@ export class Effects {
   );
 
   private queryOriginalPath(line: Stop[]) {
-    return this.routeService.queryOsrmRoute(line).pipe(map((originalPath) => setPaths({ originalPath })));
+    return this.routeService
+      .queryOsrmRoute(line)
+      .pipe(map((originalPath) => setPaths({ originalPath })))
+      .pipe(
+        catchError(() => {
+          this.notificationService.raiseNotification('Could not query paths. Is your OSRM URL configured correctly?');
+          return EMPTY;
+        })
+      );
   }
 
   private queryAllPaths(line: Stop[], cap: number) {
     return this.detourService.createQueryPairs(line, cap).map((pair) =>
       this.routeService.queryOsrmRoute([pair.source, pair.target]).pipe(
+        catchError(() => {
+          this.notificationService.raiseNotification('Could not query paths. Is your OSRM URL configured correctly?');
+          return EMPTY;
+        }),
         map((path) => ({ path, startIndex: pair.source.index, endIndex: pair.target.index })),
         map((path) => addSubPath({ path }))
       )
@@ -41,6 +55,7 @@ export class Effects {
   constructor(
     private readonly routeService: RouteService,
     private readonly store: Store<{ line: Stop[]; options: Options }>,
-    private readonly detourService: DetourService
+    private readonly detourService: DetourService,
+    private readonly notificationService: NotificationService
   ) {}
 }
