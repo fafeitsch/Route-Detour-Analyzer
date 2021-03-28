@@ -4,19 +4,31 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Store, select } from '@ngrx/store';
 import { map, switchMap, take } from 'rxjs/operators';
 import * as polyline from '@mapbox/polyline';
-import { QueriedPath } from './+store/paths/types';
-import { Options, osrmSelector } from './+store/options';
-import { LatLng, Stop } from './+store/types';
 import { Route, RouteResults } from 'osrm';
+import { OptionsService } from './options.service';
+
+export interface QueriedPath {
+  waypoints: [number, number][];
+  distanceTable: number[][];
+}
+
+export interface LatLng {
+  lat: number;
+  lng: number;
+}
+
+export interface Stop extends LatLng {
+  name: string;
+  realStop: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class RouteService {
-  constructor(private readonly http: HttpClient, private readonly store: Store<{ options: Options }>) {}
+  constructor(private readonly http: HttpClient, private readonly optionsService: OptionsService) {}
 
   queryOsrmRoute(stops: LatLng[]): Observable<QueriedPath> {
     if (!stops || stops.length < 2) {
@@ -24,17 +36,18 @@ export class RouteService {
     }
     const coords = stops.map<[number, number]>((stop) => [stop.lat, stop.lng]);
     const poly = encodeURIComponent(polyline.encode(coords));
-    return this.store.pipe(
+    return this.optionsService.getOsrmUrl().pipe(
       take(1),
-      select('options'),
-      select(osrmSelector),
       switchMap((url) => this.http.get<RouteResults>(`${url}/route/v1/driving/polyline(${poly})?overview=full`)),
       map((results) => results.routes[0]),
       map<Route, [[number, number][], number[][]]>((route) => [
         polyline.decode(route.geometry),
         this.buildLegsDistanceTable(route),
       ]),
-      map<[[number, number][], number[][]], QueriedPath>(([arr, distanceTable]) => ({ waypoints: arr, distanceTable }))
+      map<[[number, number][], number[][]], QueriedPath>(([arr, distanceTable]) => ({
+        waypoints: arr,
+        distanceTable,
+      }))
     );
   }
 
@@ -52,9 +65,8 @@ export class RouteService {
   }
 
   queryNearestStreet(stop: Stop): Observable<Stop> {
-    return this.store.pipe(
-      select('options'),
-      select(osrmSelector),
+    return this.optionsService.getOsrmUrl().pipe(
+      take(1),
       switchMap((url) => this.http.get(`${url}/nearest/v1/driving/${stop.lng},${stop.lat}.json?number=1`)),
       map<any, any>((result) => result.waypoints[0]),
       map<any, Stop>((waypoint) => ({

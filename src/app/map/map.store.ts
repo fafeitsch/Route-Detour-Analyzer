@@ -3,12 +3,10 @@
  */
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { select, Store } from '@ngrx/store';
 import { filter, map, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { QueriedPath } from '../+store/paths/types';
-import { LatLng } from '../+store/types';
-import { getOriginalPath } from '../+store/paths';
+import { LineStore } from '../line.store';
+import { LatLng } from '../route.service';
 
 export interface LatLngWithZoom extends LatLng {
   zoom: number;
@@ -30,10 +28,8 @@ export class MapStore extends ComponentStore<State> {
   }));
 
   readonly updateOriginalPath$ = super.effect(() =>
-    this.globalStore.pipe(
-      select(getOriginalPath),
-      filter((path) => !!path),
-      map((path) => path!.waypoints),
+    this.lineStore.getPath$.pipe(
+      map((path) => path.waypoints),
       tap((originalPath) => super.patchState({ originalPath }))
     )
   );
@@ -50,7 +46,7 @@ export class MapStore extends ComponentStore<State> {
     )
   );
 
-  constructor(private readonly globalStore: Store<{ paths: QueriedPath[][] }>, private readonly route: ActivatedRoute) {
+  constructor(private readonly lineStore: LineStore, private readonly route: ActivatedRoute) {
     super({
       originalPath: [],
       center: { lat: 49.7932, lng: 9.9286, zoom: 14 },

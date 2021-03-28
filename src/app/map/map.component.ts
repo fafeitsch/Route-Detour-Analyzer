@@ -4,15 +4,13 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import * as L from 'leaflet';
 import { LatLng } from 'leaflet';
-import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { pluck, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { MapStore } from './map.store';
-import { addRawStopToLine, changeStopLatLng } from '../+store/line';
-import { Options, tileServerSelector } from '../+store/options';
-import { Stop } from '../+store/types';
-import { raiseNotification } from '../+store/notification';
 import { NotificationService } from '../notification.service';
+import { FocusService } from '../focus.service';
+import { OptionsService } from '../options.service';
+import { LineStore } from '../line.store';
 
 @Component({
   selector: 'app-map',
@@ -31,12 +29,10 @@ export class MapComponent implements AfterViewInit {
   private focusMarker: any;
 
   constructor(
-    private readonly globalStore: Store<{
-      options: Options;
-      line: Stop[];
-      focusedStop: Stop | undefined;
-    }>,
+    private readonly lineStore: LineStore,
     private readonly store: MapStore,
+    private readonly focusService: FocusService,
+    private readonly optionsService: OptionsService,
     private readonly notificationService: NotificationService
   ) {}
 
@@ -45,22 +41,25 @@ export class MapComponent implements AfterViewInit {
     this.store.getCenter$
       .pipe(takeUntil(this.destroy$))
       .subscribe((c) => this.map.setView(new LatLng(c.lat, c.lng), c.zoom));
-    this.globalStore.pipe(pluck('options'), select(tileServerSelector), takeUntil(this.destroy$)).subscribe((url) => {
-      if (this.tileLayer) {
-        this.map.removeLayer(this.tileLayer);
-      }
-      this.tileLayer = L.tileLayer(url, {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    this.optionsService
+      .getTileServerUrl()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((url) => {
+        if (this.tileLayer) {
+          this.map.removeLayer(this.tileLayer);
+        }
+        this.tileLayer = L.tileLayer(url, {
+          maxZoom: 19,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        });
+        this.tileLayer.addTo(this.map);
+        this.tileLayer.on('tileerror', () =>
+          this.notificationService.raiseNotification(
+            `There was a problem fetching map tiles. Is your tile server URL configured correctly?`
+          )
+        );
       });
-      this.tileLayer.addTo(this.map);
-      this.tileLayer.on('tileerror', () =>
-        this.notificationService.raiseNotification(
-          `There was a problem fetching map tiles. Is your tile server URL configured correctly?`
-        )
-      );
-    });
-    this.globalStore.pipe(select('line'), takeUntil(this.destroy$)).subscribe((line) => {
+    this.lineStore.getLine$.pipe(takeUntil(this.destroy$)).subscribe((line) => {
       if (this.markerLayer) {
         this.map.removeLayer(this.markerLayer);
       }
@@ -72,13 +71,7 @@ export class MapComponent implements AfterViewInit {
               icon: this.createIcon(stop.realStop, false),
               draggable: true,
             }).on('dragend', ($event) => {
-              this.globalStore.dispatch(
-                changeStopLatLng({
-                  i,
-                  lat: $event.target.getLatLng().lat,
-                  lng: $event.target.getLatLng().lng,
-                })
-              );
+              this.lineStore.changeStopLatLng$([i, $event.target.getLatLng().lat, $event.target.getLatLng().lng]);
             })
           )
       ).addTo(this.map);
@@ -89,8 +82,8 @@ export class MapComponent implements AfterViewInit {
       }
       this.drawPath(path);
     });
-    this.globalStore
-      .select('focusedStop')
+    this.focusService
+      .getFocus()
       .pipe(takeUntil(this.destroy$))
       .subscribe((stop) => {
         if (this.focusMarker) {
@@ -136,12 +129,12 @@ export class MapComponent implements AfterViewInit {
       center: [39.8282, -98.5795],
       zoom: 3,
     });
-    const store = this.globalStore;
+    const store = this.lineStore;
     this.map.on('click', function (e: any) {
       const lat: number = Math.round(e.latlng.lat * 100000) / 100000;
       const lng: number = Math.round(e.latlng.lng * 100000) / 100000;
       const stop = { name: lat + ', ' + lng, lat, lng, realStop: true };
-      store.dispatch(addRawStopToLine({ stop }));
+      store.addStopToLine$(stop);
     });
   }
 }

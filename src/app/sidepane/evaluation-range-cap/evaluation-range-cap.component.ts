@@ -1,10 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { Options, updateEvaluationCap } from '../../+store/options';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { Stop } from '../../+store/types';
+import { OptionsService } from '../../options.service';
+import { LineStore } from '../../line.store';
 
 @Component({
   selector: 'evaluation-range-cap',
@@ -13,16 +12,18 @@ import { Stop } from '../../+store/types';
 })
 export class EvaluationRangeCapComponent implements OnDestroy {
   control: AbstractControl | undefined = undefined;
-  numberOfStops$ = this.store.select('line').pipe(map((line) => line.length));
+  numberOfStops$ = this.lineStore.getLine$.pipe(map((line) => line.filter((s) => s.realStop).length));
 
   private destroy$ = new Subject();
 
-  constructor(formBuilder: FormBuilder, private readonly store: Store<{ options: Options; line: Stop[] }>) {
+  constructor(
+    formBuilder: FormBuilder,
+    private readonly optionsService: OptionsService,
+    private readonly lineStore: LineStore
+  ) {
     const form = formBuilder.group({ cap: ['0'] });
     this.control = form.controls.cap;
-    this.control.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((cap) => store.dispatch(updateEvaluationCap({ cap })));
+    this.control.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((cap) => this.optionsService.setCap(cap));
   }
 
   ngOnDestroy(): void {

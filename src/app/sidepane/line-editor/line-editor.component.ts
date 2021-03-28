@@ -1,12 +1,11 @@
 /*
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { setFocusedStop, unsetFocusedStop } from '../../+store/focus/actions';
-import { moveStop, renameStop, toggleRealStop, removeStop } from '../../+store/line';
-import { Stop } from '../../+store/types';
+import { FocusService } from '../../focus.service';
+import { LineStore } from '../../line.store';
+import { Stop } from '../../route.service';
 
 @Component({
   selector: 'line-editor',
@@ -14,34 +13,34 @@ import { Stop } from '../../+store/types';
   styleUrls: ['./line-editor.component.scss'],
 })
 export class LineEditorComponent {
-  line$ = this.store.select('line');
+  line$ = this.lineStore.getLine$;
 
   editedStops = 0;
 
-  constructor(private store: Store<{ line: Stop[]; focusedStop: Stop | undefined }>) {}
+  constructor(private readonly lineStore: LineStore, private focusService: FocusService) {}
 
   drop(event: CdkDragDrop<Stop[]>) {
-    this.store.dispatch(moveStop({ oldIndex: event.previousIndex, newIndex: event.currentIndex }));
+    this.lineStore.moveStop$([event.previousIndex, event.currentIndex]);
   }
 
   dropOnTrash(event: CdkDragDrop<Stop[]>) {
-    this.store.dispatch(removeStop({ i: event.previousIndex }));
+    this.lineStore.removeStop$(event.previousIndex);
     this.unsetFocusedStop();
   }
 
   changeName(index: number, name: string) {
-    this.store.dispatch(renameStop({ i: index, name }));
+    this.lineStore.renameStop$([index, name]);
   }
 
   toggleRealStop(index: number) {
-    this.store.dispatch(toggleRealStop({ i: index }));
+    this.lineStore.toggleRealStop$(index);
   }
 
   setFocusedStop(stop: Stop) {
-    this.store.dispatch(setFocusedStop({ stop }));
+    this.focusService.focusStop(stop);
   }
 
   unsetFocusedStop() {
-    this.store.dispatch(unsetFocusedStop());
+    this.focusService.unfocusStop();
   }
 }

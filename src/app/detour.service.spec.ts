@@ -1,10 +1,8 @@
 /*
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
-import { Stop } from './+store/types';
-import { DetourService } from './detour.service';
-import { SubPath } from './+store/paths';
-import { executeExtractI18nBuilder } from '@angular-devkit/build-angular';
+import { DetourService, SubPath } from './detour.service';
+import { Stop } from './route.service';
 
 describe('DetourService#computeDetours', () => {
   it('should return undefined if input is empty', () => {
@@ -31,18 +29,18 @@ describe('DetourService#computeDetours', () => {
     const result = service.computeDetours(originalDistances, input);
     expect(result).toBeDefined();
     expect(result!.averageDetour).toBeCloseTo(3.13, 0.001);
-    expect(result!.smallestDetour.absolute).toBe(5);
-    expect(result!.smallestDetour.relative).toBe(2);
-    expect(result!.smallestDetour.source).toBe(2);
-    expect(result!.smallestDetour.target).toBe(3);
-    expect(result!.biggestDetour.absolute).toBe(30);
-    expect(result!.biggestDetour.relative).toBe(4);
-    expect(result!.biggestDetour.source).toBe(1);
-    expect(result!.biggestDetour.target).toBe(5);
-    expect(result!.medianDetour.absolute).toBe(32);
-    expect(result!.medianDetour.relative).toBeCloseTo(2.77, 0.01);
-    expect(result!.medianDetour.source).toBe(0);
-    expect(result!.medianDetour.target).toBe(5);
+    expect(result!.smallestDetour!.absolute).toBe(5);
+    expect(result!.smallestDetour!.relative).toBe(2);
+    expect(result!.smallestDetour!.source).toBe(2);
+    expect(result!.smallestDetour!.target).toBe(3);
+    expect(result!.biggestDetour!.absolute).toBe(30);
+    expect(result!.biggestDetour!.relative).toBe(4);
+    expect(result!.biggestDetour!.source).toBe(1);
+    expect(result!.biggestDetour!.target).toBe(5);
+    expect(result!.medianDetour!.absolute).toBe(32);
+    expect(result!.medianDetour!.relative).toBeCloseTo(2.77, 0.01);
+    expect(result!.medianDetour!.source).toBe(0);
+    expect(result!.medianDetour!.target).toBe(5);
   });
 });
 

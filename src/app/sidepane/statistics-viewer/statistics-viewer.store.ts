@@ -2,13 +2,14 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
 import { ComponentStore } from '@ngrx/component-store';
-import { Store } from '@ngrx/store';
-import { getOriginalPath, getSubPaths, Paths, QueriedPath, SubPath } from '../../+store/paths';
-import { filter, map, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { combineLatest } from 'rxjs';
-import { DetailResult, DetourResult, DetourService } from '../../detour.service';
-import { Stop } from '../../+store/types';
+import { combineLatest, EMPTY, forkJoin, Observable } from 'rxjs';
+import { DetailResult, DetourResult, DetourService, SubPath } from '../../detour.service';
+import { LineStore } from '../../line.store';
+import { QueriedPath, RouteService, Stop } from '../../route.service';
+import { NotificationService } from '../../notification.service';
+import { OptionsService } from '../../options.service';
 
 export interface DetourWithStop extends DetailResult {
   sourceName: string;
@@ -32,22 +33,27 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   readonly getBiggestDetour$ = super.select((state) => state.biggestDetour);
 
   readonly setTotalDistance = super.effect(() =>
-    this.store.select(getOriginalPath).pipe(
-      filter((path) => !!path?.distanceTable.length),
-      map((path) => path!.distanceTable[0][path!.distanceTable.length - 1]),
+    this.store.getPath$.pipe(
+      map((path) => path.distanceTable),
+      filter((table) => table.length > 0),
+      map((table) => table[0][table.length - 1]),
       tap((totalDistance) => super.patchState({ totalDistance }))
     )
   );
 
   readonly setAverageDetour = super.effect(() =>
-    combineLatest([
-      this.store.select(getOriginalPath).pipe(filter((path) => !!path)),
-      this.store.select(getSubPaths),
-      this.store.select('line'),
-    ]).pipe(
-      map<[QueriedPath, SubPath[], Stop[]], [Stop[], DetourResult]>(([original, sub, line]) => [
+    combineLatest([this.store.getPath$, this.optionsService.getCap(), this.store.getLine$]).pipe(
+      tap(console.log),
+      filter(([path, _, line]) => path.distanceTable.length === line.length),
+      switchMap(([path, cap, line]) =>
+        forkJoin(this.queryAllPaths(line, cap)).pipe(
+          map<SubPath[], [QueriedPath, SubPath[], Stop[]]>((subpaths) => [path, subpaths, line])
+        )
+      ),
+      tap(console.log),
+      map<[QueriedPath, SubPath[], Stop[]], [Stop[], DetourResult]>(([path, sub, line]) => [
         line,
-        this.detourService.computeDetours(original.distanceTable, sub),
+        this.detourService.computeDetours(path.distanceTable, sub),
       ]),
       tap(([line, detour]) =>
         super.patchState({
@@ -61,8 +67,11 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   );
 
   constructor(
-    private readonly store: Store<{ paths: Paths; line: Stop[] }>,
-    private readonly detourService: DetourService
+    private readonly store: LineStore,
+    private readonly detourService: DetourService,
+    private readonly routeService: RouteService,
+    private readonly notificationService: NotificationService,
+    private readonly optionsService: OptionsService
   ) {
     super({
       totalDistance: 0,
@@ -77,6 +86,26 @@ export class StatisticsViewerStore extends ComponentStore<State> {
     if (!result) {
       return undefined;
     }
-    return { ...result, sourceName: line[result.source].name, targetName: line[result.target].name };
+    return {
+      ...result,
+      sourceName: line[result.source].name,
+      targetName: line[result.target].name,
+    };
+  }
+
+  private queryAllPaths(line: Stop[], cap: number): Observable<SubPath>[] {
+    return this.detourService.createQueryPairs(line, cap).map((pair) =>
+      this.routeService.queryOsrmRoute([pair.source, pair.target]).pipe(
+        catchError(() => {
+          this.notificationService.raiseNotification('Could not query paths. Is your OSRM URL configured correctly?');
+          return EMPTY;
+        }),
+        map((path: QueriedPath) => ({
+          path,
+          startIndex: pair.source.index,
+          endIndex: pair.target.index,
+        }))
+      )
+    );
   }
 }

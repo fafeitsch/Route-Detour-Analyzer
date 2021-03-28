@@ -3,8 +3,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { SubPath } from './+store/paths';
-import { Stop } from './+store/types';
+import { QueriedPath, Stop } from './route.service';
 
 export interface DetourResult {
   averageDetour: number;
@@ -23,6 +22,12 @@ export interface DetailResult {
 export interface QueryPair {
   source: { index: number } & Stop;
   target: { index: number } & Stop;
+}
+
+export interface SubPath {
+  startIndex: number;
+  endIndex: number;
+  path: QueriedPath;
 }
 
 @Injectable({ providedIn: 'root' })

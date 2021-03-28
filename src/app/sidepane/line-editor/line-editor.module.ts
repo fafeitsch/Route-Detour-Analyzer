@@ -11,8 +11,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FocusStateModule } from '../../+store/focus/focus-state.module';
-import { LineStateModule } from '../../+store/line';
 
 @NgModule({
   declarations: [LineEditorComponent, StopEditorComponent, StopEditorComponent],
@@ -24,8 +22,6 @@ import { LineStateModule } from '../../+store/line';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
-    FocusStateModule,
-    LineStateModule,
   ],
   exports: [LineEditorComponent],
 })
