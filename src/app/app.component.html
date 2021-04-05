@@ -11,6 +11,9 @@
     </div>
   </mat-sidenav>
   <mat-sidenav-content>
-    <app-map></app-map>
+    <div class="d-flex flex-column h-100">
+      <app-map class="flex-grow-1"></app-map>
+      <statistics-viewer></statistics-viewer>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

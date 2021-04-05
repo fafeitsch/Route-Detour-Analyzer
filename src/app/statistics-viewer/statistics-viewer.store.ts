@@ -5,11 +5,11 @@ import { ComponentStore } from '@ngrx/component-store';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { combineLatest, EMPTY, forkJoin, Observable } from 'rxjs';
-import { DetailResult, DetourResult, DetourService, SubPath } from '../../detour.service';
-import { LineStore } from '../../line.store';
-import { QueriedPath, RouteService, Stop } from '../../route.service';
-import { NotificationService } from '../../notification.service';
-import { OptionsService } from '../../options.service';
+import { DetailResult, DetourResult, DetourService, SubPath } from '../detour.service';
+import { LineStore } from '../line.store';
+import { QueriedPath, RouteService, Stop } from '../route.service';
+import { NotificationService } from '../notification.service';
+import { OptionsService } from '../options.service';
 
 export interface DetourWithStop extends DetailResult {
   sourceName: string;

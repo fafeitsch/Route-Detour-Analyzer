@@ -5,9 +5,8 @@
 <external-settings *ngIf="settingsMode"></external-settings>
 <ng-container *ngIf="!settingsMode">
   <evaluation-range-cap></evaluation-range-cap>
-  <statistics-viewer></statistics-viewer>
   <line-editor></line-editor>
 </ng-container>
 <div class="flex-grow-1"></div>
-<a *ngIf="!settingsMode" class="settings" (click)="switchToSettingsMode()">Settings</a>
-<a *ngIf="settingsMode" class="settings" (click)="switchToNormalMode()">Back</a>
+<a *ngIf="!settingsMode" class="themed pointer-cursor" (click)="switchToSettingsMode()">Settings</a>
+<a *ngIf="settingsMode" class="themed pointer-cursor" (click)="switchToNormalMode()">Back</a>
