@@ -11,6 +11,10 @@
   color: mat-color($theme-primary);
 }
 
+.fill-themed {
+  fill: mat-color($theme-primary);
+}
+
 .primary-background {
   color: mat-color($theme-primary, default-contrast);
   background: mat-color($theme-primary);
