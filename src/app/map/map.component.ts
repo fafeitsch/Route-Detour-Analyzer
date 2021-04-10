@@ -66,12 +66,17 @@ export class MapComponent implements AfterViewInit {
       this.markerLayer = L.layerGroup(
         line
           .filter((icon) => icon.realStop)
-          .map((stop, i) =>
+          .map((stop, index) =>
             L.marker([stop.lat, stop.lng], {
               icon: this.createIcon(stop.realStop, false),
               draggable: true,
             }).on('dragend', ($event) => {
-              this.lineStore.changeStopLatLng$([i, $event.target.getLatLng().lat, $event.target.getLatLng().lng]);
+              this.lineStore.replaceStopOfLine$({
+                ...stop,
+                lat: $event.target.getLatLng().lat,
+                lng: $event.target.getLatLng().lng,
+                index,
+              });
             })
           )
       ).addTo(this.map);

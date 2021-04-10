@@ -10,6 +10,10 @@
   >
     <div class="w-100 pl-2 pt-2 pb-2">Drop stops here to delete them.</div>
   </div>
+  <div *ngIf="!(line$ | async).length" class="w-100 pl-2 pt-2 pb-2 disabled">Click on the map to add a stop.</div>
+  <div class="w-100 d-flex justify-content-flex-end disabled">
+    {{ (distance$ | async) / 1000 | number: '1.0-3' }} km
+  </div>
   <div cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="drop($event)">
     <div cdkDrag *ngFor="let stop of line$ | async; index as i; last as last" [cdkDragDisabled]="editedStops !== 0">
       <stop-editor
@@ -28,5 +32,4 @@
       </stop-editor>
     </div>
   </div>
-  <div *ngIf="!(line$ | async).length" class="w-100 pl-2 pt-2 pb-2 disabled">Click on the map to add a stop.</div>
 </div>

@@ -1,0 +1,18 @@
+<div class="d-flex flex-column">
+  <span class="mat-body-strong" [ngClass]="!result ? 'disabled' : ''">{{ title }}</span>
+  <div class="d-flex align-items-flex-center">
+    <line-stop stopType="real" [isFirstStop]="true"></line-stop>
+    <ng-container *ngIf="result">{{ result.sourceName || result.source + 1 + 'th stop' }}</ng-container>
+  </div>
+  <div class="d-flex align-items-flex-center">
+    <line-stop></line-stop>
+    <div *ngIf="result">
+      <div>{{ result.relative - 1 | number: '1.2-2' }} % ({{ result.absolute / 1000 | number: '1.0-3' }} km)</div>
+      <div *ngIf="average" class="disabled">(Average is {{ average - 1 | number: '1.2-2' }} %)</div>
+    </div>
+  </div>
+  <div class="d-flex align-items-flex-center">
+    <line-stop stopType="real" [isLastStop]="true"></line-stop>
+    <ng-container *ngIf="result">{{ result.targetName || result.target + 1 + 'th stop' }}</ng-container>
+  </div>
+</div>

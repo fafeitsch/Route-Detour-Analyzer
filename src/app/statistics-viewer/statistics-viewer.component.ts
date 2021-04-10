@@ -11,7 +11,6 @@ import { StatisticsViewerStore } from './statistics-viewer.store';
   providers: [StatisticsViewerStore],
 })
 export class StatisticsViewerComponent {
-  originalDistance$ = this.store.getTotalDistance$;
   averageDetour$ = this.store.getAverageDetour$;
   smallestDetour$ = this.store.getSmallestDetour$;
   medianDetour$ = this.store.getMedianDetour$;

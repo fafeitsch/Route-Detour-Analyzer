@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
     '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" [attr.width]="size" [attr.height]="size" version="1.1">' +
     '<rect *ngIf="!isFirstStop" x="20" class="fill-themed" height="50%" width="15px"></rect>' +
     '<rect *ngIf="!isLastStop" x="20" y="50%" class="fill-themed" height="100%" width="15px"></rect>' +
-    ' <g *ngIf="realStop" transform="translate(12.498047,12.498047)" id="surface1">' +
+    ' <g *ngIf="stopType === \'real\' " transform="translate(12.498047,12.498047)" id="surface1">' +
     '    <path' +
     '       id="path3770"' +
     '       style="fill:#266133;fill-opacity:1;fill-rule:evenodd;stroke:none"' +
@@ -22,7 +22,7 @@ import { Component, Input } from '@angular/core';
     '       id="path3774"' +
     '       style="fill:#266133;fill-opacity:1;fill-rule:evenodd;stroke:none"' +
     '       d="m 18.058594,6.144531 h 3.980468 v 17.660157 h -3.980468 v -7.425782 h -6.09375 v 7.425782 H 7.984375 V 6.144531 h 3.980469 v 7.515625 h 6.09375 z m 0,0" />' +
-    '  </g><g *ngIf="!realStop"' +
+    '  </g><g *ngIf="stopType === \'waypoint\'"' +
     '     style="fill:#000000;fill-opacity:1;opacity:1;fill-rule:nonzero"\n' +
     '     transform="translate(12.498047,12.498047)"\n' +
     '     id="surface1">\n' +
@@ -30,11 +30,12 @@ import { Component, Input } from '@angular/core';
     '       class="fill-themed" />\n' +
     '  </g>' +
     '</svg>',
+  host: { style: 'height: 55px' },
 })
 export class LineStopComponent {
   size = 55;
 
-  @Input() realStop: boolean = true;
+  @Input() stopType: 'real' | 'waypoint' | 'none' = 'none';
   @Input() isFirstStop: boolean = false;
   @Input() isLastStop: boolean = false;
 

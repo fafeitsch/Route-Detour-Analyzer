@@ -32,14 +32,7 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   readonly getMedianDetour$ = super.select((state) => state.medianDetour);
   readonly getBiggestDetour$ = super.select((state) => state.biggestDetour);
 
-  readonly setTotalDistance = super.effect(() =>
-    this.store.getPath$.pipe(
-      map((path) => path.distanceTable),
-      filter((table) => table.length > 0),
-      map((table) => table[0][table.length - 1]),
-      tap((totalDistance) => super.patchState({ totalDistance }))
-    )
-  );
+  readonly setTotalDistance = super.effect(() => this.store.getPath$.pipe());
 
   readonly setAverageDetour = super.effect(() =>
     combineLatest([this.store.getPath$, this.optionsService.getCap(), this.store.getLine$]).pipe(

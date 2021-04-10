@@ -1,3 +1,6 @@
+/*
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
+ */
 import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -8,7 +11,6 @@ import { LineStore } from '../../line.store';
 @Component({
   selector: 'evaluation-range-cap',
   templateUrl: './evaluation-range-cap.component.html',
-  styleUrls: ['./evaluation-range-cap.component.scss'],
 })
 export class EvaluationRangeCapComponent implements OnDestroy {
   control: AbstractControl | undefined = undefined;

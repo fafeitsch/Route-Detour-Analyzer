@@ -3,7 +3,11 @@
   -->
 <div class="height d-flex align-items-stretch">
   <button class="line-indicator" mat-icon-button (click)="toggleRealStop.emit()">
-    <line-stop [realStop]="isRealStop" [isFirstStop]="isFirstStop" [isLastStop]="isLastStop"></line-stop>
+    <line-stop
+      [stopType]="isRealStop ? 'real' : 'waypoint'"
+      [isFirstStop]="isFirstStop"
+      [isLastStop]="isLastStop"
+    ></line-stop>
   </button>
   <div class="flex-grow-1 pl-2 d-flex align-items-flex-center">
     <span *ngIf="!editMode && stopName" class="flex-grow-1">{{ stopName }}</span>

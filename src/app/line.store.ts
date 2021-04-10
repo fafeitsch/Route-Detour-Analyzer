@@ -2,9 +2,9 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { QueriedPath, RouteService, Stop } from './route.service';
-import { switchMap, tap } from 'rxjs/operators';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { NotificationService } from './notification.service';
 import { Injectable } from '@angular/core';
 
@@ -18,6 +18,13 @@ interface State {
 export class LineStore extends ComponentStore<State> {
   readonly getLine$ = super.select((state) => state.line);
   readonly getPath$ = super.select((state) => state.path);
+  readonly getTotalDistance$ = super
+    .select((state) => state.path)
+    .pipe(
+      map((path) => path.distanceTable),
+      filter((table) => table.length > 0),
+      map((table) => table[0][table.length - 1])
+    );
 
   private readonly addStop$ = super.updater((state, stop: Stop) => ({
     ...state,
@@ -44,26 +51,24 @@ export class LineStore extends ComponentStore<State> {
     line[index] = { ...state.line[index], realStop: !state.line[index].realStop };
     return { ...state, line };
   });
-  readonly changeStopLatLng$ = super.updater((state, [index, lat, lng]: [number, number, number]) => {
+  readonly replaceStop$ = super.updater((state, [replacement, index]: [Stop, number]) => {
     const line = [...state.line];
-    line[index] = { ...state.line[index], lat, lng };
+    line[index] = { ...replacement };
     return { ...state, line };
   });
 
   readonly addStopToLine$ = super.effect((stop$: Observable<Stop>) =>
-    stop$.pipe(
-      switchMap((s) =>
-        this.routeService.queryNearestStreet(s).pipe(
-          tapResponse(
-            (stop) => this.addStop$(stop),
-            () => {
-              this.notificationService.raiseNotification(
-                'Could query not nearest address. Is your OSRM URL configured correctly?'
-              );
-            }
-          )
-        )
-      )
+    stop$.pipe(switchMap((s) => this.queryNearestStop(s, this.addStop$.bind(this))))
+  );
+
+  readonly replaceStopOfLine$ = super.effect((replacement$: Observable<Stop & { index: number }>) =>
+    replacement$.pipe(
+      switchMap((replacement) => {
+        if (!replacement.name) {
+          return this.queryNearestStop(replacement, (stop) => this.replaceStop$([stop, replacement.index]));
+        }
+        return of(replacement).pipe(tap((stop) => this.replaceStop$([stop, stop.index])));
+      })
     )
   );
 
@@ -77,5 +82,15 @@ export class LineStore extends ComponentStore<State> {
 
   constructor(private readonly routeService: RouteService, private readonly notificationService: NotificationService) {
     super({ line: [], minSubPathCount: 0, path: { distanceTable: [], waypoints: [] } });
+  }
+
+  private queryNearestStop(stop: Stop, consumer: (stop: Stop) => void) {
+    return this.routeService.queryNearestStreet(stop).pipe(
+      tapResponse(consumer, () => {
+        this.notificationService.raiseNotification(
+          'Could query not nearest address. Is your OSRM URL configured correctly?'
+        );
+      })
+    );
   }
 }

@@ -14,6 +14,7 @@ import { Stop } from '../../route.service';
 })
 export class LineEditorComponent {
   line$ = this.lineStore.getLine$;
+  distance$ = this.lineStore.getTotalDistance$;
 
   editedStops = 0;
 
