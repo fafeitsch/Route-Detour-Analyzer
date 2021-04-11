@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'app-controls',
   templateUrl: './controls.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'd-flex flex-column p-3' },
+  host: { class: 'd-flex flex-column p-3 ov-hidden' },
 })
 export class ControlsComponent {
   settingsMode: boolean = false;

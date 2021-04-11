@@ -11,6 +11,7 @@ import { Stop } from '../../route.service';
   selector: 'line-editor',
   templateUrl: './line-editor.component.html',
   styleUrls: ['./line-editor.component.scss'],
+  host: { class: 'd-flex flex-column' },
 })
 export class LineEditorComponent {
   line$ = this.lineStore.getLine$;

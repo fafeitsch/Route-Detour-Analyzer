@@ -1,7 +1,7 @@
 <!--
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
   -->
-<div cdkDropListGroup *ngIf="line$ | async" class="p-3">
+<div cdkDropListGroup *ngIf="line$ | async" class="p-3 d-flex flex-grow-1 flex-column ov-hidden">
   <div
     *ngIf="(line$ | async).length > 0"
     cdkDropList
@@ -14,7 +14,7 @@
   <div class="w-100 d-flex justify-content-flex-end disabled">
     {{ (distance$ | async) / 1000 | number: '1.0-3' }} km
   </div>
-  <div cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="drop($event)">
+  <div cdkDropList cdkDropListLockAxis="y" class="flex-grow-1 ov-auto" (cdkDropListDropped)="drop($event)">
     <div cdkDrag *ngFor="let stop of line$ | async; index as i; last as last" [cdkDragDisabled]="editedStops !== 0">
       <stop-editor
         [ngClass]="editedStops === 0 ? 'grab-cursor' : ''"

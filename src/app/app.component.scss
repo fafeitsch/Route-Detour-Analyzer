@@ -7,5 +7,7 @@ mat-sidenav {
 
 .banner {
   height: 50px;
+  min-height: 50px;
+  max-height: 50px;
   font-size: 1.3em;
 }
