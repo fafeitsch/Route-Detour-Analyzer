@@ -7,10 +7,12 @@ import { PencilComponent } from './pencil.component';
 import { CrossComponent } from './cross.component';
 import { CheckmarkComponent } from '@rda/components/icons/checkmark.component';
 import { LineStopComponent } from '@rda/components/icons/line-stop.component';
+import { PlusComponent } from '@rda/components/icons/plus.component';
+import { MinusComponent } from '@rda/components/icons/minus.component';
 
 @NgModule({
-  declarations: [PencilComponent, CrossComponent, CheckmarkComponent, LineStopComponent],
-  exports: [PencilComponent, CrossComponent, CheckmarkComponent, LineStopComponent],
+  declarations: [PencilComponent, CrossComponent, CheckmarkComponent, LineStopComponent, PlusComponent, MinusComponent],
+  exports: [PencilComponent, CrossComponent, CheckmarkComponent, LineStopComponent, PlusComponent, MinusComponent],
   imports: [CommonModule],
 })
 export class IconsModule {}

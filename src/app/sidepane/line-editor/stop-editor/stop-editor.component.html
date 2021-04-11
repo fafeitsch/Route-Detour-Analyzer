@@ -1,7 +1,7 @@
 <!--
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
   -->
-<div class="height d-flex align-items-stretch">
+<div class="height d-flex align-items-flex-center">
   <button class="line-indicator" mat-icon-button (click)="toggleRealStop.emit()">
     <line-stop
       [stopType]="isRealStop ? 'real' : 'waypoint'"
@@ -9,20 +9,13 @@
       [isLastStop]="isLastStop"
     ></line-stop>
   </button>
-  <div class="flex-grow-1 pl-2 d-flex align-items-flex-center">
-    <span *ngIf="!editMode && stopName" class="flex-grow-1">{{ stopName }}</span>
-    <span *ngIf="!editMode && !stopName" class="flex-grow-1 flex-grow-1"><i>Unnamed Stop</i></span>
-    <mat-form-field *ngIf="editMode" class="flex-grow-1 mr-2"
-      ><input matInput [value]="stopName" [formControl]="nameFormControl" (keyup)="inputKeyPressed($event)"
-    /></mat-form-field>
-    <button mat-icon-button *ngIf="!editMode" (click)="toggleEdit()">
-      <icon-pencil class="primary-light-background mr-2 pt-2 pointer-cursor"></icon-pencil>
-    </button>
-    <button mat-icon-button *ngIf="editMode" (click)="commit()">
-      <icon-checkmark class="primary-light-background mr-2 pt-2 pointer-cursor"></icon-checkmark>
-    </button>
-    <button mat-icon-button *ngIf="editMode" (click)="toggleEdit()">
-      <icon-cross class="primary-light-background mr-2 pt-2 pointer-cursor"></icon-cross>
-    </button>
-  </div>
+  <inline-editor
+    class="flex-grow-1 pl-2"
+    emptyPlaceholder="Unnamed Stop"
+    [text]="stopName"
+    (changeText)="changeName.emit($event)"
+    (enterEditMode)="enterEditMode.emit()"
+    (leaveEditMode)="leaveEditMode.emit()"
+  ></inline-editor>
+  <delete-button (delete)="deleteStop()"></delete-button>
 </div>

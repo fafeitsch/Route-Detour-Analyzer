@@ -14,6 +14,7 @@ import { Stop } from '../../route.service';
   host: { class: 'd-flex flex-column' },
 })
 export class LineEditorComponent {
+  selectedLine$ = this.lineStore.getSelectedLine$;
   line$ = this.lineStore.getLine$;
   distance$ = this.lineStore.getTotalDistance$;
 
@@ -25,8 +26,8 @@ export class LineEditorComponent {
     this.lineStore.moveStop$([event.previousIndex, event.currentIndex]);
   }
 
-  dropOnTrash(event: CdkDragDrop<Stop[]>) {
-    this.lineStore.removeStop$(event.previousIndex);
+  deleteStop(index: number) {
+    this.lineStore.removeStop$(index);
     this.unsetFocusedStop();
   }
 

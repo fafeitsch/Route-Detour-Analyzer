@@ -10,6 +10,7 @@ import { StatisticsViewerComponent } from '../statistics-viewer/statistics-viewe
 import { EvaluationRangeCapModule } from './evaluation-range-cap/evaluation-range-cap.module';
 import { NotificationModule } from './notification/notification.module';
 import { SingleStatisticsModule } from '../statistics-viewer/single-statistics/single-statistics.module';
+import { LineManagerModule } from './line-manager/line-manager.module';
 
 @NgModule({
   declarations: [ControlsComponent, StatisticsViewerComponent],
@@ -21,6 +22,7 @@ import { SingleStatisticsModule } from '../statistics-viewer/single-statistics/s
     EvaluationRangeCapModule,
     NotificationModule,
     SingleStatisticsModule,
+    LineManagerModule,
   ],
 })
 export class ControlsModule {}

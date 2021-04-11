@@ -11,6 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
+import { InlineEditorModule } from '@rda/components/inline-editor/inline-editor.module';
+import { DeleteButtonModule } from '@rda/components/delete-button/delete-button.module';
 
 @NgModule({
   declarations: [LineEditorComponent, StopEditorComponent, StopEditorComponent],
@@ -22,6 +24,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    InlineEditorModule,
+    DeleteButtonModule,
   ],
   exports: [LineEditorComponent],
 })

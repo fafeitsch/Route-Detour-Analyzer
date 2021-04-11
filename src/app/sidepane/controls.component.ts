@@ -10,13 +10,17 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   host: { class: 'd-flex flex-column p-3 ov-hidden' },
 })
 export class ControlsComponent {
-  settingsMode: boolean = false;
+  mode: 'normal' | 'settings' | 'lines' = 'normal';
 
   switchToSettingsMode() {
-    this.settingsMode = true;
+    this.mode = 'settings';
   }
 
   switchToNormalMode() {
-    this.settingsMode = false;
+    this.mode = 'normal';
+  }
+
+  switchToLinesMode() {
+    this.mode = 'lines';
   }
 }

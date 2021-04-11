@@ -2,10 +2,14 @@
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
   -->
 <app-notification></app-notification>
-<external-settings class="flex-grow-1" *ngIf="settingsMode"></external-settings>
-<ng-container *ngIf="!settingsMode">
+<external-settings class="flex-grow-1" *ngIf="mode === 'settings'"></external-settings>
+<ng-container *ngIf="mode === 'normal'">
   <evaluation-range-cap></evaluation-range-cap>
   <line-editor class="ov-hidden flex-grow-1"></line-editor>
 </ng-container>
-<a *ngIf="!settingsMode" class="themed pointer-cursor" (click)="switchToSettingsMode()">Settings</a>
-<a *ngIf="settingsMode" class="themed pointer-cursor" (click)="switchToNormalMode()">Back</a>
+<line-manager *ngIf="mode === 'lines'" class="flex-grow-1"></line-manager>
+<div class="d-flex">
+  <a *ngIf="mode === 'normal'" class="mr-3 themed pointer-cursor" (click)="switchToLinesMode()">Lines</a>
+  <a *ngIf="mode === 'normal'" class="themed pointer-cursor" (click)="switchToSettingsMode()">Settings</a>
+  <a *ngIf="mode !== 'normal'" class="themed pointer-cursor" (click)="switchToNormalMode()">Back</a>
+</div>

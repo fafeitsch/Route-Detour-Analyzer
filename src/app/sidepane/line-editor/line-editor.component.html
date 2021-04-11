@@ -2,17 +2,10 @@
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
   -->
 <div cdkDropListGroup *ngIf="line$ | async" class="p-3 d-flex flex-grow-1 flex-column ov-hidden">
-  <div
-    *ngIf="(line$ | async).length > 0"
-    cdkDropList
-    class="trash d-flex align-items-stretch disabled mt-2"
-    (cdkDropListDropped)="dropOnTrash($event)"
-  >
-    <div class="w-100 pl-2 pt-2 pb-2">Drop stops here to delete them.</div>
-  </div>
   <div *ngIf="!(line$ | async).length" class="w-100 pl-2 pt-2 pb-2 disabled">Click on the map to add a stop.</div>
-  <div class="w-100 d-flex justify-content-flex-end disabled">
-    {{ (distance$ | async) / 1000 | number: '1.0-3' }} km
+  <div class="w-100 d-flex justify-content-spaced align-items-flex-center">
+    <span class="mb-3 mat-body-strong">{{ selectedLine$ | async }}</span>
+    <span class="disabled">{{ (distance$ | async) / 1000 | number: '1.0-3' }} km</span>
   </div>
   <div cdkDropList cdkDropListLockAxis="y" class="flex-grow-1 ov-auto" (cdkDropListDropped)="drop($event)">
     <div cdkDrag *ngFor="let stop of line$ | async; index as i; last as last" [cdkDragDisabled]="editedStops !== 0">
@@ -28,6 +21,7 @@
         (toggleRealStop)="toggleRealStop(i)"
         (mouseenter)="setFocusedStop(stop)"
         (mouseleave)="unsetFocusedStop()"
+        (delete)="deleteStop(i)"
       >
       </stop-editor>
     </div>

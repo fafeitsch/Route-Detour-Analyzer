@@ -17,7 +17,6 @@ export interface DetourWithStop extends DetailResult {
 }
 
 interface State {
-  totalDistance: number;
   averageDetour: number;
   medianDetour: DetourWithStop | undefined;
   biggestDetour: DetourWithStop | undefined;
@@ -26,24 +25,19 @@ interface State {
 
 @Injectable()
 export class StatisticsViewerStore extends ComponentStore<State> {
-  readonly getTotalDistance$ = super.select((state) => state.totalDistance);
   readonly getAverageDetour$ = super.select((state) => state.averageDetour);
   readonly getSmallestDetour$ = super.select((state) => state.smallestDetour);
   readonly getMedianDetour$ = super.select((state) => state.medianDetour);
   readonly getBiggestDetour$ = super.select((state) => state.biggestDetour);
 
-  readonly setTotalDistance = super.effect(() => this.store.getPath$.pipe());
-
   readonly setAverageDetour = super.effect(() =>
     combineLatest([this.store.getPath$, this.optionsService.getCap(), this.store.getLine$]).pipe(
-      tap(console.log),
       filter(([path, _, line]) => path.distanceTable.length === line.length),
       switchMap(([path, cap, line]) =>
         forkJoin(this.queryAllPaths(line, cap)).pipe(
           map<SubPath[], [QueriedPath, SubPath[], Stop[]]>((subpaths) => [path, subpaths, line])
         )
       ),
-      tap(console.log),
       map<[QueriedPath, SubPath[], Stop[]], [Stop[], DetourResult]>(([path, sub, line]) => [
         line,
         this.detourService.computeDetours(path.distanceTable, sub),
@@ -67,7 +61,6 @@ export class StatisticsViewerStore extends ComponentStore<State> {
     private readonly optionsService: OptionsService
   ) {
     super({
-      totalDistance: 0,
       averageDetour: 0,
       smallestDetour: undefined,
       medianDetour: undefined,
