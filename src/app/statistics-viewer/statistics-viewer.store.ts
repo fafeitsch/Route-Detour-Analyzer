@@ -2,7 +2,7 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
 import { ComponentStore } from '@ngrx/component-store';
-import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, filter, map, pluck, switchMap, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { combineLatest, EMPTY, forkJoin, Observable } from 'rxjs';
 import { DetailResult, DetourResult, DetourService, SubPath } from '../detour.service';
@@ -29,15 +29,26 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   readonly getSmallestDetour$ = super.select((state) => state.smallestDetour);
   readonly getMedianDetour$ = super.select((state) => state.medianDetour);
   readonly getBiggestDetour$ = super.select((state) => state.biggestDetour);
+  readonly lineColor$ = this.store.getLine$.pipe(pluck('color'));
 
   readonly setAverageDetour = super.effect(() =>
-    combineLatest([this.store.getPath$, this.optionsService.getCap(), this.store.getLine$]).pipe(
+    combineLatest([this.store.getPath$, this.optionsService.getCap(), this.store.getLine$.pipe(pluck('stops'))]).pipe(
       filter(([path, _, line]) => path.distanceTable.length === line.length),
-      switchMap(([path, cap, line]) =>
-        forkJoin(this.queryAllPaths(line, cap)).pipe(
+      switchMap(([path, cap, line]) => {
+        const sources = this.queryAllPaths(line, cap);
+        if (sources.length === 0) {
+          super.patchState({
+            smallestDetour: undefined,
+            biggestDetour: undefined,
+            medianDetour: undefined,
+            averageDetour: undefined,
+          });
+          return EMPTY;
+        }
+        return forkJoin(sources).pipe(
           map<SubPath[], [QueriedPath, SubPath[], Stop[]]>((subpaths) => [path, subpaths, line])
-        )
-      ),
+        );
+      }),
       map<[QueriedPath, SubPath[], Stop[]], [Stop[], DetourResult]>(([path, sub, line]) => [
         line,
         this.detourService.computeDetours(path.distanceTable, sub),

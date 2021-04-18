@@ -31,4 +31,12 @@ export class LineManagerComponent {
   selectLine(name: string) {
     this.store.selectLine$(name);
   }
+
+  changeColor(color: string, name: string) {
+    this.store.changeLineColor$([name, color]);
+  }
+
+  trackBy(index: number, line: { name: string; color: string; stops: number }) {
+    return line.name;
+  }
 }

@@ -13,6 +13,7 @@ export class StopEditorComponent {
   @Input() isRealStop = true;
   @Input() isFirstStop = false;
   @Input() isLastStop = false;
+  @Input() lineColor: string = '';
   @Output() enterEditMode = new EventEmitter<void>();
   @Output() leaveEditMode = new EventEmitter<void>();
   @Output() changeName = new EventEmitter<string>();

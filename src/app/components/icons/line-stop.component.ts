@@ -7,8 +7,8 @@ import { Component, Input } from '@angular/core';
   selector: 'line-stop',
   template:
     '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" [attr.width]="size" [attr.height]="size" version="1.1">' +
-    '<rect *ngIf="!isFirstStop" x="20" class="fill-themed" height="50%" width="15px"></rect>' +
-    '<rect *ngIf="!isLastStop" x="20" y="50%" class="fill-themed" height="100%" width="15px"></rect>' +
+    '<rect *ngIf="!isFirstStop" x="20" height="50%" width="15px" [attr.style]="\'fill: \' + lineColor"></rect>' +
+    '<rect *ngIf="!isLastStop" x="20" y="50%"  [attr.style]="\'fill: \' + lineColor" height="100%" width="15px"></rect>' +
     ' <g *ngIf="stopType === \'real\' " transform="translate(12.498047,12.498047)" id="surface1">' +
     '    <path' +
     '       id="path3770"' +
@@ -27,7 +27,7 @@ import { Component, Input } from '@angular/core';
     '     transform="translate(12.498047,12.498047)"\n' +
     '     id="surface1">\n' +
     '    <circle r="15.059524" cy="15.001953" cx="15.001953" id="path4630"' +
-    '       class="fill-themed" />\n' +
+    '       [attr.style]="\'fill: \' + lineColor" />\n' +
     '  </g>' +
     '</svg>',
   host: { style: 'height: 55px' },
@@ -38,6 +38,7 @@ export class LineStopComponent {
   @Input() stopType: 'real' | 'waypoint' | 'none' = 'none';
   @Input() isFirstStop: boolean = false;
   @Input() isLastStop: boolean = false;
+  @Input() lineColor: string = '#000000';
 
   @Input() set disabled(disabled: boolean) {
     if (disabled) {

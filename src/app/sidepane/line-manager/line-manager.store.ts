@@ -10,13 +10,16 @@ import { from, Observable } from 'rxjs';
 @Injectable()
 export class LineManagerStore extends ComponentStore<{}> {
   readonly getLines$ = this.lineStore.getLines$.pipe(
-    map((lines) => Object.keys(lines).map((name) => ({ name, stops: lines[name].length })))
+    map((lines) =>
+      Object.keys(lines).map((name) => ({ name, stops: lines[name].stops.length, color: lines[name].color }))
+    )
   );
 
   readonly getSelectedLine$ = this.lineStore.getSelectedLine$;
   readonly renameLine$ = this.lineStore.renameLine$;
   readonly deleteLine$ = this.lineStore.deleteLineWithName$;
   readonly selectLine$ = this.lineStore.selectLine$;
+  readonly changeLineColor$ = this.lineStore.changeLineColor$;
 
   readonly addLine$ = super.effect((trigger$: Observable<void>) =>
     trigger$.pipe(

@@ -14,7 +14,7 @@ import { LineStore } from '../../line.store';
 })
 export class EvaluationRangeCapComponent implements OnDestroy {
   control: AbstractControl | undefined = undefined;
-  numberOfStops$ = this.lineStore.getLine$.pipe(map((line) => line.filter((s) => s.realStop).length));
+  numberOfStops$ = this.lineStore.getLine$.pipe(map((line) => line.stops.filter((s) => s.realStop).length));
 
   private destroy$ = new Subject();
 

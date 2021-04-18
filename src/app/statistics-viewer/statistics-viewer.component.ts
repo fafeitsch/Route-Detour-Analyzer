@@ -15,6 +15,7 @@ export class StatisticsViewerComponent {
   smallestDetour$ = this.store.getSmallestDetour$;
   medianDetour$ = this.store.getMedianDetour$;
   biggestDetour$ = this.store.getBiggestDetour$;
+  lineColor$ = this.store.lineColor$;
 
   constructor(private readonly store: StatisticsViewerStore) {}
 }

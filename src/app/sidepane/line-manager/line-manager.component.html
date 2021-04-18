@@ -8,13 +8,20 @@
   </button>
 </header>
 
-<div *ngFor="let line of lines$ | async">
+<div *ngFor="let line of lines$ | async; trackBy: trackBy">
   <ng-container *ngIf="selectedLine$ | async as selectedLine">
     <div
       class="d-flex align-items-flex-center"
       [ngClass]="selectedLine === line.name ? 'primary-light-background' : 'pointer-cursor'"
       (click)="selectLine(line.name)"
     >
+      <input
+        class="colorpicker ml-2 pointer-cursor"
+        cpWidth="230px"
+        [colorPicker]="line.color"
+        [style.background]="line.color"
+        (colorPickerSelect)="changeColor($event, line.name)"
+      />
       <inline-editor
         class="flex-grow-1 ml-3"
         [text]="line.name"

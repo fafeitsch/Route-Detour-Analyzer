@@ -9,4 +9,5 @@ export class SingleStatisticsComponent {
   @Input() result: DetourWithStop | undefined = undefined;
   @Input() title = '';
   @Input() average = 0;
+  @Input() lineColor = '';
 }

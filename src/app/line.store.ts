@@ -4,13 +4,18 @@
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { Observable, of } from 'rxjs';
 import { QueriedPath, RouteService, Stop } from './route.service';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { NotificationService } from './notification.service';
 import { Injectable } from '@angular/core';
 
+export interface Line {
+  stops: Stop[];
+  color: string;
+}
+
 interface State {
   selectedLine: string;
-  lines: { [name: string]: Stop[] };
+  lines: { [name: string]: Line };
   path: QueriedPath;
   minSubPathCount: 0;
 }
@@ -31,62 +36,63 @@ export class LineStore extends ComponentStore<State> {
 
   private readonly addStop$ = super.updater((state, stop: Stop) => {
     const selectedLine = state.lines[state.selectedLine];
+    selectedLine.stops.push(stop);
     const newState = {
       ...state,
       lines: { ...state.lines },
     };
-    newState.lines[state.selectedLine] = [...selectedLine, stop];
+    newState.lines[state.selectedLine] = { ...selectedLine };
     return newState;
   });
   readonly removeStop$ = super.updater((state, index: number) => {
-    const line = [...state.lines[state.selectedLine]];
-    line.splice(index, 1);
+    const line = state.lines[state.selectedLine];
+    line.stops.splice(index, 1);
     const newState = {
       ...state,
       lines: { ...state.lines },
     };
-    newState.lines[state.selectedLine] = line;
+    newState.lines[state.selectedLine] = { ...line };
     return newState;
   });
   readonly moveStop$ = super.updater((state, [from, to]: [number, number]) => {
-    const line = [...state.lines[state.selectedLine]];
-    const taken = line.splice(from, 1);
-    line.splice(to, 0, taken[0]);
+    const line = state.lines[state.selectedLine];
+    const taken = line.stops.splice(from, 1);
+    line.stops.splice(to, 0, taken[0]);
     const newState = {
       ...state,
       lines: { ...state.lines },
     };
-    newState.lines[state.selectedLine] = line;
+    newState.lines[state.selectedLine] = { ...line };
     return newState;
   });
   readonly renameStop$ = super.updater((state, [index, name]: [number, string]) => {
-    const line = [...state.lines[state.selectedLine]];
-    line[index] = { ...line[index], name };
+    const line = state.lines[state.selectedLine];
+    line.stops[index] = { ...line.stops[index], name };
     const newState = {
       ...state,
       lines: { ...state.lines },
     };
-    newState.lines[state.selectedLine] = line;
+    newState.lines[state.selectedLine] = { ...line };
     return newState;
   });
   readonly toggleRealStop$ = super.updater((state, index: number) => {
-    const line = [...state.lines[state.selectedLine]];
-    line[index] = { ...line[index], realStop: !line[index].realStop };
+    const line = state.lines[state.selectedLine];
+    line.stops[index] = { ...line.stops[index], realStop: !line.stops[index].realStop };
     const newState = {
       ...state,
       lines: { ...state.lines },
     };
-    newState.lines[state.selectedLine] = line;
+    newState.lines[state.selectedLine] = { ...line };
     return newState;
   });
   readonly replaceStop$ = super.updater((state, [replacement, index]: [Stop, number]) => {
-    const line = [...state.lines[state.selectedLine]];
-    line[index] = { ...replacement };
+    const line = state.lines[state.selectedLine];
+    line.stops[index] = { ...replacement };
     const newState = {
       ...state,
       lines: { ...state.lines },
     };
-    newState.lines[state.selectedLine] = line;
+    newState.lines[state.selectedLine] = { ...line };
     return newState;
   });
   private readonly replaceLine$ = super.updater((state, [oldName, newName]: [string, string]) => {
@@ -97,10 +103,16 @@ export class LineStore extends ComponentStore<State> {
     lines[newName] = line;
     return { ...state, selectedLine, lines };
   });
+  readonly changeLineColor$ = super.updater((state, [line, color]: [string, string]) => {
+    const selected = state.lines[line];
+    const lines = { ...state.lines };
+    lines[line] = { ...selected, color };
+    return { ...state, lines };
+  });
   readonly addLine$ = super.updater((state, name: string) => {
     const lines = { ...state.lines };
-    lines[name] = [];
-    console.log(lines);
+    //TODO: Find a better way to set the theme color manually
+    lines[name] = { stops: [], color: '#3362da' };
     return { ...state, lines };
   });
   private readonly deleteLine$ = super.updater((state, name: string) => {
@@ -127,7 +139,7 @@ export class LineStore extends ComponentStore<State> {
 
   readonly queryPath$ = super.effect(() =>
     this.getLine$.pipe(
-      switchMap((line) => this.routeService.queryOsrmRoute(line)),
+      switchMap((line) => this.routeService.queryOsrmRoute(line.stops)),
       tap((path) => super.patchState({ path }))
     )
   );
@@ -136,6 +148,7 @@ export class LineStore extends ComponentStore<State> {
     name$.pipe(
       switchMap((names) =>
         this.getLines$.pipe(
+          take(1),
           map((lines) => Object.keys(lines)),
           map<string[], [string, string, string[]]>((lines) => [...names, lines])
         )
@@ -168,7 +181,8 @@ export class LineStore extends ComponentStore<State> {
   constructor(private readonly routeService: RouteService, private readonly notificationService: NotificationService) {
     super({
       selectedLine: 'Line 1',
-      lines: { 'Line 1': [] },
+      //TODO: Find a better way to set the theme color manually
+      lines: { 'Line 1': { stops: [], color: '#3362da' } },
       minSubPathCount: 0,
       path: { distanceTable: [], waypoints: [] },
     });

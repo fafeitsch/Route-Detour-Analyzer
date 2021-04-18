@@ -4,7 +4,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import * as L from 'leaflet';
 import { LatLng } from 'leaflet';
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MapStore } from './map.store';
 import { NotificationService } from '../notification.service';
@@ -64,7 +64,7 @@ export class MapComponent implements AfterViewInit {
         this.map.removeLayer(this.markerLayer);
       }
       this.markerLayer = L.layerGroup(
-        line
+        line.stops
           .filter((icon) => icon.realStop)
           .map((stop, index) =>
             L.marker([stop.lat, stop.lng], {
@@ -81,12 +81,14 @@ export class MapComponent implements AfterViewInit {
           )
       ).addTo(this.map);
     });
-    this.store.getOrignalPath$.pipe(takeUntil(this.destroy$)).subscribe((path) => {
-      if (this.pathLayer) {
-        this.map.removeLayer(this.pathLayer);
-      }
-      this.drawPath(path);
-    });
+    combineLatest([this.lineStore.getLine$, this.store.getOrignalPath$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([line, path]) => {
+        if (this.pathLayer) {
+          this.map.removeLayer(this.pathLayer);
+        }
+        this.drawPath(path, line.color);
+      });
     this.focusService
       .getFocus()
       .pipe(takeUntil(this.destroy$))
@@ -125,8 +127,9 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
-  private drawPath(path: [number, number][]) {
-    this.pathLayer = L.polyline(path, { className: 'themed' }).addTo(this.map);
+  private drawPath(path: [number, number][], color: string) {
+    let options: L.PolylineOptions = { color };
+    this.pathLayer = L.polyline(path, options).addTo(this.map);
   }
 
   private initMap(): void {
