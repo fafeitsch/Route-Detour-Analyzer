@@ -13,26 +13,18 @@ export interface LatLngWithZoom extends LatLng {
 }
 
 interface State {
-  originalPath: [number, number][];
   center: LatLngWithZoom;
 }
 
 @Injectable()
 export class MapStore extends ComponentStore<State> {
-  readonly getOrignalPath$ = super.select((state) => state.originalPath);
+  readonly getPaths$ = this.lineStore.getVisibleLines$;
   readonly getCenter$ = super.select((state) => state.center);
 
   readonly setCenter$ = super.updater((state, center: LatLngWithZoom) => ({
     ...state,
     center: center,
   }));
-
-  readonly updateOriginalPath$ = super.effect(() =>
-    this.lineStore.getPath$.pipe(
-      map((path) => path.waypoints),
-      tap((originalPath) => super.patchState({ originalPath }))
-    )
-  );
 
   readonly readCenterFromRoute$ = super.effect(() =>
     this.route.queryParamMap.pipe(
@@ -48,7 +40,6 @@ export class MapStore extends ComponentStore<State> {
 
   constructor(private readonly lineStore: LineStore, private readonly route: ActivatedRoute) {
     super({
-      originalPath: [],
       center: { lat: 49.7932, lng: 9.9286, zoom: 14 },
     });
   }

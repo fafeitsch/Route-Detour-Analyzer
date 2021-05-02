@@ -16,3 +16,9 @@
 .leaflet-map-pane {
   cursor: grabbing;
 }
+
+mat-slide-toggle {
+  position: absolute;
+  right: 0;
+  z-index: 1000;
+}

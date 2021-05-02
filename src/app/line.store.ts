@@ -16,7 +16,8 @@ export interface Line {
 interface State {
   selectedLine: string;
   lines: { [name: string]: Line };
-  path: QueriedPath;
+  showAllLines: boolean;
+  paths: { [name: string]: QueriedPath };
   minSubPathCount: 0;
 }
 
@@ -25,14 +26,22 @@ export class LineStore extends ComponentStore<State> {
   readonly getSelectedLine$ = super.select((state) => state.selectedLine);
   readonly getLines$ = super.select((state) => state.lines);
   readonly getLine$ = super.select((state) => state.lines[state.selectedLine]);
-  readonly getPath$ = super.select((state) => state.path);
-  readonly getTotalDistance$ = super
-    .select((state) => state.path)
-    .pipe(
-      map((path) => path.distanceTable),
-      filter((table) => table.length > 0),
-      map((table) => table[0][table.length - 1])
-    );
+  readonly getSelectedPath$ = super.select((state) => state.paths[state.selectedLine]);
+  readonly getVisibleLines$ = super.select<(Line & QueriedPath & { selected: boolean })[]>((state) => {
+    if (state.showAllLines) {
+      return Object.keys(state.lines).map((name) => ({
+        selected: name === state.selectedLine,
+        ...state.lines[name],
+        ...state.paths[name],
+      }));
+    }
+    return [{ selected: true, ...state.lines[state.selectedLine], ...state.paths[state.selectedLine] }];
+  });
+  readonly getTotalDistance$ = this.getSelectedPath$.pipe(
+    map((path) => path.distanceTable),
+    filter((table) => table.length > 0),
+    map((table) => table[0][table.length - 1])
+  );
 
   private readonly addStop$ = super.updater((state, stop: Stop) => {
     const selectedLine = state.lines[state.selectedLine];
@@ -111,9 +120,11 @@ export class LineStore extends ComponentStore<State> {
   });
   readonly addLine$ = super.updater((state, name: string) => {
     const lines = { ...state.lines };
+    const paths = { ...state.paths };
     //TODO: Find a better way to set the theme color manually
     lines[name] = { stops: [], color: '#3362da' };
-    return { ...state, lines };
+    paths[name] = { waypoints: [], distanceTable: [] };
+    return { ...state, lines, paths };
   });
   private readonly deleteLine$ = super.updater((state, name: string) => {
     const lines = { ...state.lines };
@@ -121,6 +132,11 @@ export class LineStore extends ComponentStore<State> {
     return { ...state, lines };
   });
   readonly selectLine$ = super.updater((state, selectedLine: string) => ({ ...state, selectedLine }));
+  readonly updateSelectedPath$ = super.updater((state, path: QueriedPath) => {
+    state.paths[state.selectedLine] = path;
+    return { ...state };
+  });
+  readonly toggleShowAll$ = super.updater((state) => ({ ...state, showAllLines: !state.showAllLines }));
 
   readonly addStopToLine$ = super.effect((stop$: Observable<Stop>) =>
     stop$.pipe(switchMap((s) => this.queryNearestStop(s, this.addStop$.bind(this))))
@@ -140,7 +156,7 @@ export class LineStore extends ComponentStore<State> {
   readonly queryPath$ = super.effect(() =>
     this.getLine$.pipe(
       switchMap((line) => this.routeService.queryOsrmRoute(line.stops)),
-      tap((path) => super.patchState({ path }))
+      tap((path) => this.updateSelectedPath$(path))
     )
   );
 
@@ -184,7 +200,8 @@ export class LineStore extends ComponentStore<State> {
       //TODO: Find a better way to set the theme color manually
       lines: { 'Line 1': { stops: [], color: '#3362da' } },
       minSubPathCount: 0,
-      path: { distanceTable: [], waypoints: [] },
+      showAllLines: false,
+      paths: { 'Line 1': { distanceTable: [], waypoints: [] } },
     });
   }
 

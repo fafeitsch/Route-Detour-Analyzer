@@ -6,9 +6,9 @@ import { Stop } from './route.service';
   providedIn: 'root',
 })
 export class FocusService {
-  private stopFocus = new Subject<Stop | undefined>();
+  private stopFocus = new Subject<(Stop & { color: string }) | undefined>();
 
-  focusStop(stop: Stop) {
+  focusStop(stop: Stop & { color: string }) {
     this.stopFocus.next(stop);
   }
 

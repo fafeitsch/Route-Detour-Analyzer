@@ -32,7 +32,11 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   readonly lineColor$ = this.store.getLine$.pipe(pluck('color'));
 
   readonly setAverageDetour = super.effect(() =>
-    combineLatest([this.store.getPath$, this.optionsService.getCap(), this.store.getLine$.pipe(pluck('stops'))]).pipe(
+    combineLatest([
+      this.store.getSelectedPath$,
+      this.optionsService.getCap(),
+      this.store.getLine$.pipe(pluck('stops')),
+    ]).pipe(
       filter(([path, _, line]) => path.distanceTable.length === line.length),
       switchMap(([path, cap, line]) => {
         const sources = this.queryAllPaths(line, cap);

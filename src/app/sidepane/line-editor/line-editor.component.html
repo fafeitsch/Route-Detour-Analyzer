@@ -20,7 +20,7 @@
         (leaveEditMode)="editedStops = editedStops - 1"
         (changeName)="changeName(i, $event)"
         (toggleRealStop)="toggleRealStop(i)"
-        (mouseenter)="setFocusedStop(stop)"
+        (mouseenter)="setFocusedStop(stop, line.color)"
         (mouseleave)="unsetFocusedStop()"
         (delete)="deleteStop(i)"
       >

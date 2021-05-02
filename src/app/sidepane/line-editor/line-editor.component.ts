@@ -39,8 +39,8 @@ export class LineEditorComponent {
     this.lineStore.toggleRealStop$(index);
   }
 
-  setFocusedStop(stop: Stop) {
-    this.focusService.focusStop(stop);
+  setFocusedStop(stop: Stop, color: string) {
+    this.focusService.focusStop({ ...stop, color });
   }
 
   unsetFocusedStop() {
