@@ -1,6 +1,7 @@
 /*!
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
+@use '~@angular/material' as mat;
 @import 'src/app/custom-theme/variables';
 
 .d-block {
@@ -8,27 +9,27 @@
 }
 
 .themed {
-  color: mat-color($theme-primary);
+  color: mat.get-color-from-palette($theme-primary);
 }
 
 .primary-background {
-  color: mat-color($theme-primary, default-contrast);
-  background: mat-color($theme-primary);
+  color: mat.get-color-from-palette($theme-primary, default-contrast);
+  background: mat.get-color-from-palette($theme-primary);
 }
 
 .primary-light-background {
-  color: mat-color($theme-primary, lighter-contrast);
-  background: mat-color($theme-primary, lighter);
+  color: mat.get-color-from-palette($theme-primary, lighter-contrast);
+  background: mat.get-color-from-palette($theme-primary, lighter);
 }
 
 .warn-background {
-  color: mat-color($theme-warn, default-contrast);
-  background: mat-color($theme-warn);
+  color: mat.get-color-from-palette($theme-warn, default-contrast);
+  background: mat.get-color-from-palette($theme-warn);
 }
 
 .warn-light-background {
-  color: mat-color($theme-warn, lighter-contrast);
-  background: mat-color($theme-warn, lighter);
+  color: mat.get-color-from-palette($theme-warn, lighter-contrast);
+  background: mat.get-color-from-palette($theme-warn, lighter);
 }
 
 .grab-cursor {
