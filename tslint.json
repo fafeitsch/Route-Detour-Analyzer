@@ -37,7 +37,7 @@
     "semicolon": {
       "options": ["always"]
     },
-    "arrow-parens": [true, "ban-single-arg-parens"],
+    "arrow-parens": [false, "ban-single-arg-parens"],
     "space-before-function-paren": {
       "options": {
         "anonymous": "never",

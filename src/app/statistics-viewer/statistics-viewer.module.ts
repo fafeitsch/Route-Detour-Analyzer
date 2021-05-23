@@ -3,9 +3,12 @@
  */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { StatisticsViewerComponent } from './statistics-viewer.component';
+import { SingleStatisticsModule } from './single-statistics/single-statistics.module';
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule],
+  declarations: [StatisticsViewerComponent],
+  exports: [StatisticsViewerComponent],
+  imports: [CommonModule, SingleStatisticsModule],
 })
 export class StatisticsViewerModule {}

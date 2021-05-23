@@ -13,6 +13,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { ControlsModule } from './sidepane/controls.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MapModule } from './map/map.module';
+import { StatisticsViewerModule } from './statistics-viewer/statistics-viewer.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { MapModule } from './map/map.module';
     MatSidenavModule,
     HttpClientModule,
     ControlsModule,
+    StatisticsViewerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

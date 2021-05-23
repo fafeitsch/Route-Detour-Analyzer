@@ -2,7 +2,7 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { Observable, of } from 'rxjs';
+import { EMPTY, forkJoin, Observable, of } from 'rxjs';
 import { QueriedPath, RouteService, Stop } from './route.service';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { NotificationService } from './notification.service';
@@ -157,6 +157,31 @@ export class LineStore extends ComponentStore<State> {
     this.getLine$.pipe(
       switchMap((line) => this.routeService.queryOsrmRoute(line.stops)),
       tap((path) => this.updateSelectedPath$(path))
+    )
+  );
+
+  readonly importLines$ = super.effect((lines$: Observable<{ [name: string]: Line }>) =>
+    lines$.pipe(
+      switchMap((lines) => {
+        if (lines === {}) {
+          return EMPTY;
+        }
+        return forkJoin(
+          Object.keys(lines).map((name) =>
+            this.routeService.queryOsrmRoute(lines[name].stops).pipe(
+              map<QueriedPath, [QueriedPath, string]>((path) => [path, name])
+            )
+          )
+        ).pipe(
+          map((results) => {
+            return results.reduce<{ [name: string]: QueriedPath }>((acc, [path, name]: [QueriedPath, string]) => {
+              acc[name] = path;
+              return acc;
+            }, {} as { [name: string]: QueriedPath });
+          }),
+          tap((paths) => super.patchState({ paths, lines, selectedLine: Object.keys(paths)[0] }))
+        );
+      })
     )
   );
 
