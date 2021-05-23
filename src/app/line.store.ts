@@ -23,13 +23,16 @@ interface State {
 
 @Injectable()
 export class LineStore extends ComponentStore<State> {
-  readonly getSelectedLine$ = super.select((state) => state.selectedLine);
-  readonly getLines$ = super.select((state) => state.lines);
-  readonly getLine$ = super.select((state) => state.lines[state.selectedLine]);
-  readonly getSelectedPath$ = super.select((state) => state.paths[state.selectedLine]);
-  readonly getVisibleLines$ = super.select<(Line & QueriedPath & { selected: boolean })[]>((state) => {
+  readonly getSelectedLine$ = super.select(state => state.selectedLine);
+  readonly getLines$ = super.select(state => state.lines);
+  readonly getLine$ = super.select(state => {
+    console.log(state.lines, state.selectedLine);
+    return state.lines[state.selectedLine];
+  });
+  readonly getSelectedPath$ = super.select(state => state.paths[state.selectedLine]);
+  readonly getVisibleLines$ = super.select<(Line & QueriedPath & { selected: boolean })[]>(state => {
     if (state.showAllLines) {
-      return Object.keys(state.lines).map((name) => ({
+      return Object.keys(state.lines).map(name => ({
         selected: name === state.selectedLine,
         ...state.lines[name],
         ...state.paths[name],
@@ -38,9 +41,9 @@ export class LineStore extends ComponentStore<State> {
     return [{ selected: true, ...state.lines[state.selectedLine], ...state.paths[state.selectedLine] }];
   });
   readonly getTotalDistance$ = this.getSelectedPath$.pipe(
-    map((path) => path.distanceTable),
-    filter((table) => table.length > 0),
-    map((table) => table[0][table.length - 1])
+    map(path => path.distanceTable),
+    filter(table => table.length > 0),
+    map(table => table[0][table.length - 1])
   );
 
   private readonly addStop$ = super.updater((state, stop: Stop) => {
@@ -107,10 +110,14 @@ export class LineStore extends ComponentStore<State> {
   private readonly replaceLine$ = super.updater((state, [oldName, newName]: [string, string]) => {
     const selectedLine = state.selectedLine === oldName ? newName : state.selectedLine;
     const line = state.lines[oldName];
+    const path = state.paths[oldName];
     const lines = { ...state.lines };
+    const paths = { ...state.paths };
     delete lines[oldName];
+    delete paths[oldName];
     lines[newName] = line;
-    return { ...state, selectedLine, lines };
+    paths[newName] = path;
+    return { ...state, selectedLine, lines, paths };
   });
   readonly changeLineColor$ = super.updater((state, [line, color]: [string, string]) => {
     const selected = state.lines[line];
@@ -136,50 +143,51 @@ export class LineStore extends ComponentStore<State> {
     state.paths[state.selectedLine] = path;
     return { ...state };
   });
-  readonly toggleShowAll$ = super.updater((state) => ({ ...state, showAllLines: !state.showAllLines }));
+  readonly toggleShowAll$ = super.updater(state => ({ ...state, showAllLines: !state.showAllLines }));
 
   readonly addStopToLine$ = super.effect((stop$: Observable<Stop>) =>
-    stop$.pipe(switchMap((s) => this.queryNearestStop(s, this.addStop$.bind(this))))
+    stop$.pipe(switchMap(s => this.queryNearestStop(s, this.addStop$.bind(this))))
   );
 
   readonly replaceStopOfLine$ = super.effect((replacement$: Observable<Stop & { index: number }>) =>
     replacement$.pipe(
-      switchMap((replacement) => {
+      switchMap(replacement => {
         if (!replacement.name) {
-          return this.queryNearestStop(replacement, (stop) => this.replaceStop$([stop, replacement.index]));
+          return this.queryNearestStop(replacement, stop => this.replaceStop$([stop, replacement.index]));
         }
-        return of(replacement).pipe(tap((stop) => this.replaceStop$([stop, stop.index])));
+        return of(replacement).pipe(tap(stop => this.replaceStop$([stop, stop.index])));
       })
     )
   );
 
   readonly queryPath$ = super.effect(() =>
     this.getLine$.pipe(
-      switchMap((line) => this.routeService.queryOsrmRoute(line.stops)),
-      tap((path) => this.updateSelectedPath$(path))
+      switchMap(line => this.routeService.queryOsrmRoute(line.stops)),
+      tap(path => this.updateSelectedPath$(path))
     )
   );
 
   readonly importLines$ = super.effect((lines$: Observable<{ [name: string]: Line }>) =>
     lines$.pipe(
-      switchMap((lines) => {
+      switchMap(lines => {
         if (lines === {}) {
           return EMPTY;
         }
         return forkJoin(
-          Object.keys(lines).map((name) =>
+          Object.keys(lines).map(name =>
             this.routeService.queryOsrmRoute(lines[name].stops).pipe(
-              map<QueriedPath, [QueriedPath, string]>((path) => [path, name])
+              map<QueriedPath, [QueriedPath, string]>(path => [path, name])
             )
           )
         ).pipe(
-          map((results) => {
+          map(results => {
             return results.reduce<{ [name: string]: QueriedPath }>((acc, [path, name]: [QueriedPath, string]) => {
               acc[name] = path;
               return acc;
             }, {} as { [name: string]: QueriedPath });
           }),
-          tap((paths) => super.patchState({ paths, lines, selectedLine: Object.keys(paths)[0] }))
+          tap(x => console.log(x)),
+          tap(paths => super.patchState({ paths, lines, selectedLine: Object.keys(paths)[0] }))
         );
       })
     )
@@ -187,11 +195,11 @@ export class LineStore extends ComponentStore<State> {
 
   readonly renameLine$ = super.effect((name$: Observable<[string, string]>) =>
     name$.pipe(
-      switchMap((names) =>
+      switchMap(names =>
         this.getLines$.pipe(
           take(1),
-          map((lines) => Object.keys(lines)),
-          map<string[], [string, string, string[]]>((lines) => [...names, lines])
+          map(lines => Object.keys(lines)),
+          map<string[], [string, string, string[]]>(lines => [...names, lines])
         )
       ),
       tap(([oldName, newName, lines]) => {
@@ -208,7 +216,7 @@ export class LineStore extends ComponentStore<State> {
 
   readonly deleteLineWithName$ = super.effect((name$: Observable<string>) =>
     name$.pipe(
-      switchMap((name) => this.getSelectedLine$.pipe(map((selected) => [name, selected]))),
+      switchMap(name => this.getSelectedLine$.pipe(map(selected => [name, selected]))),
       tap(([name, selected]) => {
         if (name === selected) {
           this.notificationService.raiseNotification('The selected line cannot be removed.');

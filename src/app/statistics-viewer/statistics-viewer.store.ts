@@ -25,10 +25,10 @@ interface State {
 
 @Injectable()
 export class StatisticsViewerStore extends ComponentStore<State> {
-  readonly getAverageDetour$ = super.select((state) => state.averageDetour);
-  readonly getSmallestDetour$ = super.select((state) => state.smallestDetour);
-  readonly getMedianDetour$ = super.select((state) => state.medianDetour);
-  readonly getBiggestDetour$ = super.select((state) => state.biggestDetour);
+  readonly getAverageDetour$ = super.select(state => state.averageDetour);
+  readonly getSmallestDetour$ = super.select(state => state.smallestDetour);
+  readonly getMedianDetour$ = super.select(state => state.medianDetour);
+  readonly getBiggestDetour$ = super.select(state => state.biggestDetour);
   readonly lineColor$ = this.store.getLine$.pipe(pluck('color'));
 
   readonly setAverageDetour = super.effect(() =>
@@ -50,7 +50,7 @@ export class StatisticsViewerStore extends ComponentStore<State> {
           return EMPTY;
         }
         return forkJoin(sources).pipe(
-          map<SubPath[], [QueriedPath, SubPath[], Stop[]]>((subpaths) => [path, subpaths, line])
+          map<SubPath[], [QueriedPath, SubPath[], Stop[]]>(subpaths => [path, subpaths, line])
         );
       }),
       map<[QueriedPath, SubPath[], Stop[]], [Stop[], DetourResult]>(([path, sub, line]) => [
@@ -95,7 +95,7 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   }
 
   private queryAllPaths(line: Stop[], cap: number): Observable<SubPath>[] {
-    return this.detourService.createQueryPairs(line, cap).map((pair) =>
+    return this.detourService.createQueryPairs(line, cap).map(pair =>
       this.routeService.queryOsrmRoute([pair.source, pair.target]).pipe(
         catchError(() => {
           this.notificationService.raiseNotification('Could not query paths. Is your OSRM URL configured correctly?');

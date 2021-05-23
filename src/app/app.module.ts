@@ -7,7 +7,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CustomThemeModule } from './custom-theme/custom-theme.module';
 import { ExternalSettingsModule } from './sidepane/external-settings/external-settings.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ControlsModule } from './sidepane/controls.module';
@@ -21,7 +20,6 @@ import { StatisticsViewerModule } from './statistics-viewer/statistics-viewer.mo
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    CustomThemeModule,
     ExternalSettingsModule,
     MapModule,
     MatSidenavModule,

@@ -28,20 +28,20 @@ export class ExternalSettingsComponent implements OnDestroy {
     this.tileServerControl.valueChanges
       .pipe(
         takeUntil(this.destroy$),
-        map((value) => value.replace('$', ''))
+        map(value => value.replace('$', ''))
       )
-      .subscribe((url) => this.optionsService.setTileServerUrl(url));
+      .subscribe(url => this.optionsService.setTileServerUrl(url));
     this.osrmServerControl.valueChanges
       .pipe(takeUntil(this.destroy$))
-      .subscribe((url) => this.optionsService.setOsrmUrl(url));
+      .subscribe(url => this.optionsService.setOsrmUrl(url));
     this.optionsService
       .getOsrmUrl()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((url) => this.osrmServerControl.patchValue(url, { emitEvent: false }));
+      .subscribe(url => this.osrmServerControl.patchValue(url, { emitEvent: false }));
     this.optionsService
       .getTileServerUrl()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((url) => this.tileServerControl.patchValue(url, { emitEvent: false }));
+      .subscribe(url => this.tileServerControl.patchValue(url, { emitEvent: false }));
   }
 
   ngOnDestroy(): void {

@@ -19,7 +19,7 @@ interface State {
 @Injectable()
 export class MapStore extends ComponentStore<State> {
   readonly getPaths$ = this.lineStore.getVisibleLines$;
-  readonly getCenter$ = super.select((state) => state.center);
+  readonly getCenter$ = super.select(state => state.center);
 
   readonly setCenter$ = super.updater((state, center: LatLngWithZoom) => ({
     ...state,
@@ -28,13 +28,13 @@ export class MapStore extends ComponentStore<State> {
 
   readonly readCenterFromRoute$ = super.effect(() =>
     this.route.queryParamMap.pipe(
-      map((params) => params.get('map')),
-      filter((param) => !!param),
-      map((param) => param!.split('/')),
-      filter((param) => param.length === 3),
-      map((param) => param.map((x) => +x)),
-      map((param) => ({ lat: param[1], lng: param[2], zoom: param[0] })),
-      tap((center) => this.setCenter$(center))
+      map(params => params.get('map')),
+      filter(param => !!param),
+      map(param => param!.split('/')),
+      filter(param => param.length === 3),
+      map(param => param.map(x => +x)),
+      map(param => ({ lat: param[1], lng: param[2], zoom: param[0] })),
+      tap(center => this.setCenter$(center))
     )
   );
 

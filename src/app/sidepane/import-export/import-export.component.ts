@@ -18,7 +18,7 @@ export class ImportExportComponent {
   constructor(private readonly lineStore: LineStore, private readonly notificationService: NotificationService) {}
 
   exportWorkspace() {
-    this.lineStore.getLines$.pipe(take(1)).subscribe((lines) => {
+    this.lineStore.getLines$.pipe(take(1)).subscribe(lines => {
       const blob = new Blob([JSON.stringify(lines)], { type: 'application/json;charset=utf-8' });
       FileSaver.saveAs(blob, 'rda-network.json');
     });
@@ -42,7 +42,6 @@ export class ImportExportComponent {
           this.notificationService.raiseNotification('Cannot import file: ' + validationMessage);
         }
         this.lineStore.importLines$(lines);
-        this.lineStore.selectLine$(Object.keys(lines)[0]);
       } catch (e) {
         this.notificationService.raiseNotification('Cannot parse file: ' + e);
       }
@@ -55,11 +54,11 @@ export class ImportExportComponent {
     if (!lineNames.length) {
       return 'The imported file contained no lines.';
     }
-    let withoutColor = lineNames.filter((name) => !lines[name].color);
+    let withoutColor = lineNames.filter(name => !lines[name].color);
     if (withoutColor.length) {
       return 'The following keys have no color: ' + withoutColor.join(', ');
     }
-    let withoutStops = lineNames.filter((name) => !lines[name].stops);
+    let withoutStops = lineNames.filter(name => !lines[name].stops);
     if (withoutStops.length) {
       return 'The following keys have no stops: ' + withoutStops.join(', ');
     }

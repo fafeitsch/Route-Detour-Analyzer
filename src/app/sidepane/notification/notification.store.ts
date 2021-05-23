@@ -18,7 +18,7 @@ interface State {
 
 @Injectable()
 export class NotificationStore extends ComponentStore<State> {
-  readonly getNotifications$ = super.select((state) => state.notifications);
+  readonly getNotifications$ = super.select(state => state.notifications);
 
   readonly addNotification$ = super.updater((state, message: string) => {
     let lastNotification = state.notifications[state.notifications.length - 1];
@@ -35,7 +35,7 @@ export class NotificationStore extends ComponentStore<State> {
   });
 
   readonly addNotification = super.effect(() =>
-    this.service.getNotifications().pipe(tap((message) => this.addNotification$(message)))
+    this.service.getNotifications().pipe(tap(message => this.addNotification$(message)))
   );
 
   readonly dismissNotification$ = super.effect((index$: Observable<number>) =>

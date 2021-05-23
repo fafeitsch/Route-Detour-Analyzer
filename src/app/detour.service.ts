@@ -38,7 +38,7 @@ export class DetourService {
     }
     const mapToLength = (sub: SubPath) => sub.path.distanceTable[0][1];
     const detailedResults = paths
-      .map((p) => ({
+      .map(p => ({
         absolute: originalDistances[p.startIndex][p.endIndex] - mapToLength(p),
         relative: originalDistances[p.startIndex][p.endIndex] / mapToLength(p),
         source: p.startIndex,
@@ -46,7 +46,7 @@ export class DetourService {
       }))
       .sort((a, b) => a.relative - b.relative);
     const averageDetour =
-      detailedResults.map((result) => result.relative).reduce((acc, curr) => acc + curr, 0) / detailedResults.length;
+      detailedResults.map(result => result.relative).reduce((acc, curr) => acc + curr, 0) / detailedResults.length;
     return {
       averageDetour,
       medianDetour: detailedResults[Math.floor(detailedResults.length / 2)],
@@ -56,7 +56,7 @@ export class DetourService {
   }
 
   createQueryPairs(line: Stop[], cap: number): QueryPair[] {
-    const numbersOfStops = line.filter((s) => s.realStop).length;
+    const numbersOfStops = line.filter(s => s.realStop).length;
     const gap = numbersOfStops - cap;
     const result: QueryPair[] = [];
     line.forEach((stop, index) => {

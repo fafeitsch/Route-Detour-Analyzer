@@ -34,13 +34,13 @@ export class RouteService {
     if (!stops || stops.length < 2) {
       return of({ waypoints: [], distanceTable: [] });
     }
-    const coords = stops.map<[number, number]>((stop) => [stop.lat, stop.lng]);
+    const coords = stops.map<[number, number]>(stop => [stop.lat, stop.lng]);
     const poly = encodeURIComponent(polyline.encode(coords));
     return this.optionsService.getOsrmUrl().pipe(
       take(1),
-      switchMap((url) => this.http.get<RouteResults>(`${url}/route/v1/driving/polyline(${poly})?overview=full`)),
-      map((results) => results.routes[0]),
-      map<Route, [[number, number][], number[][]]>((route) => [
+      switchMap(url => this.http.get<RouteResults>(`${url}/route/v1/driving/polyline(${poly})?overview=full`)),
+      map(results => results.routes[0]),
+      map<Route, [[number, number][], number[][]]>(route => [
         polyline.decode(route.geometry),
         this.buildLegsDistanceTable(route),
       ]),
@@ -52,7 +52,7 @@ export class RouteService {
   }
 
   private buildLegsDistanceTable(route: Route) {
-    const result: number[][] = [...route.legs.map((_) => [...route.legs.map((_) => 0), 0]), [0]];
+    const result: number[][] = [...route.legs.map(_ => [...route.legs.map(_ => 0), 0]), [0]];
     for (let i = 0; i < route.legs.length; i++) {
       let currentDistance = 0;
       for (let j = i; j < route.legs.length; j++) {
@@ -67,9 +67,9 @@ export class RouteService {
   queryNearestStreet(stop: Stop): Observable<Stop> {
     return this.optionsService.getOsrmUrl().pipe(
       take(1),
-      switchMap((url) => this.http.get(`${url}/nearest/v1/driving/${stop.lng},${stop.lat}.json?number=1`)),
-      map<any, any>((result) => result.waypoints[0]),
-      map<any, Stop>((waypoint) => ({
+      switchMap(url => this.http.get(`${url}/nearest/v1/driving/${stop.lng},${stop.lat}.json?number=1`)),
+      map<any, any>(result => result.waypoints[0]),
+      map<any, Stop>(waypoint => ({
         ...stop,
         name: waypoint.name,
         lat: waypoint.location[1],
