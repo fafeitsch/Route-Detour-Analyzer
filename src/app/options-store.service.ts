@@ -34,7 +34,6 @@ export class OptionsStore extends ComponentStore<State> {
       map(params => params.get('tiles')),
       filter(tileUrl => !!tileUrl),
       map(tiles => tiles!.replace(/\$/g, '')),
-      tap(x => console.log(x)),
       tap(tiles => this.setTileUrl$(tiles!))
     )
   );
@@ -43,6 +42,7 @@ export class OptionsStore extends ComponentStore<State> {
     this.route.queryParamMap.pipe(
       map(params => params.get('cap')),
       map(cap => Number(cap)),
+      filter(cap => !isNaN(cap)),
       tap(cap => this.setCap$(cap!))
     )
   );

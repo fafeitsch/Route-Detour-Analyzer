@@ -26,7 +26,6 @@ export class LineStore extends ComponentStore<State> {
   readonly getSelectedLine$ = super.select(state => state.selectedLine);
   readonly getLines$ = super.select(state => state.lines);
   readonly getLine$ = super.select(state => {
-    console.log(state.lines, state.selectedLine);
     return state.lines[state.selectedLine];
   });
   readonly getSelectedPath$ = super.select(state => state.paths[state.selectedLine]);
@@ -186,7 +185,6 @@ export class LineStore extends ComponentStore<State> {
               return acc;
             }, {} as { [name: string]: QueriedPath });
           }),
-          tap(x => console.log(x)),
           tap(paths => super.patchState({ paths, lines, selectedLine: Object.keys(paths)[0] }))
         );
       })
