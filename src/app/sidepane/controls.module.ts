@@ -4,7 +4,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlsComponent } from './controls.component';
-import { ExternalSettingsModule } from './external-settings/external-settings.module';
 import { LineEditorModule } from './line-editor/line-editor.module';
 import { EvaluationRangeCapModule } from './evaluation-range-cap/evaluation-range-cap.module';
 import { NotificationModule } from './notification/notification.module';
@@ -16,7 +15,6 @@ import { ImportExportModule } from './import-export/import-export.module';
   exports: [ControlsComponent],
   imports: [
     CommonModule,
-    ExternalSettingsModule,
     LineEditorModule,
     EvaluationRangeCapModule,
     NotificationModule,

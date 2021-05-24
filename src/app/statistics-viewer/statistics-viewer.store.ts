@@ -9,7 +9,7 @@ import { DetailResult, DetourResult, DetourService, SubPath } from '../detour.se
 import { LineStore } from '../line.store';
 import { QueriedPath, RouteService, Stop } from '../route.service';
 import { NotificationService } from '../notification.service';
-import { OptionsService } from '../options.service';
+import { OptionsStore } from '../options-store.service';
 
 export interface DetourWithStop extends DetailResult {
   sourceName: string;
@@ -32,11 +32,7 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   readonly lineColor$ = this.store.getLine$.pipe(pluck('color'));
 
   readonly setAverageDetour = super.effect(() =>
-    combineLatest([
-      this.store.getSelectedPath$,
-      this.optionsService.getCap(),
-      this.store.getLine$.pipe(pluck('stops')),
-    ]).pipe(
+    combineLatest([this.store.getSelectedPath$, this.optionsStore.cap$, this.store.getLine$.pipe(pluck('stops'))]).pipe(
       filter(([path, _, line]) => path.distanceTable.length === line.length),
       switchMap(([path, cap, line]) => {
         const sources = this.queryAllPaths(line, cap);
@@ -73,7 +69,7 @@ export class StatisticsViewerStore extends ComponentStore<State> {
     private readonly detourService: DetourService,
     private readonly routeService: RouteService,
     private readonly notificationService: NotificationService,
-    private readonly optionsService: OptionsService
+    private readonly optionsStore: OptionsStore
   ) {
     super({
       averageDetour: 0,
@@ -98,7 +94,9 @@ export class StatisticsViewerStore extends ComponentStore<State> {
     return this.detourService.createQueryPairs(line, cap).map(pair =>
       this.routeService.queryOsrmRoute([pair.source, pair.target]).pipe(
         catchError(() => {
-          this.notificationService.raiseNotification('Could not query paths. Is your OSRM URL configured correctly?');
+          this.notificationService.raiseNotification(
+            "Could not query paths. Make sure that you called the site with a query param 'osrm=URL', where URL points to an OSRM server."
+          );
           return EMPTY;
         }),
         map((path: QueriedPath) => ({

@@ -242,7 +242,7 @@ export class LineStore extends ComponentStore<State> {
     return this.routeService.queryNearestStreet(stop).pipe(
       tapResponse(consumer, () => {
         this.notificationService.raiseNotification(
-          'Could query not nearest address. Is your OSRM URL configured correctly?'
+          "Could not query nearest address. Make sure that you called the site with a query param 'osrm=URL', where URL points to an OSRM server."
         );
       })
     );

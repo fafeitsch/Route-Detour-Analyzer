@@ -3,6 +3,7 @@
  */
 import { Component } from '@angular/core';
 import { LineStore } from './line.store';
+import { OptionsStore } from './options-store.service';
 
 @Component({
   selector: 'app-root',
@@ -11,5 +12,5 @@ import { LineStore } from './line.store';
   providers: [LineStore],
 })
 export class AppComponent {
-  constructor(private readonly lineStore: LineStore) {}
+  constructor(private readonly lineStore: LineStore, private readonly optionsStore: OptionsStore) {}
 }

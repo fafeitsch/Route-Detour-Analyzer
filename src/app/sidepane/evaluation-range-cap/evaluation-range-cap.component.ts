@@ -1,34 +1,27 @@
 /*
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-import { OptionsService } from '../../options.service';
+import { map } from 'rxjs/operators';
+import { OptionsStore } from '../../options-store.service';
 import { LineStore } from '../../line.store';
 
 @Component({
   selector: 'evaluation-range-cap',
   templateUrl: './evaluation-range-cap.component.html',
 })
-export class EvaluationRangeCapComponent implements OnDestroy {
+export class EvaluationRangeCapComponent {
   control: AbstractControl | undefined = undefined;
   numberOfStops$ = this.lineStore.getLine$.pipe(map(line => line.stops.filter(s => s.realStop).length));
 
-  private destroy$ = new Subject();
-
   constructor(
     formBuilder: FormBuilder,
-    private readonly optionsService: OptionsService,
+    private readonly optionsService: OptionsStore,
     private readonly lineStore: LineStore
   ) {
     const form = formBuilder.group({ cap: ['0'] });
     this.control = form.controls.cap;
-    this.control.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(cap => this.optionsService.setCap(cap));
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
+    this.optionsService.setCap$(this.control.valueChanges);
   }
 }

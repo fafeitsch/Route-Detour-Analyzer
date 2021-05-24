@@ -3,6 +3,4 @@
  */
 export const environment = {
   production: true,
-  tileServerUrl: 'https://127.0.0.1:8000/{z}/{x}/{y}.png',
-  osrmServerUrl: 'http://127.0.0.1:5000',
 };
