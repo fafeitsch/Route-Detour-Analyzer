@@ -6,14 +6,15 @@ import { catchError, filter, map, pluck, switchMap, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { combineLatest, EMPTY, forkJoin, Observable } from 'rxjs';
 import { DetailResult, DetourResult, DetourService, SubPath } from '../detour.service';
-import { LineStore } from '../line.store';
+import { Line, LineStore } from '../line.store';
 import { QueriedPath, RouteService, Stop } from '../route.service';
 import { NotificationService } from '../notification.service';
 import { OptionsStore } from '../options-store.service';
 
 export interface DetourWithStop extends DetailResult {
-  sourceName: string;
-  targetName: string;
+  sourceStop: Stop;
+  targetStop: Stop;
+  color: string;
 }
 
 interface State {
@@ -40,10 +41,10 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   ]).pipe(map(([stops, cap]) => Math.min(((stops - 2) * (stops - 1)) / 2, ((cap + 1) * (cap + 2)) / 2)));
 
   readonly setAverageDetour = super.effect(() =>
-    combineLatest([this.store.getSelectedPath$, this.optionsStore.cap$, this.store.getLine$.pipe(pluck('stops'))]).pipe(
-      filter(([path, _, line]) => path.distanceTable.length === line.length),
+    combineLatest([this.store.getSelectedPath$, this.optionsStore.cap$, this.store.getLine$]).pipe(
+      filter(([path, _, line]) => path.distanceTable.length === line.stops.length),
       switchMap(([path, cap, line]) => {
-        const sources = this.queryAllPaths(line, cap);
+        const sources = this.queryAllPaths(line.stops, cap);
         if (sources.length === 0) {
           super.patchState({
             smallestDetour: undefined,
@@ -54,10 +55,10 @@ export class StatisticsViewerStore extends ComponentStore<State> {
           return EMPTY;
         }
         return forkJoin(sources).pipe(
-          map<SubPath[], [QueriedPath, SubPath[], Stop[]]>(subpaths => [path, subpaths, line])
+          map<SubPath[], [QueriedPath, SubPath[], Line]>(subpaths => [path, subpaths, line])
         );
       }),
-      map<[QueriedPath, SubPath[], Stop[]], [Stop[], DetourResult]>(([path, sub, line]) => [
+      map<[QueriedPath, SubPath[], Line], [Line, DetourResult]>(([path, sub, line]) => [
         line,
         this.detourService.computeDetours(path.distanceTable, sub),
       ]),
@@ -87,14 +88,15 @@ export class StatisticsViewerStore extends ComponentStore<State> {
     });
   }
 
-  private extractStopNames(line: Stop[], result: DetailResult | undefined): DetourWithStop | undefined {
+  private extractStopNames(line: Line, result: DetailResult | undefined): DetourWithStop | undefined {
     if (!result) {
       return undefined;
     }
     return {
       ...result,
-      sourceName: line[result.source].name,
-      targetName: line[result.target].name,
+      sourceStop: line.stops[result.source],
+      targetStop: line.stops[result.target],
+      color: line.color,
     };
   }
 
