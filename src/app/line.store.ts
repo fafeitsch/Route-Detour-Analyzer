@@ -4,7 +4,7 @@
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { EMPTY, forkJoin, Observable, of } from 'rxjs';
 import { QueriedPath, RouteService, Stop } from './route.service';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 import { NotificationService } from './notification.service';
 import { Injectable } from '@angular/core';
 
@@ -41,8 +41,7 @@ export class LineStore extends ComponentStore<State> {
   });
   readonly getTotalDistance$ = this.getSelectedPath$.pipe(
     map(path => path.distanceTable),
-    filter(table => table.length > 0),
-    map(table => table[0][table.length - 1])
+    map(table => (table.length === 0 ? 0 : table[0][table.length - 1]))
   );
 
   private readonly addStop$ = super.updater((state, stop: Stop) => {

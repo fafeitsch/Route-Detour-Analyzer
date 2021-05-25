@@ -5,7 +5,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlsComponent } from './controls.component';
 import { LineEditorModule } from './line-editor/line-editor.module';
-import { EvaluationRangeCapModule } from './evaluation-range-cap/evaluation-range-cap.module';
 import { NotificationModule } from './notification/notification.module';
 import { LineManagerModule } from './line-manager/line-manager.module';
 import { ImportExportModule } from './import-export/import-export.module';
@@ -13,13 +12,6 @@ import { ImportExportModule } from './import-export/import-export.module';
 @NgModule({
   declarations: [ControlsComponent],
   exports: [ControlsComponent],
-  imports: [
-    CommonModule,
-    LineEditorModule,
-    EvaluationRangeCapModule,
-    NotificationModule,
-    LineManagerModule,
-    ImportExportModule,
-  ],
+  imports: [CommonModule, LineEditorModule, NotificationModule, LineManagerModule, ImportExportModule],
 })
 export class ControlsModule {}

@@ -17,7 +17,7 @@ export class OptionsStore extends ComponentStore<State> {
   readonly osrmUrl$ = super.select(state => state.osrmUrl);
   readonly tileServerUrl$ = super.select(state => state.tileServerUrl);
 
-  readonly setCap$ = super.updater((state, gap: number) => ({ ...state, cap: gap }));
+  readonly setCap$ = super.updater((state, cap: number) => ({ ...state, cap }));
   readonly setOsrmUrl$ = super.updater((state, osrmUrl: string) => ({ ...state, osrmUrl }));
   readonly setTileUrl$ = super.updater((state, tileServerUrl: string) => ({ ...state, tileServerUrl }));
 

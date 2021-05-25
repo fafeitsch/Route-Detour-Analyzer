@@ -16,6 +16,8 @@ export class StatisticsViewerComponent {
   medianDetour$ = this.store.getMedianDetour$;
   biggestDetour$ = this.store.getBiggestDetour$;
   lineColor$ = this.store.lineColor$;
+  consideredStops$ = this.store.consideredStops$;
+  numberOfTours$ = this.store.numberOfTours$;
 
   constructor(private readonly store: StatisticsViewerStore) {}
 }

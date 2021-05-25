@@ -2,11 +2,11 @@
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
   -->
 <div cdkDropListGroup *ngIf="line$ | async as line" class="p-3 d-flex flex-grow-1 flex-column ov-hidden">
-  <div *ngIf="!line.stops.length" class="w-100 pl-2 pt-2 pb-2 disabled">Click on the map to add a stop.</div>
   <div class="w-100 d-flex justify-content-spaced align-items-flex-center">
     <span class="mb-3 mat-body-strong">{{ selectedLine$ | async }}</span>
     <span class="disabled">{{ (distance$ | async) / 1000 | number: '1.0-3' }} km</span>
   </div>
+  <div *ngIf="!line.stops.length" class="w-100 pt-2 pb-2 disabled">Click on the map to add a stop.</div>
   <div cdkDropList cdkDropListLockAxis="y" class="flex-grow-1 ov-auto" (cdkDropListDropped)="drop($event)">
     <div cdkDrag *ngFor="let stop of line.stops; index as i; last as last" [cdkDragDisabled]="editedStops !== 0">
       <stop-editor

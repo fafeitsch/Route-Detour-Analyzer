@@ -15,7 +15,7 @@ and compute the detours of sub paths withing that line.
 
 ## Features
 
-* Define custom lines and experiment
+* Define unlimited custom lines.
 * Fine-tune lines by using way points (these are not counted as stops)  
 * Parameterizable analysis
 * Min, median, average, and maximal detour per line   
@@ -54,9 +54,14 @@ The routing depends on the OSRM configuration. The OSRM demo is optimized for ca
 avoids service roads. If you want other profiles (e.g to allow service roads), you either
 have to self-host an OSRM server or pay for one.
 
-***The app proposes crazy routes that are not suitable for buses. How to fix that?***
+***The RDA proposes crazy routes that are not suitable for buses. How to fix that?***
 
 See last question. In some cases, using way points on a line can improve the overall route,
-but I overall suggest to self-host an OSRM server.
+but I overall suggest self-hosting an OSRM server.
 
 ***Why does the analyzer sometimes give negative detours?***
+
+RDA only analyzes the lengths of tours. The routing algorithms of OSRM however, often take additional
+metrics into account, such es few traffic lights, few crossings and so on. Thus, it might happen
+that a bus tour is actually shorter than the path suggested by OSRM. To avoid this, use customize
+profiles for the OSRM (only applies to self-hosted OSRM).

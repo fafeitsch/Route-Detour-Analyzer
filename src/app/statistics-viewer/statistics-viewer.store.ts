@@ -30,6 +30,14 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   readonly getMedianDetour$ = super.select(state => state.medianDetour);
   readonly getBiggestDetour$ = super.select(state => state.biggestDetour);
   readonly lineColor$ = this.store.getLine$.pipe(pluck('color'));
+  readonly consideredStops$ = combineLatest([
+    this.store.getLine$.pipe(map(line => line.stops.length)),
+    this.optionsStore.cap$,
+  ]).pipe(map(([stops, cap]) => Math.max(2, stops - cap)));
+  readonly numberOfTours$ = combineLatest([
+    this.store.getLine$.pipe(map(line => line.stops.length)),
+    this.optionsStore.cap$,
+  ]).pipe(map(([stops, cap]) => Math.min(((stops - 2) * (stops - 1)) / 2, ((cap + 1) * (cap + 2)) / 2)));
 
   readonly setAverageDetour = super.effect(() =>
     combineLatest([this.store.getSelectedPath$, this.optionsStore.cap$, this.store.getLine$.pipe(pluck('stops'))]).pipe(
