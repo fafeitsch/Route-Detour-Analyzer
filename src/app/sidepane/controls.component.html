@@ -2,10 +2,8 @@
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
   -->
 <app-notification></app-notification>
-<ng-container *ngIf="mode === 'normal'">
-  <line-editor class="ov-hidden flex-grow-1"></line-editor>
-</ng-container>
-<line-manager *ngIf="mode === 'lines'" class="flex-grow-1"></line-manager>
+<line-editor *ngIf="mode === 'normal'" class="ov-hidden flex-grow-1"></line-editor>
+<line-manager *ngIf="mode === 'lines'" class="ov-hidden flex-grow-1"></line-manager>
 <div class="d-flex align-items-flex-center">
   <a *ngIf="mode === 'normal'" class="mr-3 themed pointer-cursor" (click)="switchToLinesMode()">Lines</a>
   <a *ngIf="mode !== 'normal'" class="themed pointer-cursor" (click)="switchToNormalMode()">Back</a>

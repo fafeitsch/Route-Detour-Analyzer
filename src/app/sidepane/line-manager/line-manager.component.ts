@@ -9,6 +9,7 @@ import { LineManagerStore } from './line-manager.store';
   templateUrl: './line-manager.component.html',
   styleUrls: ['./line-manager.component.scss'],
   providers: [LineManagerStore],
+  host: { class: 'd-flex flex-column' },
 })
 export class LineManagerComponent {
   lines$ = this.store.getLines$;

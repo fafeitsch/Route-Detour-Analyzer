@@ -1,34 +1,38 @@
 <!--
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
   -->
-<header class="mat-body-strong mat-h3 d-flex align-items-flex-center">
-  Lines
-  <button mat-icon-button color="primary" class="ml-1" (click)="addLine()">
-    <icon-plus [iconWidth]="16"> </icon-plus>
-  </button>
-</header>
+<div class="ov-hidden d-flex flex-column">
+  <header class="mat-body-strong mat-h3 d-flex align-items-flex-center">
+    Lines
+    <button mat-icon-button color="primary" class="ml-1" (click)="addLine()">
+      <icon-plus [iconWidth]="16"></icon-plus>
+    </button>
+  </header>
 
-<div *ngFor="let line of lines$ | async; trackBy: trackBy">
-  <ng-container *ngIf="selectedLine$ | async as selectedLine">
-    <div
-      class="d-flex align-items-flex-center"
-      [ngClass]="selectedLine === line.name ? 'primary-light-background' : 'pointer-cursor'"
-      (click)="selectLine(line.name)"
-    >
-      <input
-        class="colorpicker ml-2 pointer-cursor"
-        cpWidth="230px"
-        [colorPicker]="line.color"
-        [style.background]="line.color"
-        (colorPickerSelect)="changeColor($event, line.name)"
-      />
-      <inline-editor
-        class="flex-grow-1 ml-3"
-        [text]="line.name"
-        (changeText)="renameLine(line.name, $event)"
-      ></inline-editor>
-      <span class="disabled">({{ line.stops }} Stops)</span>
-      <delete-button [disabled]="selectedLine === line.name" (delete)="deleteLine(line.name)"></delete-button>
+  <div class="ov-auto flex-grow-1">
+    <div *ngFor="let line of lines$ | async; trackBy: trackBy">
+      <ng-container *ngIf="selectedLine$ | async as selectedLine">
+        <div
+          class="d-flex align-items-flex-center"
+          [ngClass]="selectedLine === line.name ? 'primary-light-background' : 'pointer-cursor'"
+          (click)="selectLine(line.name)"
+        >
+          <input
+            class="colorpicker ml-2 pointer-cursor"
+            cpWidth="230px"
+            [colorPicker]="line.color"
+            [style.background]="line.color"
+            (colorPickerSelect)="changeColor($event, line.name)"
+          />
+          <inline-editor
+            class="flex-grow-1 ml-3"
+            [text]="line.name"
+            (changeText)="renameLine(line.name, $event)"
+          ></inline-editor>
+          <span class="disabled">({{ line.stops }} Stops)</span>
+          <delete-button [disabled]="selectedLine === line.name" (delete)="deleteLine(line.name)"></delete-button>
+        </div>
+      </ng-container>
     </div>
-  </ng-container>
+  </div>
 </div>
