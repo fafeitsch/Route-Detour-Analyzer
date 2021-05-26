@@ -25,7 +25,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": ["src/assets/icons/favicon.ico", "src/assets"],
             "styles": ["src/app/custom-theme/theme.scss", "src/styles.scss"],
             "scripts": [],
             "vendorChunk": true,

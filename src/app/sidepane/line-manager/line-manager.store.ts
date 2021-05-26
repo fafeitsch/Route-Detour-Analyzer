@@ -14,7 +14,6 @@ export class LineManagerStore extends ComponentStore<{}> {
       Object.keys(lines)
         .map(name => ({
           name,
-          stops: lines[name].stops.length,
           color: lines[name].color,
         }))
         .sort((l1, l2) => l1.name.localeCompare(l2.name, undefined, { numeric: true }))
