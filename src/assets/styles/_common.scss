@@ -51,3 +51,9 @@
 .ov-auto {
   overflow: auto;
 }
+
+.text-ellipses {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

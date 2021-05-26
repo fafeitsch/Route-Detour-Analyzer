@@ -1,11 +1,12 @@
 <!--
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
   -->
-<span *ngIf="!editMode && text" class="flex-grow-1">{{ text }}</span>
-<span *ngIf="!editMode && !text" class="flex-grow-1 flex-grow-1"
+<span *ngIf="!editMode && text" class="text flex-grow-1 text-ellipses">{{ text }}</span>
+<span *ngIf="!editMode && !text" class="flex-grow-1"
   ><i>{{ emptyPlaceholder }}</i></span
 >
-<mat-form-field *ngIf="editMode" class="flex-grow-1 mr-2"
+<div class="flex-grow-1"></div>
+<mat-form-field *ngIf="editMode" class="mr-2"
   ><input matInput [value]="text" [formControl]="nameFormControl" (keyup)="inputKeyPressed($event)"
 /></mat-form-field>
 <button mat-icon-button *ngIf="!editMode" (click)="toggleEdit()">

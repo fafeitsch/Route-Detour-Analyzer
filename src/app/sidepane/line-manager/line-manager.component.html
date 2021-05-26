@@ -29,7 +29,6 @@
             [text]="line.name"
             (changeText)="renameLine(line.name, $event)"
           ></inline-editor>
-          <span class="disabled">({{ line.stops }} Stops)</span>
           <delete-button [disabled]="selectedLine === line.name" (delete)="deleteLine(line.name)"></delete-button>
         </div>
       </ng-container>

@@ -7,7 +7,8 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'inline-editor',
   templateUrl: './inline-editor.component.html',
-  host: { class: 'd-flex align-items-flex-center' },
+  host: { class: 'd-flex align-items-flex-center w-100' },
+  styles: ['.text{max-width: 240px}'],
 })
 export class InlineEditorComponent {
   @Input() text = '';
