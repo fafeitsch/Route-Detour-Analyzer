@@ -124,8 +124,9 @@ export class MapComponent implements AfterViewInit {
     this.markerLayer.push(
       layerGroup(
         line.stops
+          .map((stop, index) => ({ ...stop, index }))
           .filter(stop => stop.realStop)
-          .map((stop, index) =>
+          .map(stop =>
             marker([stop.lat, stop.lng], {
               icon: this.createIcon(line.selected && stop.realStop, false, line.color),
               draggable: line.selected,
@@ -134,7 +135,6 @@ export class MapComponent implements AfterViewInit {
                 ...stop,
                 lat: $event.target.getLatLng().lat,
                 lng: $event.target.getLatLng().lng,
-                index,
               });
             })
           )

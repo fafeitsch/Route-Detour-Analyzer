@@ -10,7 +10,15 @@ import { from, Observable } from 'rxjs';
 @Injectable()
 export class LineManagerStore extends ComponentStore<{}> {
   readonly getLines$ = this.lineStore.getLines$.pipe(
-    map(lines => Object.keys(lines).map(name => ({ name, stops: lines[name].stops.length, color: lines[name].color })))
+    map(lines =>
+      Object.keys(lines)
+        .map(name => ({
+          name,
+          stops: lines[name].stops.length,
+          color: lines[name].color,
+        }))
+        .sort((l1, l2) => l1.name.localeCompare(l2.name, undefined, { numeric: true }))
+    )
   );
 
   readonly getSelectedLine$ = this.lineStore.getSelectedLine$;
