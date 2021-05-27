@@ -31,8 +31,11 @@ and compute the detours of sub paths withing that line.
 ## Building the app
 
 If you want to build the app yourself, you just need an Angular workbench set up and then
-call `ng serve` for a local demo server or `ng build --configuration production` to build
+call `npm i && ng serve` for a local demo server or `npm i && ng build --configuration production` to build
 a production environment.
+
+Instead of building the app yourself, it is also possible to use the [hosted version](https://fafeitsch.de/rda). However,
+you still need the requirements listed in the ***Usage*** section below.
 
 ## Usage
 
@@ -40,11 +43,11 @@ In order to use the app, a tile server URL is needed for displaying the map, and
 is needed for the actual routing. Some public tile servers can be found at [the OSM wiki](https://wiki.openstreetmap.org/wiki/Tile_servers),
 and the [OSRM Demo Server](https://github.com/Project-OSRM/osrm-backend/wiki/Demo-server) is available
 for quick testing. Please be aware that there are usage policies restricting the offered demo services
-of OSM and OSRM. For heavy usage of the app, I suggest self-hosting tile servers and OSRM servers.
+of OSM and OSRM. For heavy usage of the app, I suggest self-hosting [tile servers](https://switch2osm.org/serving-tiles/using-a-docker-container/) and [OSRM servers](https://hub.docker.com/r/osrm/osrm-backend/).
 
 If both URLS are at hand, paste them in the following link. Don't forget to bookmark the
 link if you want to come back:
-```https://127.0.0.1/?tiles=TILE_SERVER&osrm=OSRM_SERVER```
+```https://fafeitsch.de/rda/?tiles=TILE_SERVER&osrm=OSRM_SERVER```
 
 After the app is loaded, you can start to enter and edit lines. The detour analysis is only
 available for the currently selected line. It works with a *Evaluation Range Cap*. This cap 
@@ -55,6 +58,11 @@ between source and origin.
 If the cap is 1, then all sub tours with at most one stop less than the whole line are considered. This makes
 for two additional sub paths, making three in total. No matter how high the cap is, the minimal
 sub tours that are considered consist of two stops.
+
+The initial cap can also be controlled with the query parameter `cap`.
+
+The initial location of the map can be set with the query parameter `map=ZOOM/LATITUDE/LONGITUDE`. Thus by
+using all query params in a bookmark, all settings can easily be persisted.
 
 ## Sample File
 
