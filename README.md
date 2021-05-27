@@ -1,4 +1,4 @@
-#Route Detour Analyzer
+# Route Detour Analyzer
 
 Routes in public transportation often do not use shortest path between their origin
 and their final destination. I wondered how much deviation from the shortest path
@@ -128,12 +128,12 @@ which sub tours do you consider for a holistic analysis?
 I didn't yet have time and nerve to come to terms with these points. Thus, I leave them for discussion
 as of now. Maybe I come back to them in the future.
 
-##Shoutouts
+## Shoutouts
 
 Thanks to all the great open-source libraries and tools. I will not name all of them here
 because I will forget someone :) .
 
-##License
+## License
 
 See [License File](LICENSE).
 
