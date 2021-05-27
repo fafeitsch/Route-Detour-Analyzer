@@ -2,11 +2,23 @@
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
   -->
 <app-notification></app-notification>
-<line-editor *ngIf="mode === 'normal'" class="ov-hidden flex-grow-1"></line-editor>
-<line-manager *ngIf="mode === 'lines'" class="ov-hidden flex-grow-1"></line-manager>
+<mat-tab-group class="flex-grow-1 ov-hidden">
+  <mat-tab label="Stops">
+    <ng-template matTabContent>
+      <line-editor class="ov-hidden h-100"></line-editor>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Lines">
+    <ng-template matTabContent>
+      <line-manager class="ov-hidden h-100"></line-manager>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
 <div class="d-flex align-items-flex-center">
-  <a *ngIf="mode === 'normal'" class="mr-3 themed pointer-cursor" (click)="switchToLinesMode()">Lines</a>
-  <a *ngIf="mode !== 'normal'" class="themed pointer-cursor" (click)="switchToNormalMode()">Back</a>
+  <import-export class="mr-3"></import-export>
   <div class="flex-grow-1"></div>
-  <import-export></import-export>
+  <div class="d-flex flex-column align-items-flex-end">
+    <span class="disabled">v{{version}}</span>
+    <a href="https://github.com/fafeitsch/route-detour-analyzer" target="_blank" class="disabled d-flex align-items-flex-center"><img width="16px" src="assets/icons/github.png" class="pr-2" alt="Github Logo"/>Source on Github</a>
+  </div>
 </div>
