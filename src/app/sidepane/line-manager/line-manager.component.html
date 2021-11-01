@@ -20,6 +20,7 @@
           <input
             class="colorpicker ml-2 pointer-cursor"
             cpWidth="230px"
+            [style.width.px]="20"
             [colorPicker]="line.color"
             [style.background]="line.color"
             (colorPickerSelect)="changeColor($event, line.name)"
@@ -28,6 +29,8 @@
             class="flex-grow-1 ml-3"
             [text]="line.name"
             (changeText)="renameLine(line.name, $event)"
+            (leaveEditMode)="toggleInlineEditor()"
+            (enterEditMode)="toggleInlineEditor()"
           ></inline-editor>
           <delete-button [disabled]="selectedLine === line.name" (delete)="deleteLine(line.name)"></delete-button>
         </div>

@@ -1,11 +1,11 @@
 /*
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
-import { Injectable } from '@angular/core';
-import { ComponentStore } from '@ngrx/component-store';
-import { LineStore } from '../../line.store';
-import { map, skipWhile, switchMap, take, tap } from 'rxjs/operators';
-import { from, Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ComponentStore} from '@ngrx/component-store';
+import {LineStore} from '../../line.store';
+import {map, skipWhile, switchMap, take, tap} from 'rxjs/operators';
+import {from, Observable} from 'rxjs';
 
 @Injectable()
 export class LineManagerStore extends ComponentStore<{}> {

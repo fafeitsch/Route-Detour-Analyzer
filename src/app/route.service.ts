@@ -1,13 +1,13 @@
 /*
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { map, switchMap, take } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {map, switchMap, take} from 'rxjs/operators';
 import * as polyline from '@mapbox/polyline';
-import { Route, RouteResults } from 'osrm';
-import { OptionsStore } from './options-store.service';
+import {Route, RouteResults} from 'osrm';
+import {OptionsStore} from './options-store.service';
 
 export interface QueriedPath {
   waypoints: [number, number][];
@@ -38,7 +38,7 @@ export class RouteService {
     const poly = encodeURIComponent(polyline.encode(coords));
     return this.optionsStore.osrmUrl$.pipe(
       take(1),
-      switchMap(url => this.http.get<RouteResults>(`${url}/route/v1/driving/polyline(${poly})?overview=full`)),
+      switchMap(url => this.http.get<RouteResults>(`${url}/route/v1/driving/polyline(${poly})?overview=full&annotations=true`)),
       map(results => results.routes[0]),
       map<Route, [[number, number][], number[][]]>(route => [
         polyline.decode(route.geometry),
@@ -47,7 +47,7 @@ export class RouteService {
       map<[[number, number][], number[][]], QueriedPath>(([arr, distanceTable]) => ({
         waypoints: arr,
         distanceTable,
-      }))
+      })),
     );
   }
 

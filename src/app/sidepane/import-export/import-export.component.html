@@ -1,6 +1,11 @@
 <!--
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
   -->
-<button mat-stroked-button class="mr-3" color="primary" (click)="exportWorkspace()">Export</button>
+<button mat-stroked-button class="mr-3" color="primary" [mat-menu-trigger-for]="menu">Export</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="exportWorkspace()">Export All (w/o waypoints)</button>
+  <button mat-menu-item (click)="exportSelectedLine()">Export Selected Line</button>
+</mat-menu>
+
 <input type="file" style="display: none" #fileInput accept="application/json" (change)="onChangeFileInput()" />
 <button mat-stroked-button color="primary" class="file-select-button" (click)="onClickFileInputButton()">Import</button>
