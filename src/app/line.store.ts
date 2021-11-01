@@ -173,9 +173,9 @@ export class LineStore extends ComponentStore<State> {
         }
         return forkJoin(
           Object.keys(lines).map(name =>
-            this.routeService.queryOsrmRoute(lines[name].stops).pipe(
-              map<QueriedPath, [QueriedPath, string]>(path => [path, name])
-            )
+            this.routeService
+              .queryOsrmRoute(lines[name].stops)
+              .pipe(map<QueriedPath, [QueriedPath, string]>(path => [path, name]))
           )
         ).pipe(
           map(results => {

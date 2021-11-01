@@ -1,14 +1,14 @@
 /*
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
-import {AfterViewInit, ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {MapStore} from './map.store';
-import {NotificationService} from '../notification.service';
-import {FocusService} from '../focus.service';
-import {OptionsStore} from '../options-store.service';
-import {Line, LineStore} from '../line.store';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { MapStore } from './map.store';
+import { NotificationService } from '../notification.service';
+import { FocusService } from '../focus.service';
+import { OptionsStore } from '../options-store.service';
+import { Line, LineStore } from '../line.store';
 import {
   divIcon,
   icon,
@@ -70,7 +70,7 @@ export class MapComponent implements AfterViewInit {
       );
     });
     this.store.getPaths$.pipe(takeUntil(this.destroy$)).subscribe(lines => {
-      console.log(lines)
+      console.log(lines);
       this.pathLayers.forEach(layer => this.map!.removeLayer(layer));
       this.pathLayers = [];
       lines.forEach(path => this.drawPath(path));

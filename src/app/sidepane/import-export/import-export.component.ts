@@ -1,12 +1,12 @@
 /*
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
-import {Component, ViewChild} from '@angular/core';
-import {Line, LineStore} from '../../line.store';
-import {take, tap} from 'rxjs/operators';
+import { Component, ViewChild } from '@angular/core';
+import { Line, LineStore } from '../../line.store';
+import { take, tap } from 'rxjs/operators';
 import FileSaver from 'file-saver';
-import {NotificationService} from '../../notification.service';
-import {forkJoin} from 'rxjs';
+import { NotificationService } from '../../notification.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'import-export',
@@ -16,27 +16,33 @@ export class ImportExportComponent {
   @ViewChild('fileInput')
   private fileInput: any;
 
-  constructor(private readonly lineStore: LineStore, private readonly notificationService: NotificationService) {
-  }
+  constructor(private readonly lineStore: LineStore, private readonly notificationService: NotificationService) {}
 
   exportWorkspace() {
     this.lineStore.getLines$.pipe(take(1)).subscribe(lines => {
-      const blob = new Blob([JSON.stringify(lines)], {type: 'application/json;charset=utf-8'});
+      const blob = new Blob([JSON.stringify(lines)], { type: 'application/json;charset=utf-8' });
       FileSaver.saveAs(blob, 'rda-network.json');
     });
   }
 
   exportSelectedLine() {
     forkJoin([
-      this.lineStore.getSelectedLine$.pipe(take(1), tap(x => console.log(x))),
-      this.lineStore.getLine$.pipe(take(1), tap(x => console.log(x))),
-      this.lineStore.getSelectedPath$.pipe(take(1), tap(x => console.log(x)))
-    ]).subscribe(
-      ([name, line, path]) => {
-        const blob = new Blob([JSON.stringify({name, ...line, ...path})], {type: 'application/json;charset=utf-8'});
-        FileSaver.saveAs(blob, name + '.json');
-      }
-    )
+      this.lineStore.getSelectedLine$.pipe(
+        take(1),
+        tap(x => console.log(x))
+      ),
+      this.lineStore.getLine$.pipe(
+        take(1),
+        tap(x => console.log(x))
+      ),
+      this.lineStore.getSelectedPath$.pipe(
+        take(1),
+        tap(x => console.log(x))
+      ),
+    ]).subscribe(([name, line, path]) => {
+      const blob = new Blob([JSON.stringify({ name, ...line, ...path })], { type: 'application/json;charset=utf-8' });
+      FileSaver.saveAs(blob, name + '.json');
+    });
   }
 
   file: File | null = null;
