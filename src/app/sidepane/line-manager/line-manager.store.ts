@@ -9,26 +9,24 @@ import { from, Observable } from 'rxjs';
 
 @Injectable()
 export class LineManagerStore extends ComponentStore<{}> {
-  readonly getLines$ = this.lineStore.getLines$.pipe(
-    map(lines =>
-      Object.keys(lines)
-        .map(name => ({
-          name,
-          color: lines[name].color,
-        }))
-        .sort((l1, l2) => l1.name.localeCompare(l2.name, undefined, { numeric: true }))
-    )
+  readonly getLines$ = this.lineStore.lines$.pipe(
+    map(lines => lines.sort((l1, l2) => l1.name.localeCompare(l2.name, undefined, { numeric: true })))
   );
 
-  readonly getSelectedLine$ = this.lineStore.getSelectedLine$;
+  readonly getSelectedLine$ = this.lineStore.selectedLine$;
   readonly renameLine$ = this.lineStore.renameLine$;
-  readonly deleteLine$ = this.lineStore.deleteLineWithName$;
+  readonly deleteLine$ = this.lineStore.deleteLine$;
   readonly selectLine$ = this.lineStore.selectLine$;
   readonly changeLineColor$ = this.lineStore.changeLineColor$;
 
   readonly addLine$ = super.effect((trigger$: Observable<void>) =>
     trigger$.pipe(
-      switchMap(() => this.lineStore.getLines$.pipe(take(1))),
+      switchMap(() =>
+        this.lineStore.lines$.pipe(
+          take(1),
+          map(lines => lines.reduce((acc, curr) => ({ ...acc, [curr.name]: true }), {} as { [key: string]: boolean }))
+        )
+      ),
       switchMap(lines =>
         from(this.generateLineName()).pipe(
           skipWhile(name => !!lines[name]),

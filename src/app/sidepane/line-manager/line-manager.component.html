@@ -14,8 +14,8 @@
       <ng-container *ngIf="selectedLine$ | async as selectedLine">
         <div
           class="d-flex align-items-flex-center"
-          [ngClass]="selectedLine === line.name ? 'primary-light-background' : 'pointer-cursor'"
-          (click)="selectLine(line.name)"
+          [ngClass]="selectedLine.name === line.name ? 'primary-light-background' : 'pointer-cursor'"
+          (click)="selectLine(line)"
         >
           <input
             class="colorpicker ml-2 pointer-cursor"
@@ -32,7 +32,7 @@
             (leaveEditMode)="toggleInlineEditor()"
             (enterEditMode)="toggleInlineEditor()"
           ></inline-editor>
-          <delete-button [disabled]="selectedLine === line.name" (delete)="deleteLine(line.name)"></delete-button>
+          <delete-button [disabled]="selectedLine.name === line.name" (delete)="deleteLine(line)"></delete-button>
         </div>
       </ng-container>
     </div>

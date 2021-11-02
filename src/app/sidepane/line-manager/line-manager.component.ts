@@ -3,6 +3,7 @@
  */
 import { Component } from '@angular/core';
 import { LineManagerStore } from './line-manager.store';
+import { Line } from '../../line.store';
 
 @Component({
   selector: 'line-manager',
@@ -25,12 +26,12 @@ export class LineManagerComponent {
     this.store.addLine$();
   }
 
-  deleteLine(name: string) {
-    this.store.deleteLine$(name);
+  deleteLine(line: Line) {
+    this.store.deleteLine$(line);
   }
 
-  selectLine(name: string) {
-    this.store.selectLine$(name);
+  selectLine(line: Line) {
+    this.store.selectLine$(line);
   }
 
   changeColor(color: string, name: string) {

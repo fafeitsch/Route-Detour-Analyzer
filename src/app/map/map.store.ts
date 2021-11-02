@@ -18,7 +18,7 @@ interface State {
 
 @Injectable()
 export class MapStore extends ComponentStore<State> {
-  readonly getPaths$ = this.lineStore.getVisibleLines$;
+  readonly getPaths$ = this.lineStore.visibleLines$;
   readonly getCenter$ = super.select(state => state.center);
 
   readonly setCenter$ = super.updater((state, center: LatLngWithZoom) => ({

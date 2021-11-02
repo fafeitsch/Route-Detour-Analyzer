@@ -30,20 +30,20 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   readonly getSmallestDetour$ = super.select(state => state.smallestDetour);
   readonly getMedianDetour$ = super.select(state => state.medianDetour);
   readonly getBiggestDetour$ = super.select(state => state.biggestDetour);
-  readonly lineColor$ = this.store.getLine$.pipe(pluck('color'));
+  readonly lineColor$ = this.store.selectedLine$.pipe(pluck('color'));
   readonly consideredStops$ = combineLatest([
-    this.store.getLine$.pipe(map(line => line.stops.length)),
+    this.store.selectedLine$.pipe(map(line => line.stops.length)),
     this.optionsStore.cap$,
   ]).pipe(map(([stops, cap]) => Math.max(2, stops - cap)));
   readonly numberOfTours$ = combineLatest([
-    this.store.getLine$.pipe(map(line => line.stops.length)),
+    this.store.selectedLine$.pipe(map(line => line.stops.length)),
     this.optionsStore.cap$,
   ]).pipe(map(([stops, cap]) => Math.min(((stops - 2) * (stops - 1)) / 2, ((cap + 1) * (cap + 2)) / 2)));
 
   readonly setAverageDetour = super.effect(() =>
-    combineLatest([this.store.getSelectedPath$, this.optionsStore.cap$, this.store.getLine$]).pipe(
-      filter(([path, _, line]) => path.distanceTable.length === line.stops.length),
-      switchMap(([path, cap, line]) => {
+    combineLatest([this.optionsStore.cap$, this.store.selectedLine$]).pipe(
+      filter(([_, line]) => line.path?.distanceTable.length === line.stops.length),
+      switchMap(([cap, line]) => {
         const sources = this.queryAllPaths(line.stops, cap);
         if (sources.length === 0) {
           super.patchState({
@@ -54,13 +54,11 @@ export class StatisticsViewerStore extends ComponentStore<State> {
           });
           return EMPTY;
         }
-        return forkJoin(sources).pipe(
-          map<SubPath[], [QueriedPath, SubPath[], Line]>(subpaths => [path, subpaths, line])
-        );
+        return forkJoin(sources).pipe(map<SubPath[], [SubPath[], Line]>(subpaths => [subpaths, line]));
       }),
-      map<[QueriedPath, SubPath[], Line], [Line, DetourResult]>(([path, sub, line]) => [
+      map<[SubPath[], Line], [Line, DetourResult]>(([sub, line]) => [
         line,
-        this.detourService.computeDetours(path.distanceTable, sub),
+        this.detourService.computeDetours(line.path?.distanceTable || [], sub),
       ]),
       tap(([line, detour]) =>
         super.patchState({

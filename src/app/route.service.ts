@@ -9,8 +9,13 @@ import * as polyline from '@mapbox/polyline';
 import { Route, RouteResults } from 'osrm';
 import { OptionsStore } from './options-store.service';
 
+export interface Leg {
+  distances: number[];
+}
+
 export interface QueriedPath {
   waypoints: [number, number][];
+  legs: Leg[];
   distanceTable: number[][];
 }
 
@@ -32,7 +37,7 @@ export class RouteService {
 
   queryOsrmRoute(stops: LatLng[]): Observable<QueriedPath> {
     if (!stops || stops.length < 2) {
-      return of({ waypoints: [], distanceTable: [] });
+      return of({ waypoints: [], distanceTable: [], legs: [] });
     }
     const coords = stops.map<[number, number]>(stop => [stop.lat, stop.lng]);
     const poly = encodeURIComponent(polyline.encode(coords));
@@ -42,13 +47,11 @@ export class RouteService {
         this.http.get<RouteResults>(`${url}/route/v1/driving/polyline(${poly})?overview=full&annotations=true`)
       ),
       map(results => results.routes[0]),
-      map<Route, [[number, number][], number[][]]>(route => [
-        polyline.decode(route.geometry),
-        this.buildLegsDistanceTable(route),
-      ]),
-      map<[[number, number][], number[][]], QueriedPath>(([arr, distanceTable]) => ({
-        waypoints: arr,
+      map<Route, [Route, number[][]]>(route => [route, this.buildLegsDistanceTable(route)]),
+      map<[Route, number[][]], QueriedPath>(([arr, distanceTable]) => ({
+        waypoints: polyline.decode(arr.geometry),
         distanceTable,
+        legs: arr.legs.map(leg => ({ distances: leg.annotation.distance })),
       }))
     );
   }

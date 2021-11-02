@@ -1,11 +1,11 @@
 /*
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
-import { Component } from '@angular/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { FocusService } from '../../focus.service';
-import { LineStore } from '../../line.store';
-import { Stop } from '../../route.service';
+import {Component} from '@angular/core';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import {FocusService} from '../../focus.service';
+import {LineStore} from '../../line.store';
+import {Stop} from '../../route.service';
 
 @Component({
   selector: 'line-editor',
@@ -14,20 +14,19 @@ import { Stop } from '../../route.service';
   host: { class: 'd-flex flex-column' },
 })
 export class LineEditorComponent {
-  selectedLine$ = this.lineStore.getSelectedLine$;
-  line$ = this.lineStore.getLine$;
-  distance$ = this.lineStore.getTotalDistance$;
+  line$ = this.lineStore.selectedLine$;
+  distance$ = this.lineStore.totalDistance$;
 
   editedStops = 0;
 
   constructor(private readonly lineStore: LineStore, private focusService: FocusService) {}
 
   drop(event: CdkDragDrop<Stop[]>) {
-    this.lineStore.moveStop$([event.previousIndex, event.currentIndex]);
+    this.lineStore.moveStopOfLine$({from: event.previousIndex, to: event.currentIndex});
   }
 
   deleteStop(index: number) {
-    this.lineStore.removeStop$(index);
+    this.lineStore.removeStopFromLine$(index);
     this.unsetFocusedStop();
   }
 
@@ -36,7 +35,7 @@ export class LineEditorComponent {
   }
 
   toggleRealStop(index: number) {
-    this.lineStore.toggleRealStop$(index);
+    this.lineStore.toggleStopOfLine$(index);
   }
 
   setFocusedStop(stop: Stop, color: string) {
