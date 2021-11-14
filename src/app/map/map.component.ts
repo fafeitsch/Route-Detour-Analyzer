@@ -23,6 +23,7 @@ import {
   PolylineOptions,
   tileLayer,
 } from 'leaflet';
+import { Waypoint } from '../route.service';
 
 @Component({
   selector: 'app-map',
@@ -115,9 +116,14 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
-  private drawPath(color: string, waypoints: [number, number][]) {
+  private drawPath(color: string, waypoints: Waypoint[]) {
     let options: PolylineOptions = { color };
-    this.pathLayers.push(polyline(waypoints, options).addTo(this.map!));
+    this.pathLayers.push(
+      polyline(
+        waypoints.map(wp => [wp.lat, wp.lng]),
+        options
+      ).addTo(this.map!)
+    );
   }
 
   private drawStops(line: Line & { selected: boolean }) {

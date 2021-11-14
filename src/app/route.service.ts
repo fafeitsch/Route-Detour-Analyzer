@@ -14,14 +14,18 @@ export interface Leg {
 }
 
 export interface QueriedPath {
-  waypoints: [number, number][];
-  legs: Leg[];
+  waypoints: Waypoint[];
   distanceTable: number[][];
 }
 
 export interface LatLng {
   lat: number;
   lng: number;
+}
+
+export interface Waypoint extends LatLng {
+  stop: boolean;
+  distanceToNext: number;
 }
 
 export interface Stop extends LatLng {
@@ -48,11 +52,24 @@ export class RouteService {
       ),
       map(results => results.routes[0]),
       map<Route, [Route, number[][]]>(route => [route, this.buildLegsDistanceTable(route)]),
-      map<[Route, number[][]], QueriedPath>(([arr, distanceTable]) => ({
-        waypoints: polyline.decode(arr.geometry),
-        distanceTable,
-        legs: arr.legs.map(leg => ({ distances: leg.annotation.distance })),
-      }))
+      map<[Route, number[][]], QueriedPath>(([arr, distanceTable]) => {
+        const waypoints: Waypoint[] = polyline
+          .decode(arr.geometry)
+          .map(r => ({ lat: r[0], lng: r[1], distanceToNext: 0, stop: false }));
+        let rawIndex = 0;
+        arr.legs.forEach((leg, legIndex) => {
+          waypoints[rawIndex].stop = true;
+          leg.annotation.distance.forEach(distance => {
+            waypoints[rawIndex].distanceToNext = distance;
+            rawIndex = rawIndex + 1;
+          });
+        });
+        waypoints[waypoints.length - 1].stop = true;
+        return {
+          waypoints,
+          distanceTable,
+        };
+      })
     );
   }
 

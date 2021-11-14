@@ -43,13 +43,10 @@ export class LineStore extends ComponentStore<State> {
   );
 
   private readonly updateSelectedLine$ = super.updater((state, line: Line) => {
-    console.log(line);
-    let newVar = {
+    return {
       ...state,
       lines: state.lines.map((existing, index) => (index === state.selectedLine ? line : existing)),
     };
-    console.log(newVar);
-    return newVar;
   });
 
   readonly renameStop$ = super.updater((state, [index, name]: [number, string]) => {
@@ -242,7 +239,10 @@ export class LineStore extends ComponentStore<State> {
           .pipe(
             tapResponse(
               l => this.updateSelectedLine$(l),
-              () => this.notificationService.raiseNotification(`Could not query path for line "${line.name}\"`)
+              err => {
+                console.error(err);
+                this.notificationService.raiseNotification(`Could not query path for line "${line.name}\"`);
+              }
             )
           )
       )
@@ -257,7 +257,6 @@ export class LineStore extends ComponentStore<State> {
           .map(name => ({ ...lines[name], name }))
       ),
       tap(lines => super.patchState({ lines, selectedLine: 0 })),
-      tap(x => console.log(x)),
       tap(lines => this.queryPathAndUpdateLine$(lines[0]))
     )
   );
