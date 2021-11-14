@@ -1,14 +1,14 @@
 /*
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
-import {AfterViewInit, ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {MapStore} from './map.store';
-import {NotificationService} from '../notification.service';
-import {FocusService} from '../focus.service';
-import {OptionsStore} from '../options-store.service';
-import {Line, LineStore} from '../line.store';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { MapStore } from './map.store';
+import { NotificationService } from '../notification.service';
+import { FocusService } from '../focus.service';
+import { OptionsStore } from '../options-store.service';
+import { Line, LineStore } from '../line.store';
 import {
   divIcon,
   icon,
@@ -46,8 +46,7 @@ export class MapComponent implements AfterViewInit {
     private readonly focusService: FocusService,
     private readonly optionsStore: OptionsStore,
     private readonly notificationService: NotificationService
-  ) {
-  }
+  ) {}
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -117,7 +116,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   private drawPath(color: string, waypoints: [number, number][]) {
-    let options: PolylineOptions = {color};
+    let options: PolylineOptions = { color };
     this.pathLayers.push(polyline(waypoints, options).addTo(this.map!));
   }
 
@@ -125,7 +124,7 @@ export class MapComponent implements AfterViewInit {
     this.markerLayer.push(
       layerGroup(
         line.stops
-          .map((stop, index) => ({...stop, index}))
+          .map((stop, index) => ({ ...stop, index }))
           .filter(stop => stop.realStop)
           .map(stop =>
             marker([stop.lat, stop.lng], {
@@ -138,7 +137,7 @@ export class MapComponent implements AfterViewInit {
                   ...stop,
                   lat: $event.target.getLatLng().lat,
                   lng: $event.target.getLatLng().lng,
-                }
+                },
               });
             })
           )
@@ -159,7 +158,7 @@ export class MapComponent implements AfterViewInit {
     this.map!.on('click', function (e: any) {
       const lat: number = Math.round(e.latlng.lat * 100000) / 100000;
       const lng: number = Math.round(e.latlng.lng * 100000) / 100000;
-      const stop = {name: lat + ', ' + lng, lat, lng, realStop: true};
+      const stop = { name: lat + ', ' + lng, lat, lng, realStop: true };
       store.addStopToLine$(stop);
     });
   }

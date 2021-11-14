@@ -1,11 +1,11 @@
 /*
  * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
  */
-import {Component} from '@angular/core';
-import {CdkDragDrop} from '@angular/cdk/drag-drop';
-import {FocusService} from '../../focus.service';
-import {LineStore} from '../../line.store';
-import {Stop} from '../../route.service';
+import { Component } from '@angular/core';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { FocusService } from '../../focus.service';
+import { LineStore } from '../../line.store';
+import { Stop } from '../../route.service';
 
 @Component({
   selector: 'line-editor',
@@ -22,7 +22,7 @@ export class LineEditorComponent {
   constructor(private readonly lineStore: LineStore, private focusService: FocusService) {}
 
   drop(event: CdkDragDrop<Stop[]>) {
-    this.lineStore.moveStopOfLine$({from: event.previousIndex, to: event.currentIndex});
+    this.lineStore.moveStopOfLine$({ from: event.previousIndex, to: event.currentIndex });
   }
 
   deleteStop(index: number) {
