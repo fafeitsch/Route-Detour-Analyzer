@@ -26,7 +26,7 @@ and compute the detours of sub paths withing that line.
 ![Parameters change the results of the analysis](./img/analysis.gif)  
 * Automatic name generation for stops based on address data  
 * Use different routing servers and tile layers
-* Import and export
+* Import and export (whole workspace, single lines)
 
 ## Building the app
 
@@ -66,7 +66,7 @@ using all query params in a bookmark, all settings can easily be persisted.
 
 ## Sample File
 
-The repository contains a [sample file](wuerzburg.json) containing all city lines of Wuerzburg City in spring 2021.
+The repository contains a [sample file](wuerzburg_legacy.json) containing all city lines of Wuerzburg City in spring 2021.
 There are 21 distinct lines. Lines that have significantly different from-path compared to the to-path
 are contained twice, which makes 37 sample lines in the file. For every line only the main path
 is realized. Please do not use these lines for actual route planing as they might be imprecise and deprecated.
