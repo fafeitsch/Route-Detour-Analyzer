@@ -261,6 +261,36 @@ export class LineStore extends ComponentStore<State> {
     )
   );
 
+  readonly importLines$ = super.effect((lines$: Observable<Line[]>) =>
+    lines$.pipe(
+      tap(lines => super.patchState({ lines, selectedLine: 0 })),
+      tap(lines => this.queryPathAndUpdateLine$(lines[0]))
+    )
+  );
+
+  readonly importLine$ = super.effect((line$: Observable<Line>) =>
+    line$.pipe(
+      switchMap(line =>
+        this.lines$.pipe(
+          take(1),
+          map(lines => [...lines, line])
+        )
+      ),
+      tap(x => console.log(x)),
+      map(lines => ({ lines, valid: lines.filter(line => line.name === lines[lines.length - 1].name).length === 1 })),
+      tap(({ lines, valid }) => {
+        if (!valid) {
+          this.notificationService.raiseNotification(
+            `A line with the name "${lines[lines.length - 1].name}" does already exist.`
+          );
+        }
+      }),
+      filter(({ valid }) => valid),
+      tap(({ lines }) => super.patchState({ lines, selectedLine: lines.length - 1 })),
+      tap(({ lines }) => this.queryPathAndUpdateLine$(lines[lines.length - 1]))
+    )
+  );
+
   readonly renameLine$ = super.effect((name$: Observable<[string, string]>) =>
     name$.pipe(
       switchMap(names =>

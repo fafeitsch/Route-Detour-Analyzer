@@ -24,6 +24,21 @@ export class ImportExportComponent {
     });
   }
 
+  exportWorkspaceLegacy() {
+    this.lineStore.lines$.pipe(take(1)).subscribe(lines => {
+      const result: { [key: string]: Line } = {};
+      lines
+        .map(line => ({ ...line }))
+        .forEach(line => {
+          line.path = undefined;
+          result[line.name] = line;
+          line.name = undefined!;
+        });
+      const blob = new Blob([JSON.stringify(result)], { type: 'application/json;charset=utf-8' });
+      FileSaver.saveAs(blob, 'rda-network.json');
+    });
+  }
+
   exportSelectedLine() {
     this.lineStore.selectedLine$.pipe(take(1)).subscribe(line => {
       const blob = new Blob([JSON.stringify(line)], { type: 'application/json;charset=utf-8' });
@@ -43,12 +58,26 @@ export class ImportExportComponent {
     let reader = new FileReader();
     reader.onloadend = () => {
       try {
-        let lines = JSON.parse(reader.result as string);
-        const validationMessage = this.checkFileContent(lines);
-        if (validationMessage) {
-          this.notificationService.raiseNotification('Cannot import file: ' + validationMessage);
+        let parsedContent = JSON.parse(reader.result as string);
+        if (Array.isArray(parsedContent)) {
+          const validationMessage = this.checkFileContent(parsedContent);
+          if (validationMessage) {
+            this.notificationService.raiseNotification('Cannot import file: ' + validationMessage);
+          }
+          this.lineStore.importLines$(parsedContent);
+        } else if (parsedContent.name) {
+          const validationMessage = this.checkFileContent([parsedContent]);
+          if (validationMessage) {
+            this.notificationService.raiseNotification('Cannot import file: ' + validationMessage);
+          }
+          this.lineStore.importLine$(parsedContent);
+        } else {
+          const validationMessage = this.checkFileContentMap(parsedContent);
+          if (validationMessage) {
+            this.notificationService.raiseNotification('Cannot import file: ' + validationMessage);
+          }
+          this.lineStore.importLineNameMap$(parsedContent);
         }
-        this.lineStore.importLineNameMap$(lines);
       } catch (e) {
         this.notificationService.raiseNotification('Cannot parse file: ' + e);
       }
@@ -56,18 +85,48 @@ export class ImportExportComponent {
     reader.readAsText(files[0]);
   }
 
-  checkFileContent(lines: { [name: string]: Line }): string | undefined {
-    let lineNames = Object.keys(lines);
-    if (!lineNames.length) {
-      return 'The imported file contained no lines.';
+  checkFileContentMap(lines: { [name: string]: Line }): string | undefined {
+    try {
+      let lineNames = Object.keys(lines);
+      if (!lineNames.length) {
+        return 'The imported file contained no lines.';
+      }
+      let withoutColor = lineNames.filter(name => !lines[name].color);
+      if (withoutColor.length) {
+        return 'The following keys have no color: ' + withoutColor.join(', ');
+      }
+      let withoutStops = lineNames.filter(name => !lines[name].stops);
+      if (withoutStops.length) {
+        return 'The following keys have no stops: ' + withoutStops.join(', ');
+      }
+    } catch (error) {
+      return `Could not parse the workspace data: ${error}.`;
     }
-    let withoutColor = lineNames.filter(name => !lines[name].color);
-    if (withoutColor.length) {
-      return 'The following keys have no color: ' + withoutColor.join(', ');
-    }
-    let withoutStops = lineNames.filter(name => !lines[name].stops);
-    if (withoutStops.length) {
-      return 'The following keys have no stops: ' + withoutStops.join(', ');
+    return undefined;
+  }
+
+  checkFileContent(lines: Line[]): string | undefined {
+    try {
+      const noNames = lines
+        .map((line, index) => ({
+          line,
+          index,
+        }))
+        .filter(tuple => !tuple.line.name)
+        .map(tuple => tuple.index);
+      if (noNames.length) {
+        return 'The following entries in the array have no line name: ' + noNames.join(', ');
+      }
+      const noColor = lines.filter(line => !line.color).map(line => line.name);
+      if (noColor.length) {
+        return 'The  lines in the array have no color: ' + noColor.join(', ');
+      }
+      const noStops = lines.filter(line => !line.stops).map(line => line.name);
+      if (noStops.length) {
+        return 'The following entries in the array have no stops name: ' + noStops.join(', ');
+      }
+    } catch (error) {
+      return `Could not parse the workspace data: ${error}.`;
     }
     return undefined;
   }
