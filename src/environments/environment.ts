@@ -1,5 +1,6 @@
 /*
- * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT).
+ * Find the full license text in the LICENSE file of the project root.
  */
 
 // This file can be replaced during build by using the `fileReplacements` array.

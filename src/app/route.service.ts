@@ -1,5 +1,6 @@
 /*
- * Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT).
+ * Find the full license text in the LICENSE file of the project root.
  */
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
@@ -26,6 +27,7 @@ export interface LatLng {
 export interface Waypoint extends LatLng {
   stop: boolean;
   distanceToNext: number;
+  durationToNext: number;
 }
 
 export interface Stop extends LatLng {
@@ -53,16 +55,21 @@ export class RouteService {
       map(results => results.routes[0]),
       map<Route, [Route, number[][]]>(route => [route, this.buildLegsDistanceTable(route)]),
       map<[Route, number[][]], QueriedPath>(([arr, distanceTable]) => {
-        const waypoints: Waypoint[] = polyline
-          .decode(arr.geometry)
-          .map(r => ({ lat: r[0], lng: r[1], distanceToNext: 0, stop: false }));
+        const waypoints: Waypoint[] = polyline.decode(arr.geometry).map(r => ({
+          lat: r[0],
+          lng: r[1],
+          distanceToNext: 0,
+          durationToNext: 0,
+          stop: false,
+        }));
         let rawIndex = 0;
         arr.legs.forEach((leg, legIndex) => {
           waypoints[rawIndex].stop = true;
-          leg.annotation.distance.forEach(distance => {
-            waypoints[rawIndex].distanceToNext = distance;
+          for (let i = 0; i < leg.annotation.distance.length; i++) {
+            waypoints[rawIndex].distanceToNext = leg.annotation.distance[i];
+            waypoints[rawIndex].durationToNext = leg.annotation.duration[i];
             rawIndex = rawIndex + 1;
-          });
+          }
         });
         waypoints[waypoints.length - 1].stop = true;
         return {

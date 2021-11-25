@@ -1,20 +1,33 @@
 <!--
-  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT). Find the full license text in the LICENSE file of the project root.
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
   -->
-<span *ngIf="!editMode && text" class="text flex-grow-1 text-ellipses">{{ text }}</span>
+<span *ngIf="!editMode && text" class="text flex-grow-1 text-ellipses">{{
+  text
+}}</span>
 <span *ngIf="!editMode && !text" class="flex-grow-1"
   ><i>{{ emptyPlaceholder }}</i></span
 >
 <div class="flex-grow-1"></div>
 <mat-form-field *ngIf="editMode" class="mr-2"
-  ><input matInput [value]="text" [formControl]="nameFormControl" (keyup)="inputKeyPressed($event)"
+  ><input
+    matInput
+    [value]="text"
+    [formControl]="nameFormControl"
+    (keyup)="inputKeyPressed($event)"
 /></mat-form-field>
 <button mat-icon-button *ngIf="!editMode" (click)="toggleEdit()">
-  <icon-pencil class="primary-light-background mr-2 pt-2 pointer-cursor"></icon-pencil>
+  <icon-pencil
+    class="primary-light-background mr-2 pt-2 pointer-cursor"
+  ></icon-pencil>
 </button>
 <button mat-icon-button *ngIf="editMode" (click)="commit()">
-  <icon-checkmark class="primary-light-background mr-2 pt-2 pointer-cursor"></icon-checkmark>
+  <icon-checkmark
+    class="primary-light-background mr-2 pt-2 pointer-cursor"
+  ></icon-checkmark>
 </button>
 <button mat-icon-button *ngIf="editMode" (click)="toggleEdit()">
-  <icon-cross class="primary-light-background mr-2 pt-2 pointer-cursor"></icon-cross>
+  <icon-cross
+    class="primary-light-background mr-2 pt-2 pointer-cursor"
+  ></icon-cross>
 </button>
