@@ -16,16 +16,7 @@ import { StatisticsViewerModule } from './statistics-viewer/statistics-viewer.mo
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MapModule,
-    MatSidenavModule,
-    HttpClientModule,
-    ControlsModule,
-    StatisticsViewerModule,
-  ],
+  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })

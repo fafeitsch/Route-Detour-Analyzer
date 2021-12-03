@@ -8,10 +8,6 @@ import { OptionsStore } from './options-store.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  providers: [LineStore],
+  template: '<router-outlet></router-outlet>',
 })
-export class AppComponent {
-  constructor(private readonly lineStore: LineStore, private readonly optionsStore: OptionsStore) {}
-}
+export class AppComponent {}
