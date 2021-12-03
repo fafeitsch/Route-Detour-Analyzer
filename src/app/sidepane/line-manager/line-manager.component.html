@@ -23,12 +23,10 @@
           (click)="selectLine(line)"
         >
           <input
-            class="colorpicker ml-2 pointer-cursor"
-            cpWidth="230px"
-            [style.width.px]="20"
-            [colorPicker]="line.color"
-            [style.background]="line.color"
-            (colorPickerSelect)="changeColor($event, line.name)"
+            type="color"
+            [style.width.px]="40"
+            [value]="line.color"
+            (change)="changeColor(line.name, $event)"
           />
           <inline-editor
             class="flex-grow-1 ml-3"

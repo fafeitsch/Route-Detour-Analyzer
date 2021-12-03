@@ -2,17 +2,19 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { LineManagerStore } from './line-manager.store';
 import { Line } from '../../line.store';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'line-manager',
   templateUrl: './line-manager.component.html',
   providers: [LineManagerStore],
-  host: { class: 'd-flex flex-column' },
 })
 export class LineManagerComponent {
+  @HostBinding('class') clazz = 'd-flex flex-colum';
+
   lines$ = this.store.getLines$;
   selectedLine$ = this.store.getSelectedLine$;
   inlineEditLine = false;
@@ -35,8 +37,8 @@ export class LineManagerComponent {
     this.store.selectLine$(line);
   }
 
-  changeColor(color: string, name: string) {
-    this.store.changeLineColor$([name, color]);
+  changeColor(line: string, event: any) {
+    this.store.changeLineColor$([line, event.target.value]);
   }
 
   trackBy(index: number, line: { name: string; color: string }) {

@@ -9,11 +9,10 @@ import { InlineEditorModule } from '@rda/components/inline-editor/inline-editor.
 import { MatButtonModule } from '@angular/material/button';
 import { IconsModule } from '@rda/components/icons/icons.module';
 import { DeleteButtonModule } from '@rda/components/delete-button/delete-button.module';
-import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   declarations: [LineManagerComponent],
   exports: [LineManagerComponent],
-  imports: [CommonModule, InlineEditorModule, MatButtonModule, IconsModule, DeleteButtonModule, ColorPickerModule],
+  imports: [CommonModule, InlineEditorModule, MatButtonModule, IconsModule, DeleteButtonModule],
 })
 export class LineManagerModule {}
