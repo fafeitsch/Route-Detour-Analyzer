@@ -10,7 +10,14 @@ import { DetailResult, DetourResult, DetourService, SubPath } from '../detour.se
 import { Line, LineStore } from '../line.store';
 import { QueriedPath, RouteService, Stop } from '../route.service';
 import { NotificationService } from '../notification.service';
-import { OptionsStore } from '../options-store.service';
+import { Store } from '@ngrx/store';
+import {
+  OptionsState,
+  selectOsrmServer,
+  selectTileServer,
+  setOsrmServerFromOptionsPanel,
+  setTileServerFromOptionsPanel,
+} from '../+store/options';
 
 export interface DetourWithStop extends DetailResult {
   sourceStop: Stop;
@@ -23,6 +30,7 @@ interface State {
   medianDetour: DetourWithStop | undefined;
   biggestDetour: DetourWithStop | undefined;
   smallestDetour: DetourWithStop | undefined;
+  cap: number;
 }
 
 @Injectable()
@@ -31,18 +39,23 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   readonly getSmallestDetour$ = super.select(state => state.smallestDetour);
   readonly getMedianDetour$ = super.select(state => state.medianDetour);
   readonly getBiggestDetour$ = super.select(state => state.biggestDetour);
+  readonly cap$ = super.select(state => state.cap);
+  readonly osrm$ = this.optionsStore.select(selectOsrmServer);
+  readonly tileServer$ = this.optionsStore.select(selectTileServer);
   readonly lineColor$ = this.store.selectedLine$.pipe(pluck('color'));
   readonly consideredStops$ = combineLatest([
     this.store.selectedLine$.pipe(map(line => line.stops.length)),
-    this.optionsStore.cap$,
+    this.cap$,
   ]).pipe(map(([stops, cap]) => Math.max(2, stops - cap)));
   readonly numberOfTours$ = combineLatest([
     this.store.selectedLine$.pipe(map(line => line.stops.length)),
-    this.optionsStore.cap$,
+    this.cap$,
   ]).pipe(map(([stops, cap]) => Math.min(((stops - 2) * (stops - 1)) / 2, ((cap + 1) * (cap + 2)) / 2)));
 
+  readonly setCap$ = super.updater((state, cap: number) => ({ ...state, cap }));
+
   readonly setAverageDetour = super.effect(() =>
-    combineLatest([this.optionsStore.cap$, this.store.selectedLine$]).pipe(
+    combineLatest([this.cap$, this.store.selectedLine$]).pipe(
       filter(([_, line]) => line.path?.distanceTable.length === line.stops.length),
       switchMap(([cap, line]) => {
         const sources = this.queryAllPaths(line.stops, cap);
@@ -72,18 +85,27 @@ export class StatisticsViewerStore extends ComponentStore<State> {
     )
   );
 
+  readonly setOsrm$ = super.effect((osrm$: Observable<string>) =>
+    osrm$.pipe(tap(osrm => this.optionsStore.dispatch(setOsrmServerFromOptionsPanel({ osrm }))))
+  );
+
+  readonly setTileServer$ = super.effect((tileServer$: Observable<string>) =>
+    tileServer$.pipe(tap(tileServer => this.optionsStore.dispatch(setTileServerFromOptionsPanel({ tileServer }))))
+  );
+
   constructor(
     private readonly store: LineStore,
     private readonly detourService: DetourService,
     private readonly routeService: RouteService,
     private readonly notificationService: NotificationService,
-    private readonly optionsStore: OptionsStore
+    private readonly optionsStore: Store<OptionsState>
   ) {
     super({
       averageDetour: 0,
       smallestDetour: undefined,
       medianDetour: undefined,
       biggestDetour: undefined,
+      cap: 0,
     });
   }
 

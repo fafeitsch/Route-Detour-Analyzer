@@ -8,12 +8,11 @@ import { ControlsComponent } from './controls.component';
 import { LineEditorModule } from './line-editor/line-editor.module';
 import { NotificationModule } from './notification/notification.module';
 import { LineManagerModule } from './line-manager/line-manager.module';
-import { ImportExportModule } from './import-export/import-export.module';
 import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [ControlsComponent],
   exports: [ControlsComponent],
-  imports: [CommonModule, MatTabsModule, LineEditorModule, NotificationModule, LineManagerModule, ImportExportModule],
+  imports: [CommonModule, MatTabsModule, LineEditorModule, NotificationModule, LineManagerModule],
 })
 export class ControlsModule {}

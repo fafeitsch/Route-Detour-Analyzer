@@ -8,7 +8,8 @@ import { HttpClient } from '@angular/common/http';
 import { map, switchMap, take } from 'rxjs/operators';
 import * as polyline from '@mapbox/polyline';
 import { Route, RouteResults } from 'osrm';
-import { OptionsStore } from './options-store.service';
+import { Store } from '@ngrx/store';
+import { OptionsState, selectOsrmServer } from './+store/options';
 
 export interface Leg {
   distances: number[];
@@ -39,7 +40,7 @@ export interface Stop extends LatLng {
   providedIn: 'root',
 })
 export class RouteService {
-  constructor(private readonly http: HttpClient, private readonly optionsStore: OptionsStore) {}
+  constructor(private readonly http: HttpClient, private readonly store: Store<OptionsState>) {}
 
   queryOsrmRoute(stops: LatLng[]): Observable<QueriedPath> {
     if (!stops || stops.length < 2) {
@@ -47,7 +48,7 @@ export class RouteService {
     }
     const coords = stops.map<[number, number]>(stop => [stop.lat, stop.lng]);
     const poly = encodeURIComponent(polyline.encode(coords));
-    return this.optionsStore.osrmUrl$.pipe(
+    return this.store.select(selectOsrmServer).pipe(
       take(1),
       switchMap(url =>
         this.http.get<RouteResults>(`${url}/route/v1/driving/polyline(${poly})?overview=full&annotations=true`)
@@ -94,7 +95,7 @@ export class RouteService {
   }
 
   queryNearestStreet(stop: Stop): Observable<Stop> {
-    return this.optionsStore.osrmUrl$.pipe(
+    return this.store.select(selectOsrmServer).pipe(
       take(1),
       switchMap(url => this.http.get(`${url}/nearest/v1/driving/${stop.lng},${stop.lat}.json?number=1`)),
       map<any, any>(result => result.waypoints[0]),

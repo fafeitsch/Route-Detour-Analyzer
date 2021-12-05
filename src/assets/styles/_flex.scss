@@ -3,7 +3,7 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 .d-flex {
-  display: flex;
+  display: flex !important;
 
   &.justify-content-flex-center {
     justify-content: center;

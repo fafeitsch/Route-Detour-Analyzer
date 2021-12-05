@@ -5,8 +5,8 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-import { OptionsStore } from '../../options-store.service';
+import { takeUntil } from 'rxjs/operators';
+import { StatisticsViewerStore } from '../statistics-viewer.store';
 
 @Component({
   selector: 'app-settings',
@@ -14,14 +14,12 @@ import { OptionsStore } from '../../options-store.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppSettingsComponent implements OnDestroy, AfterViewInit {
-  tileServerControl: AbstractControl;
-  osrmServerControl: AbstractControl;
   capControl: AbstractControl;
 
   private destroy$ = new Subject<boolean>();
 
   constructor(
-    private readonly optionsStore: OptionsStore,
+    private readonly store: StatisticsViewerStore,
     private readonly formBuilder: FormBuilder,
     private readonly ref: ChangeDetectorRef
   ) {
@@ -30,24 +28,12 @@ export class AppSettingsComponent implements OnDestroy, AfterViewInit {
       osrmServerUrl: [''],
       cap: [''],
     });
-    this.tileServerControl = form.controls.tileServerUrl;
-    this.osrmServerControl = form.controls.osrmServerUrl;
     this.capControl = form.controls.cap;
-    this.optionsStore.setTileUrl$(this.tileServerControl.valueChanges.pipe(map(val => val.replace(/\$/, ''))));
-    this.optionsStore.setOsrmUrl$(this.osrmServerControl.valueChanges);
-    this.optionsStore.setCap$(this.capControl.valueChanges);
+    this.store.setCap$(this.capControl.valueChanges);
   }
 
   ngAfterViewInit(): void {
-    this.optionsStore.osrmUrl$.pipe(takeUntil(this.destroy$)).subscribe(url => {
-      this.osrmServerControl.patchValue(url, { emitEvent: false });
-      this.ref.detectChanges();
-    });
-    this.optionsStore.tileServerUrl$.pipe(takeUntil(this.destroy$)).subscribe(url => {
-      this.tileServerControl.patchValue(url, { emitEvent: false });
-      this.ref.detectChanges();
-    });
-    this.optionsStore.cap$.pipe(takeUntil(this.destroy$)).subscribe(cap => {
+    this.store.cap$.pipe(takeUntil(this.destroy$)).subscribe(cap => {
       this.capControl.patchValue(cap, { emitEvent: false });
       this.ref.detectChanges();
     });

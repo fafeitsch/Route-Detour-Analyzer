@@ -3,11 +3,10 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { Component } from '@angular/core';
-import { LineStore } from './line.store';
-import { OptionsStore } from './options-store.service';
 
 @Component({
   selector: 'app-root',
   template: '<router-outlet></router-outlet>',
+  host: { class: 'display: block;' },
 })
 export class AppComponent {}

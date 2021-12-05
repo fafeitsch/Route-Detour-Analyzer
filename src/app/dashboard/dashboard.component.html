@@ -1,0 +1,18 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<mat-grid-list class="flex-grow-1" rowHeight="fit" [gutterSize]="0" [cols]="4">
+  <mat-grid-tile class="p-0">
+    <import-export-card class="w-100 h-100"></import-export-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <settings-card class="w-100 h-100"></settings-card>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="2" rowspan="3">
+    <overview-map class="h-100 w-100"></overview-map>
+  </mat-grid-tile>
+  <mat-grid-tile rowspan="2">
+    <lines-card class="w-100 h-100"> </lines-card>
+  </mat-grid-tile>
+</mat-grid-list>

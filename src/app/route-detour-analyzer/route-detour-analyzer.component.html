@@ -2,22 +2,26 @@
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
   ~ Find the full license text in the LICENSE file of the project root.
   -->
+<!--<mat-sidenav-container class="h-100">-->
+<!--  <mat-sidenav mode="side" class="h-100" [disableClose]="true">-->
+<!--    <div class="h-100 d-flex flex-column ov-hidden">-->
+<!--      <div-->
+<!--        class="w-100 banner primary-background d-flex align-items-flex-center justify-content-flex-center mb-5"-->
+<!--      >-->
+<!--        Route Detour Analyzer-->
+<!--      </div>-->
+<!--      <app-controls class="flex-grow-1"></app-controls>-->
+<!--    </div>-->
+<!--  </mat-sidenav>-->
+<!--  <mat-sidenav-content>-->
+<!--  </mat-sidenav-content>-->
+<!--</mat-sidenav-container>-->
+<div class="h-100 d-flex flex-column">
+  <mat-toolbar color="primary">
+    <span>My App</span>
+  </mat-toolbar>
 
-<mat-sidenav-container class="h-100">
-  <mat-sidenav mode="side" class="h-100" opened [disableClose]="true">
-    <div class="h-100 d-flex flex-column ov-hidden">
-      <div
-        class="w-100 banner primary-background d-flex align-items-flex-center justify-content-flex-center mb-5"
-      >
-        Route Detour Analyzer
-      </div>
-      <app-controls class="flex-grow-1"></app-controls>
-    </div>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <div class="d-flex flex-column h-100">
-      <app-map class="flex-grow-1"></app-map>
-      <statistics-viewer class="pt-3 pl-3 pr-3"></statistics-viewer>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  <div class="p-3 flex-grow-1">
+    <router-outlet></router-outlet>
+  </div>
+</div>

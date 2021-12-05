@@ -2,25 +2,35 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { Line, LineStore } from '../../line.store';
+import { NotificationService } from '../../notification.service';
 import { take } from 'rxjs/operators';
 import FileSaver from 'file-saver';
-import { NotificationService } from '../../notification.service';
+import { importLines, Workbench } from '../../+store/workbench';
+import { Store } from '@ngrx/store';
 
 @Component({
-  selector: 'import-export',
-  templateUrl: './import-export.component.html',
+  selector: 'import-export-card',
+  styles: [``],
+  templateUrl: './import-export-card.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ImportExportComponent {
+export class ImportExportCardComponent {
   @ViewChild('fileInput')
   private fileInput: any;
 
-  constructor(private readonly lineStore: LineStore, private readonly notificationService: NotificationService) {}
+  constructor(
+    private readonly lineStore: LineStore,
+    private readonly notificationService: NotificationService,
+    private readonly store: Store<Workbench>
+  ) {}
 
   exportWorkspace() {
     this.lineStore.lines$.pipe(take(1)).subscribe(lines => {
-      const blob = new Blob([JSON.stringify(lines)], { type: 'application/json;charset=utf-8' });
+      const blob = new Blob([JSON.stringify(lines)], {
+        type: 'application/json;charset=utf-8',
+      });
       FileSaver.saveAs(blob, 'rda-network.json');
     });
   }
@@ -35,14 +45,18 @@ export class ImportExportComponent {
           result[line.name] = line;
           line.name = undefined!;
         });
-      const blob = new Blob([JSON.stringify(result)], { type: 'application/json;charset=utf-8' });
+      const blob = new Blob([JSON.stringify(result)], {
+        type: 'application/json;charset=utf-8',
+      });
       FileSaver.saveAs(blob, 'rda-network.json');
     });
   }
 
   exportSelectedLine() {
     this.lineStore.selectedLine$.pipe(take(1)).subscribe(line => {
-      const blob = new Blob([JSON.stringify(line)], { type: 'application/json;charset=utf-8' });
+      const blob = new Blob([JSON.stringify(line)], {
+        type: 'application/json;charset=utf-8',
+      });
       FileSaver.saveAs(blob, line.name + '.json');
     });
   }
@@ -65,6 +79,7 @@ export class ImportExportComponent {
           if (validationMessage) {
             this.notificationService.raiseNotification('Cannot import file: ' + validationMessage);
           }
+          this.store.dispatch(importLines({ lines: parsedContent }));
           this.lineStore.importLines$(parsedContent);
         } else if (parsedContent.name) {
           const validationMessage = this.checkFileContent([parsedContent]);

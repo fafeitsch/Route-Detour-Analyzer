@@ -1,0 +1,54 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<mat-card class="mt-3 ml-3 d-flex flex-column">
+  <mat-card-title>Import/Export</mat-card-title>
+  <mat-card-content class="flex-grow-1 mt-3">
+    <div class="mt-3 d-flex flex-column h-100">
+      <button
+        mat-stroked-button
+        class="mr-3 w-100"
+        color="primary"
+        [mat-menu-trigger-for]="menu"
+      >
+        Export
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="exportWorkspace()">Export All</button>
+        <button mat-menu-item (click)="exportWorkspaceLegacy()">
+          Export All (< 1.2.0)
+        </button>
+        <button mat-menu-item (click)="exportSelectedLine()">
+          Export Selected Line
+        </button>
+      </mat-menu>
+
+      <button
+        mat-stroked-button
+        color="primary"
+        class="file-select-button w-100 mt-3"
+        [mat-menu-trigger-for]="importMenu"
+      >
+        Import
+      </button>
+
+      <mat-menu #importMenu="matMenu">
+        <input
+          type="file"
+          style="display: none"
+          #fileInput
+          accept="application/json"
+          (change)="onChangeFileInput()"
+        />
+        <button mat-menu-item (click)="onClickFileInputButton()">Import</button>
+        <button mat-menu-item (click)="onClickFileInputButton()">
+          Import (&lt; 1.2.0)
+        </button>
+        <button mat-menu-item (click)="onClickFileInputButton()">
+          Import Line
+        </button>
+      </mat-menu>
+    </div>
+  </mat-card-content>
+</mat-card>

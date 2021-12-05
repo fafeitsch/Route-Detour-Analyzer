@@ -8,7 +8,6 @@ import { takeUntil } from 'rxjs/operators';
 import { MapStore } from './map.store';
 import { NotificationService } from '../notification.service';
 import { FocusService } from '../focus.service';
-import { OptionsStore } from '../options-store.service';
 import { Line, LineStore } from '../line.store';
 import {
   divIcon,
@@ -25,6 +24,8 @@ import {
   tileLayer,
 } from 'leaflet';
 import { Waypoint } from '../route.service';
+import { OptionsState, selectTileServer } from '../+store/options';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-map',
@@ -46,7 +47,7 @@ export class MapComponent implements AfterViewInit {
     private readonly lineStore: LineStore,
     private readonly store: MapStore,
     private readonly focusService: FocusService,
-    private readonly optionsStore: OptionsStore,
+    private readonly optionsStore: Store<OptionsState>,
     private readonly notificationService: NotificationService
   ) {}
 
@@ -55,22 +56,25 @@ export class MapComponent implements AfterViewInit {
     this.store.getCenter$
       .pipe(takeUntil(this.destroy$))
       .subscribe(c => this.map!.setView(new LatLng(c.lat, c.lng), c.zoom));
-    this.optionsStore.tileServerUrl$.pipe(takeUntil(this.destroy$)).subscribe(url => {
-      if (this.tileLayer) {
-        this.map!.removeLayer(this.tileLayer);
-      }
-      this.tileLayer = tileLayer(url, {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      });
-      this.tileLayer.addTo(this.map!);
-      this.tileLayer.on('tileerror', () =>
-        this.notificationService.raiseNotification(
-          `There was a problem fetching map tiles. Make sure that you called the site with a query param 'tiles=URL', where URL
+    this.optionsStore
+      .select(selectTileServer)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(url => {
+        if (this.tileLayer) {
+          this.map!.removeLayer(this.tileLayer);
+        }
+        this.tileLayer = tileLayer(url, {
+          maxZoom: 19,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        });
+        this.tileLayer.addTo(this.map!);
+        this.tileLayer.on('tileerror', () =>
+          this.notificationService.raiseNotification(
+            `There was a problem fetching map tiles. Make sure that you called the site with a query param 'tiles=URL', where URL
             points to a tile server.`
-        )
-      );
-    });
+          )
+        );
+      });
     this.store.getPaths$.pipe(takeUntil(this.destroy$)).subscribe(lines => {
       this.pathLayers.forEach(layer => this.map!.removeLayer(layer));
       this.pathLayers = [];

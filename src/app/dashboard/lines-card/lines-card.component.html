@@ -1,0 +1,19 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<mat-card class="mt-3 ml-3 d-flex flex-column">
+  <mat-card-title>Lines</mat-card-title>
+  <mat-card-content class="flex-grow-1 ov-auto">
+    <div
+      *ngFor="let line of lines$ | async"
+      class="d-flex align-items-flex-center mb-2"
+    >
+      <div
+        class="mr-3 line-indicator"
+        [style.background-color]="line.color"
+      ></div>
+      {{ line.name }}
+    </div>
+  </mat-card-content>
+</mat-card>

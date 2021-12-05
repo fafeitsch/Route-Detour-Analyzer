@@ -13,10 +13,26 @@ import { ControlsModule } from './sidepane/controls.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MapModule } from './map/map.module';
 import { StatisticsViewerModule } from './statistics-viewer/statistics-viewer.module';
+import { StoreModule } from '@ngrx/store';
+import { OptionsDataModule } from './+store/options/options-data.module';
+import { environment } from '../environments/environment';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    StoreModule.forRoot({}),
+    OptionsDataModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+    }),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
