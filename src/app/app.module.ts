@@ -8,15 +8,12 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { ControlsModule } from './sidepane/controls.module';
 import { HttpClientModule } from '@angular/common/http';
-import { MapModule } from './map/map.module';
-import { StatisticsViewerModule } from './statistics-viewer/statistics-viewer.module';
 import { StoreModule } from '@ngrx/store';
 import { OptionsDataModule } from './+store/options/options-data.module';
 import { environment } from '../environments/environment';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +21,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
     OptionsDataModule,
     BrowserAnimationsModule,
     HttpClientModule,

@@ -3,7 +3,7 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { createReducer, on } from '@ngrx/store';
-import { importLines } from './actions';
+import { importLines, importSampleLines } from './actions';
 
 export interface Leg {
   distances: number[];
@@ -46,6 +46,9 @@ const initialState: Workbench = { lines: [] };
 export const WorkbenchReducer = createReducer(
   initialState,
   on(importLines, (state, { lines }) => {
+    return { ...state, lines };
+  }),
+  on(importSampleLines, (state, { lines }) => {
     return { ...state, lines };
   })
 );
