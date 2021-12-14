@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InlineEditorComponent } from './inline-editor.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { IconsModule } from '@rda/components/icons/icons.module';
+import { LineStopModule } from '@rda/components/icons/line-stop.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -14,6 +14,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [InlineEditorComponent],
   exports: [InlineEditorComponent],
-  imports: [CommonModule, MatFormFieldModule, IconsModule, MatButtonModule, MatInputModule, ReactiveFormsModule],
+  imports: [CommonModule, MatFormFieldModule, LineStopModule, MatButtonModule, MatInputModule, ReactiveFormsModule],
 })
 export class InlineEditorModule {}

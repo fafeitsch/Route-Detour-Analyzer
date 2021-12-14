@@ -4,16 +4,37 @@
   -->
 <mat-card class="mt-3 ml-3 d-flex flex-column">
   <mat-card-title>Lines</mat-card-title>
-  <mat-card-content class="flex-grow-1 ov-auto">
-    <div
-      *ngFor="let line of lines$ | async"
-      class="d-flex align-items-flex-center mb-2"
-    >
+  <mat-card-content
+    class="d-flex flex-column overflow-hidden align-items-start"
+  >
+    <button mat-button class="mb-3" color="primary" (click)="createLine()">
+      Create New Line
+    </button>
+    <div class="flex-grow-1 overflow-auto w-100">
       <div
-        class="mr-3 line-indicator"
-        [style.background-color]="line.color"
-      ></div>
-      {{ line.name }}
+        *ngFor="let line of lines$ | async"
+        class="d-flex align-items-center mb-2"
+      >
+        <div
+          class="mr-3 line-indicator"
+          [style.background-color]="line.color"
+        ></div>
+
+        <div class="d-flex flex-column w-100">
+          <span>{{ line.name }}</span>
+          <div class="d-flex align-items-center">
+            <a
+              class="themed mat-body-strong mr-2"
+              [routerLink]="['route-editor', line.name]"
+              >Route Editor</a
+            >
+            <div class="flex-grow-1"></div>
+            <button mat-button color="primary" (click)="deleteLine(line.name)">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </mat-card-content>
 </mat-card>

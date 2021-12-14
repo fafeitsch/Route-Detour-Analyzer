@@ -3,8 +3,9 @@
   ~ Find the full license text in the LICENSE file of the project root.
   -->
 <div
+  osmMap
   class="w-100"
-  id="osmMap"
   [style.border-radius]="'5px'"
-  (mapReady)="mapReady($event)"
+  [lines]="lines$ | async"
+  [useStopIcon]="true"
 ></div>

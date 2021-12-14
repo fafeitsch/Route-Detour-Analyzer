@@ -1,0 +1,17 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<mat-slide-toggle
+  color="primary"
+  class="mr-3 mt-3 p-2 line-toggler"
+  (change)="toggleViewAll()"
+  >Peek all Lines
+</mat-slide-toggle>
+<div
+  osmMap
+  class="h-100 flex-grow-1"
+  [lines]="showAllLines ? (readonlyLines$ | async) : []"
+  (mapReady)="mapReady($event)"
+  (canvasClicked)="addStop($event)"
+></div>

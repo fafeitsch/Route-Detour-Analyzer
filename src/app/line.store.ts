@@ -5,7 +5,7 @@
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { forkJoin, Observable, of } from 'rxjs';
 import { QueriedPath, RouteService, Stop } from './route.service';
-import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { NotificationService } from './notification.service';
 import { Injectable } from '@angular/core';
 
@@ -47,15 +47,6 @@ export class LineStore extends ComponentStore<State> {
     return {
       ...state,
       lines: state.lines.map((existing, index) => (index === state.selectedLine ? line : existing)),
-    };
-  });
-
-  readonly renameStop$ = super.updater((state, [index, name]: [number, string]) => {
-    const selectedLine = { ...state.lines[state.selectedLine] };
-    selectedLine.stops[index] = { ...selectedLine.stops[index], name };
-    return {
-      ...state,
-      lines: state.lines.map((line, index) => (index === state.selectedLine ? selectedLine : line)),
     };
   });
 
@@ -129,108 +120,6 @@ export class LineStore extends ComponentStore<State> {
     )
   );
 
-  readonly addStopToLine$ = super.effect((stop$: Observable<Stop>) =>
-    stop$.pipe(
-      switchMap(s =>
-        this.routeService.queryNearestStreet(s).pipe(
-          catchError<Stop, Observable<any>>(() => {
-            this.notificationService.raiseNotification('Could not query name for stop. Using default name instead.');
-            return of(stop);
-          })
-        )
-      ),
-      switchMap(stop => this.selectedLine$.pipe(take(1)).pipe(map(line => ({ stop, line })))),
-      map(({ stop, line }) => ({ ...line, stops: [...line.stops, stop] })),
-      tap(line => this.queryPathAndUpdateLine$(line))
-    )
-  );
-
-  readonly removeStopFromLine$ = super.effect((index$: Observable<number>) =>
-    index$.pipe(
-      switchMap(stop => this.selectedLine$.pipe(take(1)).pipe(map(line => ({ stop, line })))),
-      tap(({ stop, line }) => {
-        line.stops.splice(stop, 1);
-        this.queryPathAndUpdateLine$(line);
-      })
-    )
-  );
-
-  readonly moveStopOfLine$ = super.effect((index$: Observable<{ from: number; to: number }>) =>
-    index$.pipe(
-      switchMap(movement =>
-        this.selectedLine$.pipe(take(1)).pipe(
-          map(line => ({
-            ...line,
-            stops: [...line.stops],
-          })),
-          map(line => ({ movement, line }))
-        )
-      ),
-      tap(({ movement, line }) => {
-        const taken = line.stops.splice(movement.from, 1);
-        line.stops.splice(movement.to, 0, taken[0]);
-        this.queryPathAndUpdateLine$(line);
-      })
-    )
-  );
-
-  readonly toggleStopOfLine$ = super.effect((index$: Observable<number>) =>
-    index$.pipe(
-      switchMap(index =>
-        this.selectedLine$.pipe(take(1)).pipe(
-          map(line => ({
-            ...line,
-            stops: [...line.stops],
-          })),
-          map(line => ({ line, index }))
-        )
-      ),
-      tap(({ index, line }) => {
-        line.stops[index].realStop = !line.stops[index].realStop;
-        this.queryPathAndUpdateLine$(line);
-      })
-    )
-  );
-
-  readonly replaceStopOfLine$ = super.effect((replacement$: Observable<{ index: number; stop: Stop }>) =>
-    replacement$.pipe(
-      switchMap(replacement => {
-        if (!replacement.stop.name) {
-          return this.routeService
-            .queryNearestStreet(replacement.stop)
-            .pipe(
-              map(s => ({
-                index: replacement.index,
-                stop: s,
-              }))
-            )
-            .pipe(
-              catchError(() => {
-                this.notificationService.raiseNotification(
-                  'Could not query name for stop. Using default name instead.'
-                );
-                return of(replacement);
-              })
-            );
-        }
-        return of(replacement);
-      }),
-      switchMap(replacement =>
-        this.selectedLine$.pipe(take(1)).pipe(
-          map(line => ({
-            ...line,
-            stops: [...line.stops],
-          })),
-          map(line => ({ line, replacement }))
-        )
-      ),
-      tap(({ replacement, line }) => {
-        line.stops[replacement.index] = replacement.stop;
-        this.queryPathAndUpdateLine$(line);
-      })
-    )
-  );
-
   private readonly queryPathAndUpdateLine$ = super.effect((line$: Observable<Line>) =>
     line$.pipe(
       switchMap(line =>
@@ -277,7 +166,6 @@ export class LineStore extends ComponentStore<State> {
           map(lines => [...lines, line])
         )
       ),
-      tap(x => console.log(x)),
       map(lines => ({ lines, valid: lines.filter(line => line.name === lines[lines.length - 1].name).length === 1 })),
       tap(({ lines, valid }) => {
         if (!valid) {

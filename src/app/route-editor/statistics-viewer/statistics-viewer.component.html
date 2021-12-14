@@ -1,0 +1,35 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<div class="d-flex">
+  <span class="m-3 pt-3"
+    >All sub tours with at least {{ consideredStops$ | async }} stops are
+    considered (currently {{ numberOfTours$ | async }} subtours).</span
+  >
+  <mat-form-field>
+    <mat-label>Evaluation Range Cap</mat-label>
+    <input matInput type="number" [formControl]="capControl" />
+  </mat-form-field>
+</div>
+<div class="p-3 d-flex">
+  <single-statistics
+    class="flex-grow-1"
+    title="Minimal Detour"
+    [result]="smallestDetour$ | async"
+    [lineColor]="lineColor$ | async"
+  ></single-statistics>
+  <single-statistics
+    class="flex-grow-1"
+    title="Median Detour"
+    [result]="medianDetour$ | async"
+    [average]="averageDetour$ | async"
+    [lineColor]="lineColor$ | async"
+  ></single-statistics>
+  <single-statistics
+    class="flex-grow-1"
+    title="Maximal Detour"
+    [result]="biggestDetour$ | async"
+    [lineColor]="lineColor$ | async"
+  ></single-statistics>
+</div>

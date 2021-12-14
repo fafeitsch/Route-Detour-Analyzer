@@ -7,7 +7,7 @@ import { Line, LineStore } from '../../line.store';
 import { NotificationService } from '../../notification.service';
 import { take } from 'rxjs/operators';
 import FileSaver from 'file-saver';
-import { importLines, Workbench } from '../../+store/workbench';
+import { linesImported, Workbench } from '../../+store/workbench';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -79,7 +79,7 @@ export class ImportExportCardComponent {
           if (validationMessage) {
             this.notificationService.raiseNotification('Cannot import file: ' + validationMessage);
           }
-          this.store.dispatch(importLines({ lines: parsedContent }));
+          this.store.dispatch(linesImported({ lines: parsedContent }));
           this.lineStore.importLines$(parsedContent);
         } else if (parsedContent.name) {
           const validationMessage = this.checkFileContent([parsedContent]);

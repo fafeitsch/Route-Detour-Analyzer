@@ -1,0 +1,79 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<div
+  cdkDropListGroup
+  *ngIf="line$ | async as line"
+  class="p-3 flex-grow-1 d-flex flex-column overflow-hidden"
+>
+  <div class="d-flex justify-content-flex-end align-items-center">
+    <span
+      *ngIf="(uncommitedChanges$ | async) && !(lineError$ | async)"
+      class="mr-3"
+      >Your changes are not yet saved.
+    </span>
+    <span *ngIf="lineError$ | async as err" class="mr-3">
+      {{ err }}
+    </span>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!(uncommitedChanges$ | async) || !!(lineError$ | async)"
+      (click)="commitChanges()"
+    >
+      Save
+    </button>
+  </div>
+  <div class="w-100 d-flex justify-content-spaced align-items-center mt-3">
+    <input
+      class="color-indicator mr-2 p-0"
+      type="color"
+      [formControl]="colorControl"
+    />
+    <div class="d-flex align-items-center flex-grow-1 overflow-hidden">
+      <inline-editor
+        class="mat-body-strong"
+        emptyPlaceholder="Unnamed Line"
+        [text]="line.name"
+        (changeText)="changeLineName($event)"
+      ></inline-editor>
+    </div>
+    <span class="disabled no-wrap"
+      >{{ (distance$ | async) / 1000 | number: '1.0-3' }} km</span
+    >
+  </div>
+  <div *ngIf="!line.stops.length" class="w-100 pt-2 pb-2 disabled">
+    Click on the map to add a stop.
+  </div>
+  <div
+    cdkDropList
+    cdkDropListLockAxis="y"
+    class="flex-grow-1 overflow-auto"
+    (cdkDropListDropped)="drop($event)"
+  >
+    <div
+      *ngFor="let stop of line.stops; index as i; last as last"
+      cdkDrag
+      [class.focused-stop]="(focusedStop$ | async) === i"
+      [cdkDragDisabled]="editedStops !== 0"
+    >
+      <stop-editor
+        [ngClass]="editedStops === 0 ? 'grab-cursor' : ''"
+        [stopName]="stop.name"
+        [isRealStop]="stop.realStop"
+        [isFirstStop]="i === 0"
+        [isLastStop]="last"
+        [lineColor]="line.color"
+        (enterEditMode)="editedStops = editedStops + 1"
+        (leaveEditMode)="editedStops = editedStops - 1"
+        (changeName)="changeName(i, $event)"
+        (toggleRealStop)="toggleRealStop(i)"
+        (mouseenter)="setFocusedStop(i)"
+        (mouseleave)="unsetFocusedStop()"
+        (delete)="deleteStop(i)"
+      >
+      </stop-editor>
+    </div>
+  </div>
+</div>

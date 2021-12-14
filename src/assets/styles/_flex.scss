@@ -17,8 +17,12 @@
     justify-content: space-between;
   }
 
-  &.align-items-flex-center {
+  &.align-items-center {
     align-items: center;
+  }
+
+  &.align-items-start {
+    align-items: start;
   }
 
   &.align-items-stretch {
@@ -36,4 +40,8 @@
 
 .flex-grow-1 {
   flex-grow: 1;
+}
+
+.flex-shrink-1 {
+  flex-shrink: 1;
 }

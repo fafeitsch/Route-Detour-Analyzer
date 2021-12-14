@@ -8,15 +8,17 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'inline-editor',
   templateUrl: './inline-editor.component.html',
-  host: { class: 'd-flex align-items-flex-center w-100' },
-  styles: ['.text{max-width: 240px}'],
+  host: { class: 'd-flex align-items-flex-center w-100 ov-hidden' },
+  styles: ['.text{cursor: text}'],
 })
 export class InlineEditorComponent {
   @Input() text = '';
   @Input() emptyPlaceholder = '';
+  @Input() additionalActionLabel: string | undefined = undefined;
   @Output() enterEditMode = new EventEmitter<void>();
   @Output() leaveEditMode = new EventEmitter<void>();
   @Output() changeText = new EventEmitter<string>();
+  @Output() additionalAction = new EventEmitter<void>();
 
   nameFormControl = new FormControl('');
   editMode = false;
@@ -32,8 +34,13 @@ export class InlineEditorComponent {
   }
 
   inputKeyPressed(event: KeyboardEvent) {
+    event.stopPropagation();
     if (event.key === 'Enter') {
       this.commit();
+    }
+    if (event.key === 'Escape') {
+      this.editMode = false;
+      this.leaveEditMode.emit();
     }
   }
 
@@ -41,5 +48,9 @@ export class InlineEditorComponent {
     this.editMode = false;
     this.changeText.emit(this.nameFormControl.value);
     this.leaveEditMode.emit();
+  }
+
+  clickedAdditionalAction() {
+    this.additionalAction.emit();
   }
 }

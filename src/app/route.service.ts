@@ -94,17 +94,12 @@ export class RouteService {
     return result;
   }
 
-  queryNearestStreet(stop: Stop): Observable<Stop> {
+  queryNearestStreet(stop: LatLng): Observable<string> {
     return this.store.select(selectOsrmServer).pipe(
       take(1),
       switchMap(url => this.http.get(`${url}/nearest/v1/driving/${stop.lng},${stop.lat}.json?number=1`)),
       map<any, any>(result => result.waypoints[0]),
-      map<any, Stop>(waypoint => ({
-        ...stop,
-        name: waypoint.name,
-        lat: waypoint.location[1],
-        lng: waypoint.location[0],
-      }))
+      map<any, string>(waypoint => waypoint.name)
     );
   }
 }

@@ -5,7 +5,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OverviewMapComponent } from './overview-map.component';
-import { MapModule } from '../../shared/map/map.module';
+import { MapModule } from '../../components/map/map.module';
 import { WorkbenchDataModule } from '../../+store/workbench';
 
 @NgModule({

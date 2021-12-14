@@ -33,6 +33,12 @@
   background: mat.get-color-from-palette($theme-warn, lighter);
 }
 
+a {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: inherit;
+}
+
 .grab-cursor {
   cursor: grab;
 }
@@ -45,11 +51,15 @@
   opacity: 0.5;
 }
 
-.ov-hidden {
+.no-wrap {
+  white-space: nowrap;
+}
+
+.overflow-hidden {
   overflow: hidden;
 }
 
-.ov-auto {
+.overflow-auto {
   overflow: auto;
 }
 

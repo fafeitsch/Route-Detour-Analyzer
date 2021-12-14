@@ -15,6 +15,10 @@ const routes: Routes = [
         path: '',
         loadChildren: () => import('../dashboard/dashboard.module').then(m => m.DashboardModule),
       },
+      {
+        path: 'route-editor/:line',
+        loadChildren: () => import('../route-editor/route-editor.module').then(m => m.RouteEditorModule),
+      },
     ],
   },
 ];

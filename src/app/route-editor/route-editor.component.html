@@ -1,0 +1,23 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<mat-sidenav-container class="h-100">
+  <mat-sidenav
+    mode="side"
+    [style.width.px]="400"
+    [opened]="true"
+    [disableClose]="true"
+  >
+    <stop-list class="h-100"></stop-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="d-flex flex-column">
+    <div class="flex-grow-1 mb-3">
+      <route-map
+        [selectedLine]="selectedLine$ | async"
+        [focusedStop]="focusedStop$ | async"
+      ></route-map>
+    </div>
+    <statistics-viewer></statistics-viewer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

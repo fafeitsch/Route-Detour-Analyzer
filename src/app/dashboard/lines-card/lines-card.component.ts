@@ -3,7 +3,7 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { lines, Workbench } from '../../+store/workbench';
+import { lineCreated, lineDeleted, lines, Workbench } from '../../+store/workbench';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -16,4 +16,12 @@ export class LinesCardComponent {
   lines$ = this.workbenchStore.select(lines);
 
   constructor(private readonly workbenchStore: Store<Workbench>) {}
+
+  deleteLine(name: string) {
+    this.workbenchStore.dispatch(lineDeleted({ name }));
+  }
+
+  createLine() {
+    this.workbenchStore.dispatch(lineCreated());
+  }
 }

@@ -6,10 +6,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LinesCardComponent } from './lines-card.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [LinesCardComponent],
   exports: [LinesCardComponent],
-  imports: [CommonModule, MatCardModule],
+  imports: [CommonModule, RouterModule, MatCardModule, MatButtonModule],
 })
 export class LinesCardModule {}
