@@ -5,12 +5,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouteDetourAnalyzerComponent } from './route-detour-analyzer.component';
-import { ControlsModule } from '../sidepane/controls.module';
 import { RouteDetourAnalyzerRoutingModule } from './route-detour-analyzer-routing.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { ImportModule } from './import/import.module';
 
 @NgModule({
   declarations: [RouteDetourAnalyzerComponent],
-  imports: [CommonModule, MatToolbarModule, RouteDetourAnalyzerRoutingModule, ControlsModule],
+  imports: [CommonModule, MatToolbarModule, RouteDetourAnalyzerRoutingModule, ImportModule],
 })
 export class RouteDetourAnalyzerModule {}

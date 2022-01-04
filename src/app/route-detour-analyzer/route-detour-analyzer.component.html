@@ -3,11 +3,31 @@
   ~ Find the full license text in the LICENSE file of the project root.
   -->
 <div class="h-100 d-flex flex-column">
-  <mat-toolbar color="primary">
-    <a [routerLink]="['']">My App</a>
+  <mat-toolbar color="primary" class="d-flex justify-content-spaced">
+    <div>
+      <a [routerLink]="['']">Public Transport Line Editor</a>
+    </div>
+    <div class="d-flex align-items-center">
+      <a class="mat-body mr-3" [routerLink]="['export']">Export</a>
+      <app-import class="mr-3"></app-import>
+      <div class="mat-body d-flex flex-column align-items-end">
+        <span class="disabled">v{{ version }}</span>
+        <a
+          href="https://github.com/fafeitsch/route-detour-analyzer"
+          target="_blank"
+          class="disabled d-flex align-items-center"
+          ><img
+            width="16px"
+            src="assets/icons/github.png"
+            class="pr-2"
+            alt="Github Logo"
+          />Source on Github</a
+        >
+      </div>
+    </div>
   </mat-toolbar>
 
-  <div class="p-3 flex-grow-1">
+  <div class="m-3 flex-grow-1 overflow-hidden">
     <router-outlet></router-outlet>
   </div>
 </div>

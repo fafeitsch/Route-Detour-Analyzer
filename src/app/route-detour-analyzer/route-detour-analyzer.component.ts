@@ -3,7 +3,7 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { LineStore } from '../line.store';
+import packageInfo from '../../../package.json';
 
 @Component({
   selector: 'app-route-detour-analyzer',
@@ -11,8 +11,7 @@ import { LineStore } from '../line.store';
   styleUrls: ['./route-detour-analyzer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'h-100 d-flex flex-column' },
-  providers: [LineStore],
 })
 export class RouteDetourAnalyzerComponent {
-  constructor(private readonly lineStore: LineStore) {}
+  version = packageInfo.version;
 }

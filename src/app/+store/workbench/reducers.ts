@@ -3,7 +3,7 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { createReducer, on } from '@ngrx/store';
-import { importSampleLines, lineCreated, lineDeleted, lineSavedInRouteEditor, linesImported } from './actions';
+import { importSampleLines, lineDeleted, lineSavedInRouteEditor, linesImported } from './actions';
 
 export interface Leg {
   distances: number[];
@@ -45,32 +45,38 @@ const initialState: Workbench = { lines: [] };
 
 export const WorkbenchReducer = createReducer(
   initialState,
-  on(linesImported, (state, { lines }) => {
-    return { ...state, lines };
+  on(linesImported, (state, { lines, replace }) => {
+    if (replace) {
+      return { ...state, lines };
+    }
+    const indices: { [name: string]: number } = state.lines.reduce((acc, curr, index) => {
+      acc[curr.name] = index;
+      return acc;
+    }, {} as { [name: string]: number });
+    const mergedLines = [...state.lines];
+    lines.forEach(line => {
+      if (!indices[line.name] === undefined) {
+        mergedLines.push(line);
+      } else {
+        mergedLines[indices[line.name]] = line;
+      }
+    });
+    return { ...state, lines: mergedLines };
   }),
   on(importSampleLines, (state, { lines }) => {
     return { ...state, lines };
   }),
-  on(lineSavedInRouteEditor, (state, { oldName, line }) => ({
+  on(lineSavedInRouteEditor, (state, { oldName, line }) => {
+    oldName = oldName || line.name;
+    return {
+      ...state,
+      lines: state.lines.some(l => l.name === oldName)
+        ? state.lines.map(oldLine => (oldLine.name === oldName ? line : oldLine))
+        : [...state.lines, line],
+    };
+  }),
+  on(lineDeleted, (state, { name }) => ({
     ...state,
-    lines: state.lines.map(oldLine => (oldLine.name === oldName ? line : oldLine)),
-  })),
-  on(lineDeleted, (state, { name }) => ({ ...state, lines: state.lines.filter(line => line.name !== name) })),
-  on(lineCreated, state => ({
-    ...state,
-    lines: [
-      { name: findFreeLineName(state.lines), color: '#3362da', stops: [], path: { waypoints: [], distanceTable: [] } },
-      ...state.lines,
-    ],
+    lines: state.lines.filter(line => line.name !== name),
   }))
 );
-
-function findFreeLineName(lines: Line[]) {
-  let lineNumber = 1;
-  const regex = /^Line \d+$/;
-  const names = lines.map(line => line.name).filter(name => regex.test(name));
-  while (names.includes(`Line ${lineNumber}`)) {
-    lineNumber = lineNumber + 1;
-  }
-  return `Line ${lineNumber}`;
-}

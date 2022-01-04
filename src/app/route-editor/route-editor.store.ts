@@ -5,7 +5,7 @@
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { LatLng, Line, lines, lineSavedInRouteEditor, Workbench } from '../+store/workbench';
 import { Store } from '@ngrx/store';
-import { catchError, filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { combineLatest, Observable, of } from 'rxjs';
@@ -18,6 +18,13 @@ interface State {
   uncommitedChanges: boolean;
   focusedStop: number | undefined;
 }
+
+const defaultLine = {
+  name: '',
+  stops: [],
+  path: { waypoints: [], distanceTable: [] },
+  color: '#000000',
+};
 
 @Injectable()
 export class RouteEditorStore extends ComponentStore<State> {
@@ -50,10 +57,13 @@ export class RouteEditorStore extends ComponentStore<State> {
   readonly selectLineFromRoute$ = super.effect(() =>
     this.route.paramMap.pipe(
       map(params => params.get('line')),
-      switchMap(lineName => this.store.select(lines).pipe(map(lines => lines.find(line => line.name === lineName)))),
-      filter(line => !!line),
-      map(line => ({ ...line! })),
-      tap(line => super.patchState({ line, originalLineName: line.name }))
+      switchMap(lineName =>
+        this.store.select(lines).pipe(
+          map(lines => lines.find(line => line.name === lineName)),
+          map(line => (!line ? { ...defaultLine, name: lineName || '' } : { ...line })),
+          tap(line => super.patchState({ line, originalLineName: line.name }))
+        )
+      )
     )
   );
 
@@ -239,7 +249,7 @@ export class RouteEditorStore extends ComponentStore<State> {
     private readonly router: Router
   ) {
     super({
-      line: { name: '', stops: [], path: { waypoints: [], distanceTable: [] }, color: '#000000' },
+      line: { ...defaultLine },
       originalLineName: '',
       focusedStop: undefined,
       uncommitedChanges: false,

@@ -7,7 +7,7 @@
   *ngIf="line$ | async as line"
   class="p-3 flex-grow-1 d-flex flex-column overflow-hidden"
 >
-  <div class="d-flex justify-content-flex-end align-items-center">
+  <div class="d-flex justify-content-end align-items-center">
     <span
       *ngIf="(uncommitedChanges$ | async) && !(lineError$ | async)"
       class="mr-3"

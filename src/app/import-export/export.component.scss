@@ -2,11 +2,12 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-
-.panel {
+.line-indicator {
+  width: 20px;
+  height: 20px;
   border-radius: 5px;
 }
 
-.small-font {
-  font-size: 0.8em;
+.no-min-height {
+  min-height: 0;
 }

@@ -1,0 +1,23 @@
+<input
+  type="file"
+  style="display: none"
+  #fileInput
+  accept="application/json"
+  (change)="onChangeFileInput()"
+/>
+<button
+  mat-raised-button
+  color="accent"
+  class="file-select-button"
+  [mat-menu-trigger-for]="menu"
+>
+  Import
+</button>
+<mat-menu #menu>
+  <button mat-menu-item (click)="onClickFileInputButton(true)">
+    Replace Workspace
+  </button>
+  <button mat-menu-item (click)="onClickFileInputButton(false)">
+    Add Lines (overwrite existing Lines)
+  </button>
+</mat-menu>

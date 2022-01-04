@@ -19,6 +19,10 @@ const routes: Routes = [
         path: 'route-editor/:line',
         loadChildren: () => import('../route-editor/route-editor.module').then(m => m.RouteEditorModule),
       },
+      {
+        path: 'export',
+        loadChildren: () => import('../import-export/export.module').then(m => m.ExportModule),
+      },
     ],
   },
 ];

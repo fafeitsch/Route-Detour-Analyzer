@@ -5,6 +5,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { lineCreated, lineDeleted, lines, Workbench } from '../../+store/workbench';
 import { Store } from '@ngrx/store';
+import { freeLineName } from '../../+store/workbench/selectors';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'lines-card',
@@ -14,8 +16,9 @@ import { Store } from '@ngrx/store';
 })
 export class LinesCardComponent {
   lines$ = this.workbenchStore.select(lines);
+  nextFreeLineName$ = this.workbenchStore.select(freeLineName);
 
-  constructor(private readonly workbenchStore: Store<Workbench>) {}
+  constructor(private readonly workbenchStore: Store<Workbench>, private readonly router: Router) {}
 
   deleteLine(name: string) {
     this.workbenchStore.dispatch(lineDeleted({ name }));
