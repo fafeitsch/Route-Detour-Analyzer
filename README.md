@@ -34,8 +34,8 @@ If you want to build the app yourself, you just need an Angular workbench set up
 call `npm i && ng serve` for a local demo server or `npm i && ng build --configuration production` to build
 a production environment.
 
-Instead of building the app yourself, it is also possible to use the [hosted version](https://fafeitsch.de/rda). However,
-you still need the requirements listed in the ***Usage*** section below.
+~~Instead of building the app yourself, it is also possible to use the [hosted version](https://fafeitsch.de/rda). However,
+you still need the requirements listed in the ***Usage*** section below.~~
 
 ## Usage
 
