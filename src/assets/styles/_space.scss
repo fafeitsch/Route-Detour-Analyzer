@@ -21,7 +21,14 @@ $sides: (top, bottom, left, right);
   }
 }
 
-@for $i from 1 through length($spaceamounts){
+@for $i from 1 through length($spaceamounts) {
+  $amount: nth($spaceamounts, $i);
+  .flex-gap-#{$i} {
+    gap: #{$amount}px !important;
+  }
+}
+
+@for $i from 1 through length($spaceamounts) {
   $amount: nth($spaceamounts, $i);
   .m-#{$i} {
     margin: #{$amount}px !important;

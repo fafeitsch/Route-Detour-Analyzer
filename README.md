@@ -1,17 +1,11 @@
-# Route Detour Analyzer
+# Public Transport Line Editor
 
-Routes in public transportation often do not use shortest path between their origin
-and their final destination. I wondered how much deviation from the shortest path
-are the passengers willing to accept.
+*Public Transport Line Editor* allows creating bus lines. The initial idea of this program
+arose from an open topic in my Master's thesis. While examining an algorithm for dial-by-ride
+planning, I wondered how much detour passengers accept on public transport routes.
 
-For example, in the image below, the detour of the bus line is 500 m (or 1.71 times)
-longer than the shortest path between the leftmost and the rightmost station.
-
-![Example of a detour on a public transportation line.](./img/detour.png)
-
-I wondered: How much detour is acceptable on any bus line between the stations? In
-order to evaluate this I wrote the Route Detour Analyzer. It allows defining lines
-and compute the detours of sub paths withing that line.
+For this, I created PTL Editor which should help to answer the question. I have currently some ideas
+for further features.
 
 ## Features
 
@@ -28,14 +22,29 @@ and compute the detours of sub paths withing that line.
 * Use different routing servers and tile layers
 * Import and export (whole workspace, single lines)
 
+## Changelog
+
+For a detailed changelog, please use Github's commit based changelog generator.
+
+Version 1.x.x
+
+* Basic features such as creating, editing, and deleting lines
+* Import and Export
+
+Version 2.x.x
+
+* Rework of the app's structure
+* BREAKING CHANGE: Importing a single line is not supported anymore (in the old format). Workaround: Edit the text file so that
+  it contains an array of the line, i.e. ```{name: Line 1, stops: …}``` becomes ```[{Line 1, stops: …}]```. Import
+  the edited file with the "Add" Import.
+* BREAKING CHANGE: application settings (tile server, OSRM, cap) was removed from the query params. 
+  Instead, OSRM and tile server URLS are stored in local storage.
+
 ## Building the app
 
 If you want to build the app yourself, you just need an Angular workbench set up and then
 call `npm i && ng serve` for a local demo server or `npm i && ng build --configuration production` to build
 a production environment.
-
-~~Instead of building the app yourself, it is also possible to use the [hosted version](https://fafeitsch.de/rda). However,
-you still need the requirements listed in the ***Usage*** section below.~~
 
 ## Usage
 
@@ -45,11 +54,8 @@ and the [OSRM Demo Server](https://github.com/Project-OSRM/osrm-backend/wiki/Dem
 for quick testing. Please be aware that there are usage policies restricting the offered demo services
 of OSM and OSRM. For heavy usage of the app, I suggest self-hosting [tile servers](https://switch2osm.org/serving-tiles/using-a-docker-container/) and [OSRM servers](https://hub.docker.com/r/osrm/osrm-backend/).
 
-If both URLS are at hand, paste them in the following link. Don't forget to bookmark the
-link if you want to come back:
-```https://fafeitsch.de/rda/?tiles=TILE_SERVER&osrm=OSRM_SERVER```
-
-After the app is loaded, you can start to enter and edit lines. The detour analysis is only
+Enter both URLs into the Settings section of the landing page of the app. Then, you can start to enter and edit lines.
+The detour analysis is only
 available for the currently selected line. It works with a *Evaluation Range Cap*. This cap 
 essentially limits the lengths of sub tours that are considered. A cap of 0 means that only
 the complete tour is analyzed, i.e. the total length of the line is compared to the shortest path
@@ -64,19 +70,16 @@ The initial cap can also be controlled with the query parameter `cap`.
 The initial location of the map can be set with the query parameter `map=ZOOM/LATITUDE/LONGITUDE`. Thus by
 using all query params in a bookmark, all settings can easily be persisted.
 
-## Sample File
+## Sample Network
 
-The repository contains a [sample file](wuerzburg_legacy.json) containing all city lines of Wuerzburg City in spring 2021.
+The app per default displays a sample network containing all city lines of Wuerzburg City in spring 2021.
 There are 21 distinct lines. Lines that have significantly different from-path compared to the to-path
 are contained twice, which makes 37 sample lines in the file. For every line only the main path
 is realized. Please do not use these lines for actual route planing as they might be imprecise and deprecated.
 Use the official [public transportation site](https://vvm-info.de) for that.
 
-Please be aware that the sample file only contains the location and names of the stops. The
-routing between the stops is done by OSRM. Depending on your used OSRM profile your routes
-can be different from mine. In my OSRM profile, I basically allowed all types of roads
-to be used for routing. The profile file is currently in bad shape, unfortunately. I will clean
-it up in the future.
+Please be aware that the sample also contains the whole the detailed routes of the lines. Depending on your used
+OSRM server and profile, the lines will be re-routed once you begin to edit them.
 
 ## FAQ
 
@@ -86,14 +89,14 @@ The routing depends on the OSRM configuration. The OSRM demo is optimized for ca
 avoids service roads. If you want other profiles (e.g to allow service roads), you either
 have to self-host an OSRM server or pay for one.
 
-***The RDA proposes crazy routes that are not suitable for buses. How to fix that?***
+***The PTL Editor proposes crazy routes that are not suitable for buses. How to fix that?***
 
 See last question. In some cases, using way points on a line can improve the overall route,
 but I overall suggest self-hosting an OSRM server.
 
 ***Why does the analyzer sometimes give negative detours?***
 
-RDA only analyzes the lengths of tours. The routing algorithms of OSRM however, often take additional
+PTL Editor only analyzes the lengths of tours. The routing algorithms of OSRM however, often take additional
 metrics into account, such es few traffic lights, few crossings and so on. Thus, it might happen
 that a bus tour is actually shorter than the path suggested by OSRM. To avoid this, use customize
 profiles for the OSRM (only applies to self-hosted OSRM).

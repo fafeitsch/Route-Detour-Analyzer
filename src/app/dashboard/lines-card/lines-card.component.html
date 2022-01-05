@@ -28,18 +28,18 @@
 
         <div class="d-flex flex-column w-100">
           <span>{{ line.name }}</span>
-          <div class="d-flex align-items-center">
+          <div class="d-flex align-items-center flex-gap-2">
             <a
-              class="themed mat-body-strong mr-2"
+              class="themed mat-body-strong"
               [routerLink]="['route-editor', line.name]"
               >Route Editor</a
             >
             <div class="flex-grow-1"></div>
-            <button mat-button color="primary" (click)="deleteLine(line.name)">
-              Delete
-            </button>
           </div>
         </div>
+        <button mat-button color="primary" (click)="deleteLine(line.name)">
+          Delete
+        </button>
       </div>
     </div>
   </mat-card-content>
