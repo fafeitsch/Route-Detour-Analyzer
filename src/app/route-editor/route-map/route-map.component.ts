@@ -90,12 +90,23 @@ export class RouteMapComponent {
       this.map?.removeLayer(this.markerLayer);
     }
     this.markerLayer = layerGroup(
-      this.line$.value!.stops.map((stop, index) =>
-        marker([stop.lat, stop.lng], {
+      this.line$.value!.stops.map((stop, index) => {
+        let dragging = false;
+        return marker([stop.lat, stop.lng], {
           icon: this.createIcon(stop.realStop, this._focusedStop === index),
           draggable: true,
         })
-          .on('dragend', $event =>
+          .on('mouseover', () => this.routeStore.setFocusedStop$(index))
+          .on('mouseout', () => {
+            if (!dragging) {
+              this.routeStore.setFocusedStop$(undefined);
+            }
+          })
+          .on('dragstart', () => {
+            dragging = true;
+          })
+          .on('dragend', $event => {
+            dragging = false;
             this.routeStore.replaceStopOfLine$({
               index,
               stop: {
@@ -103,11 +114,9 @@ export class RouteMapComponent {
                 lat: $event.target.getLatLng().lat,
                 lng: $event.target.getLatLng().lng,
               },
-            })
-          )
-          .on('mouseover', () => this.routeStore.setFocusedStop$(index))
-          .on('mouseout', () => this.routeStore.setFocusedStop$(undefined))
-      )
+            });
+          });
+      })
     ).addTo(this.map!);
   }
 
