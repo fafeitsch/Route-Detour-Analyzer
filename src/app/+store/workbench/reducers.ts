@@ -20,9 +20,9 @@ export interface LatLng {
 }
 
 export interface Waypoint extends LatLng {
-  stop: boolean;
-  distanceToNext: number;
-  durationToNext: number;
+  stop?: boolean;
+  distance: number;
+  duration: number;
 }
 
 export interface Stop extends LatLng {

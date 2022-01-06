@@ -7,7 +7,6 @@ import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { combineLatest, EMPTY, forkJoin, Observable } from 'rxjs';
 import { DetailResult, DetourResult, DetourService, SubPath } from '../../detour.service';
-import { QueriedPath, RouteService, Stop } from '../../route.service';
 import { NotificationService } from '../../notification.service';
 import { Store } from '@ngrx/store';
 import {
@@ -18,7 +17,8 @@ import {
   setTileServerFromOptionsPanel,
 } from '../../+store/options';
 import { RouteEditorStore } from '../route-editor.store';
-import { Line } from '../../+store/workbench';
+import { Line, QueriedPath, Stop } from '../../+store/workbench';
+import { RouteService } from '../../route.service';
 
 export interface DetourWithStop extends DetailResult {
   sourceStop: Stop;

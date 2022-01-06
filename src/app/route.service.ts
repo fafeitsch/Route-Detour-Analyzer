@@ -10,30 +10,10 @@ import * as polyline from '@mapbox/polyline';
 import { Route, RouteResults } from 'osrm';
 import { Store } from '@ngrx/store';
 import { OptionsState, selectOsrmServer } from './+store/options';
+import { LatLng, QueriedPath, Waypoint } from './+store/workbench';
 
 export interface Leg {
   distances: number[];
-}
-
-export interface QueriedPath {
-  waypoints: Waypoint[];
-  distanceTable: number[][];
-}
-
-export interface LatLng {
-  lat: number;
-  lng: number;
-}
-
-export interface Waypoint extends LatLng {
-  stop: boolean;
-  distanceToNext: number;
-  durationToNext: number;
-}
-
-export interface Stop extends LatLng {
-  name: string;
-  realStop: boolean;
 }
 
 @Injectable({
@@ -59,16 +39,15 @@ export class RouteService {
         const waypoints: Waypoint[] = polyline.decode(arr.geometry).map(r => ({
           lat: r[0],
           lng: r[1],
-          distanceToNext: 0,
-          durationToNext: 0,
-          stop: false,
+          distance: 0,
+          duration: 0,
         }));
         let rawIndex = 0;
         arr.legs.forEach((leg, legIndex) => {
           waypoints[rawIndex].stop = true;
           for (let i = 0; i < leg.annotation.distance.length; i++) {
-            waypoints[rawIndex].distanceToNext = leg.annotation.distance[i];
-            waypoints[rawIndex].durationToNext = leg.annotation.duration[i];
+            waypoints[rawIndex].distance = leg.annotation.distance[i];
+            waypoints[rawIndex].duration = leg.annotation.duration[i];
             rawIndex = rawIndex + 1;
           }
         });

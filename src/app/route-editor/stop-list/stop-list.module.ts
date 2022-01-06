@@ -18,13 +18,13 @@ import { InlineEditorModule } from '@rda/components/inline-editor/inline-editor.
   declarations: [StopListComponent, StopEditorComponent, StopEditorComponent],
   imports: [
     CommonModule,
-    DragDropModule,
-    LineStopModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
     InlineEditorModule,
+    DragDropModule,
+    LineStopModule,
   ],
   exports: [StopListComponent],
 })

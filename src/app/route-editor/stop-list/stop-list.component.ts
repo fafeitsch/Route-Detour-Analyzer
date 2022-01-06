@@ -4,10 +4,10 @@
  */
 import { Component } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Stop } from '../../route.service';
 import { RouteEditorStore } from '../route-editor.store';
 import { FormControl } from '@angular/forms';
 import { tap } from 'rxjs/operators';
+import { Stop } from '../../+store/workbench';
 
 @Component({
   selector: 'stop-list',

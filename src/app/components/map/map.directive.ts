@@ -21,8 +21,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { NotificationService } from '../../notification.service';
-import { LatLng, Line } from '../../+store/workbench';
-import { Waypoint } from '../../route.service';
+import { LatLng, Line, Waypoint } from '../../+store/workbench';
 
 @Directive({
   selector: '[osmMap]',
