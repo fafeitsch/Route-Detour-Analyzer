@@ -12,7 +12,7 @@ import { LinesCardModule } from './lines-card/lines-card.module';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ToolbarModule } from '../shared/toolbar/toolbar.module';
 import { RouterModule } from '@angular/router';
-import { ImportModule } from './import/import.module';
+import { ImportExportModule } from './import-export/import-export.module';
 
 @NgModule({
   declarations: [DashboardComponent],
@@ -25,7 +25,7 @@ import { ImportModule } from './import/import.module';
     OverviewMapModule,
     LinesCardModule,
     ToolbarModule,
-    ImportModule,
+    ImportExportModule,
   ],
 })
 export class DashboardModule {}

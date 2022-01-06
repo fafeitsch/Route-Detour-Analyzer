@@ -5,8 +5,30 @@
 import { createReducer, on } from '@ngrx/store';
 import { importSampleLines, lineDeleted, lineSavedInRouteEditor, linesImported } from './actions';
 
-export interface Leg {
-  distances: number[];
+export namespace DataModel {
+  export interface Line {
+    name: string;
+    color: string;
+    stops: Stop[];
+    path: QueriedPath;
+  }
+
+  export type Stop = LatLng | { key: string };
+
+  export function isStationReference(stop: Stop): stop is { key: string } {
+    return (stop as { key: string }).key !== undefined;
+  }
+}
+
+export namespace Domain {
+  export interface Line {
+    name: string;
+    color: string;
+    stops: Stop[];
+    path: QueriedPath;
+  }
+
+  export type Stop = Partial<Station> & LatLng & { realStop: boolean };
 }
 
 export interface QueriedPath {
@@ -25,46 +47,22 @@ export interface Waypoint extends LatLng {
   duration: number;
 }
 
-export interface Stop extends LatLng {
+export interface Station extends LatLng {
   name: string;
-  realStop: boolean;
-}
-
-export interface Line {
-  name: string;
-  stops: Stop[];
-  color: string;
-  path: QueriedPath;
+  key: string;
 }
 
 export interface Workbench {
-  lines: Line[];
+  stations: Station[];
+  lines: DataModel.Line[];
 }
 
-const initialState: Workbench = { lines: [] };
+const initialState: Workbench = { lines: [], stations: [] };
 
 export const WorkbenchReducer = createReducer(
   initialState,
-  on(linesImported, (state, { lines, replace }) => {
-    if (replace) {
-      return { ...state, lines };
-    }
-    const indices: { [name: string]: number } = state.lines.reduce((acc, curr, index) => {
-      acc[curr.name] = index;
-      return acc;
-    }, {} as { [name: string]: number });
-    const mergedLines = [...state.lines];
-    lines.forEach(line => {
-      if (!indices[line.name] === undefined) {
-        mergedLines.push(line);
-      } else {
-        mergedLines[indices[line.name]] = line;
-      }
-    });
-    return { ...state, lines: mergedLines };
-  }),
-  on(importSampleLines, (state, { lines }) => {
-    return { ...state, lines };
+  on(linesImported, importSampleLines, (state, { workbench }) => {
+    return { ...state, ...workbench };
   }),
   on(lineSavedInRouteEditor, (state, { oldName, line }) => {
     oldName = oldName || line.name;

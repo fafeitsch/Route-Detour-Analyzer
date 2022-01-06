@@ -2,6 +2,15 @@
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
   ~ Find the full license text in the LICENSE file of the project root.
   -->
+<button
+  *ngIf="workbench$ | async as workbench"
+  mat-raised-button
+  color="accent"
+  (click)="exportWorkbench(workbench)"
+>
+  Save
+</button>
+
 <input
   type="file"
   style="display: none"
@@ -9,20 +18,12 @@
   accept="application/json"
   (change)="onChangeFileInput()"
 />
-<button
-  mat-raised-button
-  color="accent"
-  class="file-select-button"
-  (click)="onClickFileInputButton(false)"
->
-  Import Lines
-</button>
 
 <button
   mat-raised-button
   color="accent"
   class="file-select-button"
-  (click)="onClickFileInputButton(true)"
+  (click)="onClickFileInputButton()"
 >
-  Open Project
+  Open
 </button>

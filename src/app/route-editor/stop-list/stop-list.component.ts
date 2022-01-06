@@ -7,7 +7,8 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { RouteEditorStore } from '../route-editor.store';
 import { FormControl } from '@angular/forms';
 import { tap } from 'rxjs/operators';
-import { Stop } from '../../+store/workbench';
+import { Domain } from '../../+store/workbench';
+import Stop = Domain.Stop;
 
 @Component({
   selector: 'stop-list',

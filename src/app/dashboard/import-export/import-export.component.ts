@@ -3,26 +3,29 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { dirtyLinesImported, Line, Workbench } from '../../+store/workbench';
+import { Domain, linesImported, Workbench } from '../../+store/workbench';
 import { Store } from '@ngrx/store';
+import { workbenchForExport } from '../../+store/workbench/selectors';
+import FileSaver from 'file-saver';
+import Line = Domain.Line;
 
 @Component({
-  selector: 'import',
-  templateUrl: './import.component.html',
+  selector: 'import-export',
+  templateUrl: './import-export.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'd-flex flex-gap-2' },
 })
-export class ImportComponent {
+export class ImportExportComponent {
   @ViewChild('fileInput')
   private fileInput: any;
 
+  workbench$ = this.store.select(workbenchForExport);
+
   file: File | null = null;
-  replace = false;
 
   constructor(private store: Store<Workbench>) {}
 
-  onClickFileInputButton(replace: boolean): void {
-    this.replace = replace;
+  onClickFileInputButton(): void {
     this.fileInput.nativeElement.click();
   }
 
@@ -33,21 +36,12 @@ export class ImportComponent {
     reader.onloadend = () => {
       try {
         let parsedContent = JSON.parse(reader.result as string);
-        if (Array.isArray(parsedContent)) {
-          const validationMessage = this.checkFileContent(parsedContent);
-          if (validationMessage) {
-            console.error(validationMessage);
-            return;
-          }
-          this.store.dispatch(dirtyLinesImported({ lines: parsedContent, replace: this.replace }));
-        } else {
-          const validationMessage = this.checkFileContentMap(parsedContent);
-          if (validationMessage) {
-            console.error(validationMessage);
-            return;
-          }
-          this.convertLineNameMap(parsedContent);
+        const validationMessage = this.checkFileContent(parsedContent.lines);
+        if (validationMessage) {
+          console.error(validationMessage);
+          return;
         }
+        this.store.dispatch(linesImported({ workbench: parsedContent }));
       } catch (e) {
         console.error(e);
       }
@@ -109,10 +103,10 @@ export class ImportComponent {
     return undefined;
   }
 
-  private convertLineNameMap(lineMap: { [name: string]: Line }) {
-    const lines: Line[] = Object.keys(lineMap)
-      .sort()
-      .map(name => ({ ...lineMap[name], name }));
-    this.store.dispatch(dirtyLinesImported({ lines, replace: this.replace }));
+  exportWorkbench(workbench: Workbench) {
+    const blob = new Blob([JSON.stringify(workbench)], {
+      type: 'application/json;charset=utf-8',
+    });
+    FileSaver.saveAs(blob, 'rda-network.json');
   }
 }

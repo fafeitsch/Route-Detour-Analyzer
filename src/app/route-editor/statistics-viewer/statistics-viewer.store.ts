@@ -17,8 +17,10 @@ import {
   setTileServerFromOptionsPanel,
 } from '../../+store/options';
 import { RouteEditorStore } from '../route-editor.store';
-import { Line, QueriedPath, Stop } from '../../+store/workbench';
+import { Domain, QueriedPath } from '../../+store/workbench';
 import { RouteService } from '../../route.service';
+import Line = Domain.Line;
+import Stop = Domain.Stop;
 
 export interface DetourWithStop extends DetailResult {
   sourceStop: Stop;

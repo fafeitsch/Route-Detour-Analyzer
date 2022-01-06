@@ -4,13 +4,13 @@
  */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ImportComponent } from './import.component';
+import { ImportExportComponent } from './import-export.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
-  declarations: [ImportComponent],
-  exports: [ImportComponent],
+  declarations: [ImportExportComponent],
+  exports: [ImportExportComponent],
   imports: [CommonModule, MatButtonModule, MatMenuModule],
 })
-export class ImportModule {}
+export class ImportExportModule {}

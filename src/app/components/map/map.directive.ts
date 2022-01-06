@@ -21,7 +21,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { NotificationService } from '../../notification.service';
-import { LatLng, Line, Waypoint } from '../../+store/workbench';
+import { Domain, LatLng, Waypoint } from '../../+store/workbench';
+import Line = Domain.Line;
 
 @Directive({
   selector: '[osmMap]',
@@ -122,10 +123,10 @@ export class MapDirective implements AfterViewInit, OnDestroy {
       layerGroup(
         line.stops
           .map((stop, index) => ({ ...stop, index }))
-          .filter(stop => stop.realStop)
+          .filter(stop => stop.key)
           .map(stop =>
             marker([stop.lat, stop.lng], {
-              icon: this.createIcon(stop.realStop, line.color),
+              icon: this.createIcon(!!stop.key, line.color),
             })
           )
       ).addTo(this.map!)

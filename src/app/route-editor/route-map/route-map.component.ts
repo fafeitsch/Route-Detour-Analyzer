@@ -4,11 +4,12 @@
  */
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 import { divIcon, icon, Layer, layerGroup, Map, marker, polyline } from 'leaflet';
-import { LatLng, Line, lines, Workbench } from '../../+store/workbench';
+import { Domain, LatLng, lines, Workbench } from '../../+store/workbench';
 import { RouteEditorStore } from '../route-editor.store';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
+import Line = Domain.Line;
 
 @Component({
   selector: 'route-map',

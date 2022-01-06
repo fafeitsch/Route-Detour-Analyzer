@@ -3,13 +3,15 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { LatLng, Line, lines, lineSavedInRouteEditor, Stop, Workbench } from '../+store/workbench';
+import { Domain, LatLng, lines, lineSavedInRouteEditor, Workbench } from '../+store/workbench';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { combineLatest, Observable, of } from 'rxjs';
 import { RouteService } from '../route.service';
+import Line = Domain.Line;
+import Stop = Domain.Stop;
 
 interface State {
   line: Line;

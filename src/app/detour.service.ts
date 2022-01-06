@@ -3,7 +3,8 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { Injectable } from '@angular/core';
-import { QueriedPath, Stop } from './+store/workbench';
+import { Domain, QueriedPath } from './+store/workbench';
+import Stop = Domain.Stop;
 
 export interface DetourResult {
   averageDetour: number;
