@@ -7,10 +7,11 @@ import { CommonModule } from '@angular/common';
 import { RouteDetourAnalyzerComponent } from './route-detour-analyzer.component';
 import { RouteDetourAnalyzerRoutingModule } from './route-detour-analyzer-routing.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ImportModule } from './import/import.module';
+import { ImportModule } from '../dashboard/import/import.module';
+import { ToolbarModule } from '../shared/toolbar/toolbar.module';
 
 @NgModule({
   declarations: [RouteDetourAnalyzerComponent],
-  imports: [CommonModule, MatToolbarModule, RouteDetourAnalyzerRoutingModule, ImportModule],
+  imports: [CommonModule, MatToolbarModule, RouteDetourAnalyzerRoutingModule, ImportModule, ToolbarModule],
 })
 export class RouteDetourAnalyzerModule {}

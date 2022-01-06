@@ -1,0 +1,28 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<input
+  type="file"
+  style="display: none"
+  #fileInput
+  accept="application/json"
+  (change)="onChangeFileInput()"
+/>
+<button
+  mat-raised-button
+  color="accent"
+  class="file-select-button"
+  (click)="onClickFileInputButton(false)"
+>
+  Import Lines
+</button>
+
+<button
+  mat-raised-button
+  color="accent"
+  class="file-select-button"
+  (click)="onClickFileInputButton(true)"
+>
+  Open Project
+</button>

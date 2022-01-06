@@ -15,6 +15,12 @@ import { RouteEditorStore } from './route-editor.store';
 export class RouteEditorComponent {
   selectedLine$ = this.store.line$;
   focusedStop$ = this.store.focusedStop$;
+  uncommitedChanges$ = this.store.uncommitedChanges$;
+  lineError$ = this.store.lineError$;
 
   constructor(private readonly store: RouteEditorStore) {}
+
+  commitChanges() {
+    this.store.commitChanges$();
+  }
 }

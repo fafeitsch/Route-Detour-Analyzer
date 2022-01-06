@@ -19,8 +19,6 @@ export class StopListComponent {
   line$ = this.routeEditorStore.line$.pipe(tap(line => this.colorControl.patchValue(line.color, { emitEvent: false })));
   distance$ = this.routeEditorStore.totalDistance$;
   focusedStop$ = this.routeEditorStore.focusedStop$;
-  uncommitedChanges$ = this.routeEditorStore.uncommitedChanges$;
-  lineError$ = this.routeEditorStore.lineError$;
   colorControl = new FormControl();
 
   editedStops = 0;
@@ -52,10 +50,6 @@ export class StopListComponent {
 
   unsetFocusedStop() {
     this.routeEditorStore.setFocusedStop$(undefined);
-  }
-
-  commitChanges() {
-    this.routeEditorStore.commitChanges$();
   }
 
   changeLineName(name: string) {

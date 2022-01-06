@@ -16,15 +16,15 @@
         color="primary"
         [checked]="includeWaypoints"
         (change)="includeWaypoints = !includeWaypoints"
-        >Include Waypoints</mat-checkbox
-      >
+        >Include Waypoints
+      </mat-checkbox>
       <mat-checkbox
         class="mr-3"
         color="primary"
         [checked]="exportAsMap"
         (change)="exportAsMap = !exportAsMap"
-        >Export as Map</mat-checkbox
-      >
+        >Export as Map
+      </mat-checkbox>
     </div>
     <h3 class="mat-h3">Line Selection</h3>
     <div class="d-flex mb-3">
@@ -57,10 +57,10 @@
         }}</span>
       </div>
     </div>
-    <div class="w-100 mt-3 d-flex justify-content-end">
-      <button mat-raised-button color="primary" (click)="exportLines(lines)">
-        Export
-      </button>
-    </div>
   </mat-card-content>
 </mat-card>
+<toolbar *ngIf="lines$ | async as lines">
+  <button mat-raised-button color="accent" (click)="exportLines(lines)">
+    Export
+  </button>
+</toolbar>

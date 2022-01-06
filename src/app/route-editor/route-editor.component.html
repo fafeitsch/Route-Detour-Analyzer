@@ -21,3 +21,21 @@
     <statistics-viewer></statistics-viewer>
   </mat-sidenav-content>
 </mat-sidenav-container>
+<toolbar>
+  <span
+    *ngIf="(uncommitedChanges$ | async) && !(lineError$ | async)"
+    class="mr-3"
+    >Your changes are not yet saved.
+  </span>
+  <span *ngIf="lineError$ | async as err" class="mr-3">
+    {{ err }}
+  </span>
+  <button
+    mat-raised-button
+    color="accent"
+    [disabled]="!(uncommitedChanges$ | async) || !!(lineError$ | async)"
+    (click)="commitChanges()"
+  >
+    Save
+  </button>
+</toolbar>

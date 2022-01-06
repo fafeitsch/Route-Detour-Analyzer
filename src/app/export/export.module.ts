@@ -9,9 +9,10 @@ import { ExportRoutingModule } from './export-routing.module';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
+import { ToolbarModule } from '../shared/toolbar/toolbar.module';
 
 @NgModule({
   declarations: [ExportComponent],
-  imports: [CommonModule, ExportRoutingModule, MatCardModule, MatCheckboxModule, MatButtonModule],
+  imports: [CommonModule, ExportRoutingModule, MatCardModule, MatCheckboxModule, MatButtonModule, ToolbarModule],
 })
 export class ExportModule {}

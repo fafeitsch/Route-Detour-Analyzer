@@ -10,16 +10,22 @@ import { SettingsCardModule } from './settings-card/settings-card.module';
 import { OverviewMapModule } from './overview-map/overview-map.module';
 import { LinesCardModule } from './lines-card/lines-card.module';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { ToolbarModule } from '../shared/toolbar/toolbar.module';
+import { RouterModule } from '@angular/router';
+import { ImportModule } from './import/import.module';
 
 @NgModule({
   declarations: [DashboardComponent],
   imports: [
     CommonModule,
-    DashboardRoutingModule,
+    RouterModule,
     MatGridListModule,
+    DashboardRoutingModule,
     SettingsCardModule,
     OverviewMapModule,
     LinesCardModule,
+    ToolbarModule,
+    ImportModule,
   ],
 })
 export class DashboardModule {}

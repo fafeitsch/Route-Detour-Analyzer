@@ -21,7 +21,7 @@ const routes: Routes = [
       },
       {
         path: 'export',
-        loadChildren: () => import('../import-export/export.module').then(m => m.ExportModule),
+        loadChildren: () => import('../export/export.module').then(m => m.ExportModule),
       },
     ],
   },

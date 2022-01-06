@@ -1,11 +1,16 @@
+/*
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT).
+ * Find the full license text in the LICENSE file of the project root.
+ */
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { dirtyLinesImported, Line, Workbench } from '../../+store/workbench';
 import { Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-import',
+  selector: 'import',
   templateUrl: './import.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: 'd-flex flex-gap-2' },
 })
 export class ImportComponent {
   @ViewChild('fileInput')
