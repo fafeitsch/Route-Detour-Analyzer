@@ -13,10 +13,10 @@ describe('DetourService#computeDetours', () => {
   });
   it('should compute the correct result', () => {
     const input: SubPath[] = [
-      { startIndex: 1, endIndex: 5, path: { waypoints: [], distanceTable: [[0, 10], [0]] } },
-      { startIndex: 1, endIndex: 4, path: { waypoints: [], distanceTable: [[0, 8], [0]] } },
-      { startIndex: 2, endIndex: 3, path: { waypoints: [], distanceTable: [[0, 5], [0]] } },
-      { startIndex: 0, endIndex: 5, path: { waypoints: [], distanceTable: [[0, 18], [0]] } },
+      { startIndex: 1, endIndex: 5, path: { waypoints: [], distTable: [[0, 10], [0]] } },
+      { startIndex: 1, endIndex: 4, path: { waypoints: [], distTable: [[0, 8], [0]] } },
+      { startIndex: 2, endIndex: 3, path: { waypoints: [], distTable: [[0, 5], [0]] } },
+      { startIndex: 0, endIndex: 5, path: { waypoints: [], distTable: [[0, 18], [0]] } },
     ];
     const originalDistances = [
       [0, 10, 20, 30, 40, 50],

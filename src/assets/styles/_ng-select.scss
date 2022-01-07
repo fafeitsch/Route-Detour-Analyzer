@@ -1,0 +1,27 @@
+/*!
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT).
+ * Find the full license text in the LICENSE file of the project root.
+ */
+.ng-select {
+  line-height: 1.125;
+  padding-bottom: 0;
+
+  .ng-select-container {
+    align-items: baseline;
+    min-height: 39px;
+  }
+
+  .ng-dropdown-panel {
+    position: absolute;
+    top: 40px;
+  }
+}
+
+.label-as-placeholder{
+  .ng-placeholder {
+    position: absolute;
+    left: 0;
+    transform-origin: 0 0;
+    transform: translateY(-1.3em) scale(0.75) perspective(180px) translateZ(0.001px);
+  }
+}

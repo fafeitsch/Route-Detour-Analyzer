@@ -3,7 +3,13 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { createReducer, on } from '@ngrx/store';
-import { importSampleLines, lineDeleted, lineSavedInRouteEditor, linesImported } from './actions';
+import {
+  importSampleLines,
+  lineDeleted,
+  lineSavedInRouteEditor,
+  linesImported,
+  persistStationManagerChange,
+} from './actions';
 
 export namespace DataModel {
   export interface Line {
@@ -33,7 +39,7 @@ export namespace Domain {
 
 export interface QueriedPath {
   waypoints: Waypoint[];
-  distanceTable: number[][];
+  distTable: number[][];
 }
 
 export interface LatLng {
@@ -43,8 +49,8 @@ export interface LatLng {
 
 export interface Waypoint extends LatLng {
   stop?: boolean;
-  distance: number;
-  duration: number;
+  dist: number;
+  dur: number;
 }
 
 export interface Station extends LatLng {
@@ -76,5 +82,10 @@ export const WorkbenchReducer = createReducer(
   on(lineDeleted, (state, { name }) => ({
     ...state,
     lines: state.lines.filter(line => line.name !== name),
+  })),
+  on(persistStationManagerChange, (state, { lines, stations }) => ({
+    ...state,
+    lines,
+    stations,
   }))
 );

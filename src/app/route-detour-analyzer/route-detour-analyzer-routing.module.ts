@@ -19,6 +19,10 @@ const routes: Routes = [
         path: 'route-editor/:line',
         loadChildren: () => import('../route-editor/route-editor.module').then(m => m.RouteEditorModule),
       },
+      {
+        path: 'stations',
+        loadChildren: () => import('../station-manager/station-manager.module').then(m => m.StationManagerModule),
+      },
     ],
   },
 ];

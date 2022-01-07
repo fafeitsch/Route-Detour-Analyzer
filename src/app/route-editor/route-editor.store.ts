@@ -24,7 +24,7 @@ interface State {
 const defaultLine = {
   name: '',
   stops: [],
-  path: { waypoints: [], distanceTable: [] },
+  path: { waypoints: [], distTable: [] },
   color: '#000000',
 };
 
@@ -32,7 +32,7 @@ const defaultLine = {
 export class RouteEditorStore extends ComponentStore<State> {
   readonly line$ = super.select(state => state.line);
   readonly totalDistance$ = this.line$.pipe(
-    map(line => line.path?.distanceTable || []),
+    map(line => line.path?.distTable || []),
     map(table => (table.length === 0 ? 0 : table[0][table.length - 1]))
   );
   readonly focusedStop$ = super.select(state => state.focusedStop);
@@ -107,40 +107,6 @@ export class RouteEditorStore extends ComponentStore<State> {
       switchMap(stop => this.line$.pipe(take(1)).pipe(map(line => ({ stop, line })))),
       map(({ stop, line }) => ({ ...line, stops: [...line.stops, stop] })),
       tap(line => this.queryPathAndUpdateLine$(line))
-    )
-  );
-
-  readonly replaceStopOfLine$ = super.effect((replacement$: Observable<{ index: number; stop: Stop }>) =>
-    replacement$.pipe(
-      tap(() => super.patchState({ uncommitedChanges: true })),
-      switchMap(replacement => {
-        if (!replacement.stop.name) {
-          return this.routeService.queryNearestStreet(replacement.stop).pipe(
-            map(name => ({
-              index: replacement.index,
-              stop: { ...replacement.stop, name },
-            })),
-            catchError(err => {
-              console.error(err);
-              return of(replacement);
-            })
-          );
-        }
-        return of(replacement);
-      }),
-      switchMap(replacement =>
-        this.line$.pipe(take(1)).pipe(
-          map(line => ({
-            ...line,
-            stops: [...line.stops],
-          })),
-          map(line => ({ line, replacement }))
-        )
-      ),
-      tap(({ replacement, line }) => {
-        line.stops[replacement.index] = replacement.stop;
-        this.queryPathAndUpdateLine$(line);
-      })
     )
   );
 

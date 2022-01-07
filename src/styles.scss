@@ -9,6 +9,8 @@
 @import "assets/styles/flex";
 @import "assets/styles/space";
 @import "assets/styles/common";
+@import "~@ng-select/ng-select/themes/material.theme.css";
+@import "assets/styles/ng-select";
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

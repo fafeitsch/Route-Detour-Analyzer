@@ -37,7 +37,7 @@ export class DetourService {
     if (!paths.length) {
       return { averageDetour: 0 };
     }
-    const mapToLength = (sub: SubPath) => sub.path.distanceTable[0][1];
+    const mapToLength = (sub: SubPath) => sub.path.distTable[0][1];
     const detailedResults = paths
       .map(p => ({
         absolute: originalDistances[p.startIndex][p.endIndex] - mapToLength(p),

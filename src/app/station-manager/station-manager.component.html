@@ -1,0 +1,29 @@
+<mat-sidenav-container class="h-100">
+  <mat-sidenav
+    mode="side"
+    [style.width.px]="400"
+    [disableClose]="true"
+    [opened]="true"
+  >
+    <station-list
+      [stations]="stations$ | async"
+      [focusedStation]="focusedStation"
+      (centerOnStation)="setCenteredStation($event)"
+      (focusStation)="focusStation($event)"
+    ></station-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="d-flex flex-column">
+    <div class="flex-grow-1">
+      <station-map
+        [stations]="stations$ | async"
+        [centerAndZoom]="center"
+        [focusedStation]="focusedStation"
+        (focusStation)="focusStation($event)"
+      ></station-map>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<toolbar>
+  <button mat-raised-button color="accent" (click)="commit()">Save</button>
+</toolbar>

@@ -1,0 +1,30 @@
+/*!
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT).
+ * Find the full license text in the LICENSE file of the project root.
+ */
+#map {
+  height: 100%;
+}
+
+.leaflet-clickable {
+  cursor: grabbing !important;
+}
+
+.leaflet-container {
+  cursor: pointer !important;
+}
+
+.leaflet-map-pane {
+  cursor: grabbing;
+}
+
+mat-slide-toggle {
+  position: absolute;
+  right: 0;
+  z-index: 1000;
+}
+
+.line-toggler {
+  background: #FFFFFF;
+  opacity: 0.9;
+}

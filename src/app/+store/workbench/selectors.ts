@@ -9,6 +9,8 @@ const featureSelector = createFeatureSelector<Workbench>('workbench');
 
 export const workbenchForExport = createSelector(featureSelector, workbench => workbench);
 
+export const stations = createSelector(featureSelector, workbench => workbench.stations);
+export const rawLines = createSelector(featureSelector, workbench => workbench.lines);
 export const lines: Selector<Workbench, Domain.Line[]> = createSelector(featureSelector, workbench => {
   const stationMap = workbench.stations.reduce((acc, curr) => {
     acc[curr.key] = curr;

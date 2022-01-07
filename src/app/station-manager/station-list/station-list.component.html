@@ -1,0 +1,20 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<ng-container *ngIf="stationUsage$ | async as stationUsage">
+  <station-editor
+    *ngFor="let station of stations"
+    [id]="'station' + station.key"
+    [class.focused-stop]="focusedStation?.key === station.key"
+    [stations]="stations"
+    [station]="station"
+    [stationUsage]="stationUsage[station.key] || []"
+    (focusStation)="stationHovered(station)"
+    (unfocusStation)="unfocusStation()"
+    (deleteStation)="deleteStation(station.key, $event)"
+    (centerOnStation)="centerStation(station)"
+    (renameStation)="renameStation(station.key, $event)"
+  >
+  </station-editor>
+</ng-container>

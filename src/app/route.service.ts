@@ -24,7 +24,7 @@ export class RouteService {
 
   queryOsrmRoute(stops: LatLng[]): Observable<QueriedPath> {
     if (!stops || stops.length < 2) {
-      return of({ waypoints: [], distanceTable: [], legs: [] });
+      return of({ waypoints: [], distTable: [], legs: [] });
     }
     const coords = stops.map<[number, number]>(stop => [stop.lat, stop.lng]);
     const poly = encodeURIComponent(polyline.encode(coords));
@@ -39,22 +39,22 @@ export class RouteService {
         const waypoints: Waypoint[] = polyline.decode(arr.geometry).map(r => ({
           lat: r[0],
           lng: r[1],
-          distance: 0,
-          duration: 0,
+          dist: 0,
+          dur: 0,
         }));
         let rawIndex = 0;
-        arr.legs.forEach((leg, legIndex) => {
+        arr.legs.forEach(leg => {
           waypoints[rawIndex].stop = true;
           for (let i = 0; i < leg.annotation.distance.length; i++) {
-            waypoints[rawIndex].distance = leg.annotation.distance[i];
-            waypoints[rawIndex].duration = leg.annotation.duration[i];
+            waypoints[rawIndex].dist = leg.annotation.distance[i];
+            waypoints[rawIndex].dur = leg.annotation.duration[i];
             rawIndex = rawIndex + 1;
           }
         });
         waypoints[waypoints.length - 1].stop = true;
         return {
           waypoints,
-          distanceTable,
+          distTable: distanceTable,
         };
       })
     );

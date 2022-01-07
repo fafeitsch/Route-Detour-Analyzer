@@ -57,7 +57,7 @@ export class StatisticsViewerStore extends ComponentStore<State> {
 
   readonly setAverageDetour = super.effect(() =>
     combineLatest([this.cap$, this.store.line$]).pipe(
-      filter(([_, line]) => line.path?.distanceTable.length === line.stops.length),
+      filter(([_, line]) => line.path?.distTable.length === line.stops.length),
       switchMap(([cap, line]) => {
         const sources = this.queryAllPaths(line.stops, cap);
         if (sources.length === 0) {
@@ -73,7 +73,7 @@ export class StatisticsViewerStore extends ComponentStore<State> {
       }),
       map<[SubPath[], Line], [Line, DetourResult]>(([sub, line]) => [
         line,
-        this.detourService.computeDetours(line.path?.distanceTable || [], sub),
+        this.detourService.computeDetours(line.path?.distTable || [], sub),
       ]),
       tap(([line, detour]) =>
         super.patchState({

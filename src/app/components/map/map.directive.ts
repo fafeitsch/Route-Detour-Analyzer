@@ -40,6 +40,13 @@ export class MapDirective implements AfterViewInit, OnDestroy {
     this.drawReadonlyLines();
   }
 
+  @Input() set centerAndZoom(param: LatLng & { zoom?: number }) {
+    if (!param) {
+      return;
+    }
+    this.map?.setView(param, param.zoom);
+  }
+
   private _useStopIcon: boolean = false;
 
   @Output() mapReady = new EventEmitter<Map>();
@@ -64,7 +71,7 @@ export class MapDirective implements AfterViewInit, OnDestroy {
     this.optionsStore
       .select(selectMapCenter)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(center => this.map?.setView(center, center.zoom));
+      .subscribe(center => (this.centerAndZoom = center));
     this.optionsStore
       .select(selectTileServer)
       .pipe(takeUntil(this.destroy$))
