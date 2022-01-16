@@ -22,7 +22,7 @@ export class StationEditorComponent {
   }
 
   usedByLines: string[] = [];
-  usedByLinesTooltip: string = '';
+  usedByLinesTooltip = '';
 
   @Output() focusStation = new EventEmitter<void>();
   @Output() unfocusStation = new EventEmitter<void>();
