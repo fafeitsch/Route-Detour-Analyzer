@@ -3,8 +3,7 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { Injectable } from '@angular/core';
-import { Domain, QueriedPath } from './+store/workbench';
-import Stop = Domain.Stop;
+import { DataModel, QueriedPath, Station } from './+store/workbench';
 
 export interface DetourResult {
   averageDetour: number;
@@ -21,8 +20,8 @@ export interface DetailResult {
 }
 
 export interface QueryPair {
-  source: { index: number } & Stop;
-  target: { index: number } & Stop;
+  source: { index: number } & Station;
+  target: { index: number } & Station;
 }
 
 export interface SubPath {
@@ -56,18 +55,18 @@ export class DetourService {
     };
   }
 
-  createQueryPairs(line: Stop[], cap: number): QueryPair[] {
-    const numbersOfStops = line.filter(s => s.realStop).length;
+  createQueryPairs(line: Station[], cap: number): QueryPair[] {
+    const numbersOfStops = line.filter(s => !s.isWaypoint).length;
     const gap = numbersOfStops - cap;
     const result: QueryPair[] = [];
     line.forEach((stop, index) => {
-      if (!stop.realStop) {
+      if (stop.isWaypoint) {
         return;
       }
       let counter = 1;
       line.slice(index + 1).forEach((target, targetIndex) => {
-        counter = target.realStop ? counter + 1 : counter;
-        if (!target.realStop || counter < gap) {
+        counter = !target.isWaypoint ? counter + 1 : counter;
+        if (target.isWaypoint || counter < gap) {
           return;
         }
         result.push({ source: { ...stop, index }, target: { ...target, index: targetIndex + index + 1 } });

@@ -2,13 +2,14 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
-import { divIcon, icon, Layer, layerGroup, Map, marker, polyline } from 'leaflet';
-import { Domain, LatLng, lines, Workbench } from '../../+store/workbench';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { Layer, Map, polyline } from 'leaflet';
+import { Domain, lines, Station, Workbench } from '../../+store/workbench';
 import { RouteEditorStore } from '../route-editor.store';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
+import { stations } from '../../+store/workbench/selectors';
 import Line = Domain.Line;
 
 @Component({
@@ -24,22 +25,21 @@ export class RouteMapComponent {
     this.drawLine();
   }
 
-  @Input() set focusedStop(stop: number | undefined) {
-    this._focusedStop = stop;
-    if (this.map) {
-      this.drawStops();
-    }
-  }
+  @Input() focusedStop: Station | undefined = undefined;
+  @Input() centeredStop: Station | undefined = undefined;
 
-  private line$ = new BehaviorSubject<Line | undefined>(undefined);
+  @Output() focusStop = new EventEmitter<Station | undefined>();
+
+  line$ = new BehaviorSubject<Line | undefined>(undefined);
   showAllLines = false;
+  showAllStations = true;
   readonlyLines$ = combineLatest([this.store.select(lines), this.line$]).pipe(
     map(([lines, line]) => lines.filter(l => l.name !== line?.name))
   );
-  private _focusedStop: number | undefined = undefined;
+
+  allStations$ = this.store.select(stations);
   private map: Map | undefined = undefined;
   private pathLayer: Layer | undefined;
-  private markerLayer: Layer | undefined;
 
   constructor(private readonly routeStore: RouteEditorStore, private readonly store: Store<Workbench>) {}
 
@@ -57,7 +57,6 @@ export class RouteMapComponent {
       this.line$.value.path?.waypoints.map(wp => [wp.lat, wp.lng]),
       { color: this.line$.value.color }
     ).addTo(this.map);
-    this.drawStops();
   }
 
   mapReady(map: Map) {
@@ -65,50 +64,19 @@ export class RouteMapComponent {
     this.drawLine();
   }
 
-  private createIcon(realStop: boolean, enlarged: boolean) {
-    if (!realStop) {
-      const size = 15;
-      return divIcon({
-        className: 'themed',
-        html: `<svg width="${size}" height="${size}">
-            <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="${this.line$.value!.color}"/>
-            </svg>`,
-        iconSize: [size, size],
-        iconAnchor: [size / 2, size / 2],
-      });
-    } else {
-      const size = enlarged ? 30 : 20;
-      return icon({
-        iconUrl: 'assets/icons/stop.svg',
-        iconSize: [size, size],
-        iconAnchor: [size / 2, size / 2],
-      });
-    }
-  }
-
-  private drawStops() {
-    if (this.markerLayer) {
-      this.map?.removeLayer(this.markerLayer);
-    }
-    this.markerLayer = layerGroup(
-      this.line$.value!.stops.map((stop, index) =>
-        marker([stop.lat, stop.lng], {
-          icon: this.createIcon(stop.realStop, this._focusedStop === index),
-          draggable: true,
-        })
-          .on('mouseover', () => this.routeStore.setFocusedStop$(index))
-          .on('mouseout', () => {
-            this.routeStore.setFocusedStop$(undefined);
-          })
-      )
-    ).addTo(this.map!);
-  }
-
-  addStop(latLng: LatLng) {
-    this.routeStore.addStopToLine$(latLng);
+  addStop(station: Station) {
+    this.routeStore.addStopToLine$(station);
   }
 
   toggleViewAll() {
     this.showAllLines = !this.showAllLines;
+  }
+
+  toggleViewAllStations() {
+    this.showAllStations = !this.showAllStations;
+  }
+
+  stationFocused(station: Station | undefined) {
+    this.focusStop.emit(station);
   }
 }

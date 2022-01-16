@@ -2,13 +2,12 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { RouteEditorStore } from '../route-editor.store';
 import { FormControl } from '@angular/forms';
 import { tap } from 'rxjs/operators';
-import { Domain } from '../../+store/workbench';
-import Stop = Domain.Stop;
+import { Station } from '../../+store/workbench';
 
 @Component({
   selector: 'stop-list',
@@ -17,9 +16,13 @@ import Stop = Domain.Stop;
   host: { class: 'd-flex flex-column' },
 })
 export class StopListComponent {
+  @Input() focusedStop: Station | undefined = undefined;
+
+  @Output() focusStop = new EventEmitter<Station | undefined>();
+  @Output() centerStop = new EventEmitter<Station>();
+
   line$ = this.routeEditorStore.line$.pipe(tap(line => this.colorControl.patchValue(line.color, { emitEvent: false })));
   distance$ = this.routeEditorStore.totalDistance$;
-  focusedStop$ = this.routeEditorStore.focusedStop$;
   colorControl = new FormControl();
 
   editedStops = 0;
@@ -28,32 +31,24 @@ export class StopListComponent {
     this.routeEditorStore.changeLineColor$(this.colorControl.valueChanges);
   }
 
-  drop(event: CdkDragDrop<Stop[]>) {
+  drop(event: CdkDragDrop<Station[]>) {
     this.routeEditorStore.moveStopOfLine$({ from: event.previousIndex, to: event.currentIndex });
   }
 
   deleteStop(index: number) {
     this.routeEditorStore.removeStopFromLine$(index);
-    this.unsetFocusedStop();
+    this.focusStop.emit(undefined);
   }
 
-  changeName(index: number, name: string) {
-    this.routeEditorStore.renameStop$([index, name]);
-  }
-
-  toggleRealStop(index: number) {
-    this.routeEditorStore.toggleStopOfLine$(index);
-  }
-
-  setFocusedStop(index: number) {
-    this.routeEditorStore.setFocusedStop$(index);
-  }
-
-  unsetFocusedStop() {
-    this.routeEditorStore.setFocusedStop$(undefined);
+  setFocusedStop(station: Station | undefined) {
+    this.focusStop.emit(station);
   }
 
   changeLineName(name: string) {
     this.routeEditorStore.changeLineName$(name);
+  }
+
+  stationClicked(station: Station) {
+    this.centerStop.emit(station);
   }
 }

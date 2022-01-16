@@ -9,16 +9,27 @@
     [opened]="true"
     [disableClose]="true"
   >
-    <stop-list class="h-100"></stop-list>
+    <stop-list
+      class="h-100"
+      [focusedStop]="focusedStop"
+      (focusStop)="focusStation($event)"
+      (centerStop)="centerOnStation($event)"
+    ></stop-list>
   </mat-sidenav>
   <mat-sidenav-content class="d-flex flex-column">
     <div class="flex-grow-1 mb-3">
       <route-map
         [selectedLine]="selectedLine$ | async"
-        [focusedStop]="focusedStop$ | async"
+        [focusedStop]="focusedStop"
+        [centeredStop]="centeredStop"
+        (focusStop)="focusStation($event)"
       ></route-map>
     </div>
-    <statistics-viewer></statistics-viewer>
+    <statistics-viewer
+      [focusedStop]="focusedStop"
+      (centerStop)="centerOnStation($event)"
+      (focusStop)="focusStation($event)"
+    ></statistics-viewer>
   </mat-sidenav-content>
 </mat-sidenav-container>
 <toolbar>

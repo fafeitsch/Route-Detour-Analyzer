@@ -5,10 +5,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapDirective } from './map.directive';
+import { StationMapDirective } from './station-map.directive';
 
 @NgModule({
-  declarations: [MapDirective],
-  exports: [MapDirective],
+  declarations: [MapDirective, StationMapDirective],
+  exports: [MapDirective, StationMapDirective],
   imports: [CommonModule],
 })
 export class MapModule {}

@@ -19,22 +19,16 @@ export namespace DataModel {
     path: QueriedPath;
   }
 
-  export type Stop = LatLng | { key: string };
-
-  export function isStationReference(stop: Stop): stop is { key: string } {
-    return (stop as { key: string }).key !== undefined;
-  }
+  export type Stop = { key: string };
 }
 
 export namespace Domain {
   export interface Line {
     name: string;
     color: string;
-    stops: Stop[];
+    stops: Station[];
     path: QueriedPath;
   }
-
-  export type Stop = Partial<Station> & LatLng & { realStop: boolean };
 }
 
 export interface QueriedPath {
@@ -56,6 +50,7 @@ export interface Waypoint extends LatLng {
 export interface Station extends LatLng {
   name: string;
   key: string;
+  isWaypoint?: boolean;
 }
 
 export interface Workbench {

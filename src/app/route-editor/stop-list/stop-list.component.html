@@ -37,22 +37,19 @@
     <div
       *ngFor="let stop of line.stops; index as i; last as last"
       cdkDrag
-      [class.focused-stop]="(focusedStop$ | async) === i"
+      [class.focused-stop]="focusedStop?.key === stop?.key"
       [cdkDragDisabled]="editedStops !== 0"
     >
       <stop-editor
         [ngClass]="editedStops === 0 ? 'grab-cursor' : ''"
         [stopName]="stop.name"
-        [isRealStop]="stop.realStop"
         [isFirstStop]="i === 0"
         [isLastStop]="last"
         [lineColor]="line.color"
-        (enterEditMode)="editedStops = editedStops + 1"
-        (leaveEditMode)="editedStops = editedStops - 1"
-        (changeName)="changeName(i, $event)"
-        (toggleRealStop)="toggleRealStop(i)"
-        (mouseenter)="setFocusedStop(i)"
-        (mouseleave)="unsetFocusedStop()"
+        [isRealStop]="!stop.isWaypoint"
+        (click)="stationClicked(stop)"
+        (mouseenter)="setFocusedStop(stop)"
+        (mouseleave)="setFocusedStop(undefined)"
         (delete)="deleteStop(i)"
       >
       </stop-editor>

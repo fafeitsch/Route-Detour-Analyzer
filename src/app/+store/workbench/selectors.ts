@@ -18,12 +18,7 @@ export const lines: Selector<Workbench, Domain.Line[]> = createSelector(featureS
   }, {} as { [key: string]: Station });
   return workbench.lines.map(line => ({
     ...line,
-    stops: line.stops.map(stop => {
-      if (DataModel.isStationReference(stop)) {
-        return { ...stationMap[stop.key], realStop: true };
-      }
-      return { ...stop, realStop: false };
-    }),
+    stops: line.stops.map(stop => ({ ...stationMap[stop.key] })),
   }));
 });
 export const freeLineName = createSelector(featureSelector, workbench => findFreeLineName(workbench.lines));

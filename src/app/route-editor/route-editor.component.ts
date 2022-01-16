@@ -4,6 +4,7 @@
  */
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouteEditorStore } from './route-editor.store';
+import { Station } from '../+store/workbench';
 
 @Component({
   selector: 'route-editor',
@@ -14,7 +15,8 @@ import { RouteEditorStore } from './route-editor.store';
 })
 export class RouteEditorComponent {
   selectedLine$ = this.store.line$;
-  focusedStop$ = this.store.focusedStop$;
+  focusedStop: Station | undefined = undefined;
+  centeredStop: Station | undefined = undefined;
   uncommitedChanges$ = this.store.uncommitedChanges$;
   lineError$ = this.store.lineError$;
 
@@ -22,5 +24,13 @@ export class RouteEditorComponent {
 
   commitChanges() {
     this.store.commitChanges$();
+  }
+
+  focusStation(station: Station | undefined) {
+    this.focusedStop = station;
+  }
+
+  centerOnStation(station: Station | undefined) {
+    this.centeredStop = station;
   }
 }

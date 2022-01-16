@@ -9,10 +9,13 @@
   >Peek all Lines
 </mat-slide-toggle>
 <div
-  osmMap
+  stationMap
   class="h-100 flex-grow-1"
   [centerAndZoom]="centerAndZoom"
+  [focusedStation]="focusedStation"
   [lines]="showAllLines ? (readonlyLines$ | async) : []"
-  (mapReady)="mapReady($event)"
+  [stations]="stations"
   (canvasClicked)="addStop($event)"
+  (dragStation)="stationDragged($event)"
+  (focusStation)="focusStation.emit($event)"
 ></div>

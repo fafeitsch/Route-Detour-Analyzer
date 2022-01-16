@@ -15,10 +15,6 @@ export class StopEditorComponent {
   @Input() isFirstStop = false;
   @Input() isLastStop = false;
   @Input() lineColor: string = '';
-  @Output() enterEditMode = new EventEmitter<void>();
-  @Output() leaveEditMode = new EventEmitter<void>();
-  @Output() changeName = new EventEmitter<string>();
-  @Output() toggleRealStop = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
 
   deleteStop() {

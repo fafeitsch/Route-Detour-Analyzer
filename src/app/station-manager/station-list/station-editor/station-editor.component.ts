@@ -29,6 +29,7 @@ export class StationEditorComponent {
   @Output() deleteStation = new EventEmitter<string | undefined>();
   @Output() centerOnStation = new EventEmitter<void>();
   @Output() renameStation = new EventEmitter<string>();
+  @Output() toggleWaypoint = new EventEmitter<void>();
 
   mode: 'normal' | 'delete' = 'normal';
   replacement: string | undefined = undefined;
@@ -51,5 +52,9 @@ export class StationEditorComponent {
 
   editStationName(name: string) {
     this.renameStation.emit(name);
+  }
+
+  waypointToggled() {
+    this.toggleWaypoint.emit();
   }
 }

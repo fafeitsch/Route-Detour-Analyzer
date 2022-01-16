@@ -16,6 +16,7 @@ import { StationManagerStore } from '../station-manager.store';
 })
 export class StationListComponent {
   @Input() stations: Station[] = [];
+
   @Input() set focusedStation(station: Station | undefined) {
     if (this._focusedStation?.key === station?.key) {
       return;
@@ -58,6 +59,10 @@ export class StationListComponent {
   }
 
   renameStation(key: string, name: string) {
-    return this.stationManagerStore.renameStation$({ key, name });
+    this.stationManagerStore.renameStation$({ key, name });
+  }
+
+  toggleWaypoint(key: string) {
+    this.stationManagerStore.toggleStationWaypoint(key);
   }
 }

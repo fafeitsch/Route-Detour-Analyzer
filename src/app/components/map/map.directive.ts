@@ -3,19 +3,7 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import {
-  divIcon,
-  icon,
-  Layer,
-  layerGroup,
-  LeafletMouseEvent,
-  map as leafletMap,
-  Map,
-  marker,
-  polyline,
-  PolylineOptions,
-  tileLayer,
-} from 'leaflet';
+import { Layer, LeafletMouseEvent, map as leafletMap, Map, polyline, PolylineOptions, tileLayer } from 'leaflet';
 import { OptionsState, selectMapCenter, selectTileServer } from '../../+store/options';
 import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -35,24 +23,21 @@ export class MapDirective implements AfterViewInit, OnDestroy {
 
   private _lines: Line[] = [];
 
-  @Input() set useStopIcon(useIcon: boolean) {
-    this._useStopIcon = useIcon;
-    this.drawReadonlyLines();
-  }
-
-  @Input() set centerAndZoom(param: LatLng & { zoom?: number }) {
+  @Input() set centerAndZoom(param: (LatLng & { zoom?: number }) | undefined) {
     if (!param) {
       return;
     }
     this.map?.setView(param, param.zoom);
   }
 
-  private _useStopIcon: boolean = false;
-
   @Output() mapReady = new EventEmitter<Map>();
   @Output() canvasClicked = new EventEmitter<LatLng>();
 
-  private map: Map | undefined = undefined;
+  private _map: Map | undefined = undefined;
+  get map(): Map | undefined {
+    return this._map;
+  }
+
   private tileLayer: Layer | undefined;
   private readonlyLayers: Layer[] = [];
   private destroy$ = new Subject();
@@ -64,7 +49,7 @@ export class MapDirective implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit() {
-    this.map = leafletMap(this.el.nativeElement, {
+    this._map = leafletMap(this.el.nativeElement, {
       center: [39.8282, -98.5795],
       zoom: 3,
     });
@@ -111,7 +96,6 @@ export class MapDirective implements AfterViewInit, OnDestroy {
     this.readonlyLayers.forEach(layer => this.map?.removeLayer(layer));
     this._lines.forEach(line => {
       this.drawPath(line.color, line.path.waypoints);
-      this.drawStops(line);
     });
   }
 
@@ -123,44 +107,5 @@ export class MapDirective implements AfterViewInit, OnDestroy {
         options
       ).addTo(this.map!)
     );
-  }
-
-  private drawStops(line: Line) {
-    this.readonlyLayers.push(
-      layerGroup(
-        line.stops
-          .map((stop, index) => ({ ...stop, index }))
-          .filter(stop => stop.key)
-          .map(stop =>
-            marker([stop.lat, stop.lng], {
-              icon: this.createIcon(!!stop.key, line.color),
-            })
-          )
-      ).addTo(this.map!)
-    );
-  }
-
-  private createIcon(realStop: boolean, color: string) {
-    if (!realStop) {
-      return;
-    }
-    if (!this._useStopIcon) {
-      const size = 15;
-      return divIcon({
-        className: 'themed',
-        html: `<svg width="${size}" height="${size}">
-            <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="${color}"/>
-            </svg>`,
-        iconSize: [size, size],
-        iconAnchor: [size / 2, size / 2],
-      });
-    } else {
-      const size = 20;
-      return icon({
-        iconUrl: 'assets/icons/stop.svg',
-        iconSize: [size, size],
-        iconAnchor: [size / 2, size / 2],
-      });
-    }
   }
 }

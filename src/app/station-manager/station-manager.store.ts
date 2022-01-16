@@ -11,7 +11,6 @@ import { Injectable } from '@angular/core';
 import { combineLatest, Observable, of } from 'rxjs';
 import { RouteService } from '../route.service';
 import Line = DataModel.Line;
-import isStationReference = DataModel.isStationReference;
 
 interface State {
   stations: Station[];
@@ -29,12 +28,9 @@ export class StationManagerStore extends ComponentStore<State> {
       const result: { [key: string]: Line[] | undefined } = {};
       lines.forEach(line =>
         line.stops.forEach(stop => {
-          if (!isStationReference(stop)) {
-            return;
-          }
           result[stop.key] = result[stop.key] || [];
           const lastLine = result[stop.key]![result[stop.key]!.length - 1];
-          if (isStationReference(stop) && lastLine !== line) {
+          if (lastLine !== line) {
             result[stop.key]!.push(line);
           }
         })
@@ -47,11 +43,9 @@ export class StationManagerStore extends ComponentStore<State> {
     const stations = state.stations.filter(station => station.key !== key);
     const lines: Line[] = state.lines.map(line => {
       if (!replacement) {
-        line.stops = line.stops.filter(stop => !isStationReference(stop) || stop.key !== key);
+        line.stops = line.stops.filter(stop => stop.key !== key);
       } else {
-        line.stops = line.stops.map(stop =>
-          !isStationReference(stop) || stop.key !== key ? stop : { key: replacement! }
-        );
+        line.stops = line.stops.map(stop => (stop.key !== key ? stop : { key: replacement! }));
       }
       return { ...line };
     });
@@ -80,6 +74,13 @@ export class StationManagerStore extends ComponentStore<State> {
   readonly renameStation$ = super.updater((state, { key, name }: { key: string; name: string }) => ({
     ...state,
     stations: state.stations.map(station => (station.key !== key ? station : { ...station, name })),
+  }));
+
+  readonly toggleStationWaypoint = super.updater((state, key: string) => ({
+    ...state,
+    stations: state.stations.map(station =>
+      station.key !== key ? station : { ...station, isWaypoint: !station.isWaypoint }
+    ),
   }));
 
   loadStations = super.effect(() =>
@@ -134,7 +135,7 @@ export class StationManagerStore extends ComponentStore<State> {
 
   private findAffectedLines(station: string, lines: Line[]) {
     return lines.reduce((acc, curr) => {
-      if (curr.stops.some(stop => isStationReference(stop) && stop.key === station)) {
+      if (curr.stops.some(stop => stop.key === station)) {
         acc[curr.name] = true;
       }
       return acc;

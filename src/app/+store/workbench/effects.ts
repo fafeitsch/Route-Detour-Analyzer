@@ -11,6 +11,7 @@ import { Injectable } from '@angular/core';
 import { EMPTY, forkJoin, Observable, of } from 'rxjs';
 import { RouteService } from '../../route.service';
 import { DataModel, Station } from './reducers';
+import Line = DataModel.Line;
 
 @Injectable()
 export class WorkbenchEffects implements OnInitEffects {
@@ -34,14 +35,9 @@ export class WorkbenchEffects implements OnInitEffects {
           acc[curr.key] = curr;
           return acc;
         }, {} as { [key: string]: Station });
-        const requests: Observable<DataModel.Line>[] = lines.map(line => {
+        const requests: Observable<Line>[] = lines.map(line => {
           if (dirtyLines[line.name]) {
-            const stops = line.stops.map(stop => {
-              if (DataModel.isStationReference(stop)) {
-                return { ...stationMap[stop.key], realStop: true };
-              }
-              return { ...stop, realStop: false };
-            });
+            const stops = line.stops.map(stop => ({ ...stationMap[stop.key] }));
             return this.routeService.queryOsrmRoute(stops).pipe(map(path => ({ ...line, path })));
           } else {
             return of(line);

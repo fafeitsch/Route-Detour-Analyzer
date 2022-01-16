@@ -18,6 +18,9 @@
     title="Minimal Detour"
     [result]="smallestDetour$ | async"
     [lineColor]="lineColor$ | async"
+    [focusedStop]="focusedStop"
+    (focusStop)="stopFocused($event)"
+    (centerStop)="stopClicked($event)"
   ></single-statistics>
   <single-statistics
     class="flex-grow-1"
@@ -25,11 +28,18 @@
     [result]="medianDetour$ | async"
     [average]="averageDetour$ | async"
     [lineColor]="lineColor$ | async"
-  ></single-statistics>
+    [focusedStop]="focusedStop"
+    (focusStop)="stopFocused($event)"
+    (centerStop)="stopClicked($event)"
+  >
+  </single-statistics>
   <single-statistics
     class="flex-grow-1"
     title="Maximal Detour"
     [result]="biggestDetour$ | async"
     [lineColor]="lineColor$ | async"
+    [focusedStop]="focusedStop"
+    (focusStop)="stopFocused($event)"
+    (centerStop)="stopClicked($event)"
   ></single-statistics>
 </div>

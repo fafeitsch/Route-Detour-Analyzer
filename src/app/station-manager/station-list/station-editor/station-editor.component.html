@@ -2,16 +2,18 @@
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
   ~ Find the full license text in the LICENSE file of the project root.
   -->
-<img
-  src="assets/icons/stop.svg"
+<line-stop
   class="pointer-cursor"
+  [stopType]="station?.isWaypoint ? 'waypoint' : 'real'"
   (mouseenter)="focusStation.emit()"
   (mouseleave)="unfocusStation.emit()"
   (click)="centerOnStation.emit()"
-/>
-<div class="d-flex flex-column flex-grow-1 flex-gap-2">
-  <div class="d-flex flex-grow-1 align-items-start">
-    <div class="d-flex flex-column flex-gap-1 flex-grow-1">
+></line-stop>
+<div class="d-flex flex-column flex-grow-1 flex-gap-2 overflow-hidden">
+  <div class="d-flex flex-grow-1 flex-gap-3 align-items-start">
+    <div
+      class="d-flex flex-column flex-gap-1 flex-grow-1 flex-shrink-1 overflow-hidden"
+    >
       <inline-editor
         emptyPlaceholder="Unnamed Station"
         [text]="station?.name"
@@ -27,6 +29,16 @@
     </div>
     <button
       *ngIf="mode !== 'delete'"
+      class="flex-shrink-1"
+      mat-stroked-button
+      color="primary"
+      (click)="waypointToggled()"
+    >
+      Toggle
+    </button>
+    <button
+      *ngIf="mode !== 'delete'"
+      class="flex-shrink-1"
       mat-stroked-button
       color="primary"
       (click)="deleteClicked()"

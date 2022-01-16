@@ -5,6 +5,7 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { lines, Workbench } from '../../+store/workbench';
 import { Store } from '@ngrx/store';
+import { stations } from '../../+store/workbench/selectors';
 
 @Component({
   selector: 'overview-map',
@@ -15,6 +16,7 @@ import { Store } from '@ngrx/store';
 })
 export class OverviewMapComponent {
   lines$ = this.store.select(lines);
+  stations$ = this.store.select(stations);
 
   constructor(private readonly store: Store<Workbench>) {}
 }

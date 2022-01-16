@@ -3,22 +3,20 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { Domain, LatLng, lines, lineSavedInRouteEditor, Workbench } from '../+store/workbench';
+import { Domain, lines, lineSavedInRouteEditor, Station, Workbench } from '../+store/workbench';
 import { Store } from '@ngrx/store';
-import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { RouteService } from '../route.service';
 import Line = Domain.Line;
-import Stop = Domain.Stop;
 
 interface State {
   line: Line;
   originalLineName: string;
   lineError: string | undefined;
   uncommitedChanges: boolean;
-  focusedStop: number | undefined;
 }
 
 const defaultLine = {
@@ -35,26 +33,9 @@ export class RouteEditorStore extends ComponentStore<State> {
     map(line => line.path?.distTable || []),
     map(table => (table.length === 0 ? 0 : table[0][table.length - 1]))
   );
-  readonly focusedStop$ = super.select(state => state.focusedStop);
   readonly uncommitedChanges$ = super.select(state => state.uncommitedChanges);
   readonly lineError$ = super.select(state => state.lineError);
   readonly originalLineName$ = super.select(state => state.originalLineName);
-
-  readonly setFocusedStop$ = super.updater((state, focusedStop: number | undefined) => ({
-    ...state,
-    focusedStop,
-  }));
-
-  readonly renameStop$ = super.updater((state, [index, name]: [number, string]) => {
-    return {
-      ...state,
-      uncommitedChanges: true,
-      line: {
-        ...state.line,
-        stops: state.line.stops.map((stop, i) => (i === index ? { ...stop, name } : stop)),
-      },
-    };
-  });
 
   readonly selectLineFromRoute$ = super.effect(() =>
     this.route.paramMap.pipe(
@@ -69,41 +50,9 @@ export class RouteEditorStore extends ComponentStore<State> {
     )
   );
 
-  readonly toggleStopOfLine$ = super.effect((index$: Observable<number>) =>
-    index$.pipe(
-      tap(() => super.patchState({ uncommitedChanges: true })),
-      switchMap(index =>
-        this.line$.pipe(take(1)).pipe(
-          map(line => ({
-            ...line,
-            stops: line.stops.map((stop, i) =>
-              i === index
-                ? {
-                    ...stop,
-                    realStop: !stop.realStop,
-                  }
-                : stop
-            ),
-          })),
-          tap(line => super.patchState({ line }))
-        )
-      )
-    )
-  );
-
-  readonly addStopToLine$ = super.effect((stop$: Observable<LatLng>) =>
+  readonly addStopToLine$ = super.effect((stop$: Observable<Station>) =>
     stop$.pipe(
       tap(() => super.patchState({ uncommitedChanges: true })),
-      switchMap(s =>
-        this.routeService.queryNearestStreet(s).pipe(
-          map<string, Stop>(name => ({ ...s, name, realStop: true })),
-          catchError(err => {
-            console.error(err);
-            const stop: Stop = { ...s, name: '', realStop: true };
-            return of(stop);
-          })
-        )
-      ),
       switchMap(stop => this.line$.pipe(take(1)).pipe(map(line => ({ stop, line })))),
       map(({ stop, line }) => ({ ...line, stops: [...line.stops, stop] })),
       tap(line => this.queryPathAndUpdateLine$(line))
@@ -219,7 +168,6 @@ export class RouteEditorStore extends ComponentStore<State> {
     super({
       line: { ...defaultLine },
       originalLineName: '',
-      focusedStop: undefined,
       uncommitedChanges: false,
       lineError: undefined,
     });

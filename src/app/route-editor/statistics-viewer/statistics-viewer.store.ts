@@ -17,14 +17,13 @@ import {
   setTileServerFromOptionsPanel,
 } from '../../+store/options';
 import { RouteEditorStore } from '../route-editor.store';
-import { Domain, QueriedPath } from '../../+store/workbench';
+import { Domain, QueriedPath, Station } from '../../+store/workbench';
 import { RouteService } from '../../route.service';
 import Line = Domain.Line;
-import Stop = Domain.Stop;
 
 export interface DetourWithStop extends DetailResult {
-  sourceStop: Stop;
-  targetStop: Stop;
+  sourceStop: Station;
+  targetStop: Station;
   color: string;
 }
 
@@ -122,7 +121,7 @@ export class StatisticsViewerStore extends ComponentStore<State> {
     };
   }
 
-  private queryAllPaths(line: Stop[], cap: number): Observable<SubPath>[] {
+  private queryAllPaths(line: Station[], cap: number): Observable<SubPath>[] {
     return this.detourService.createQueryPairs(line, cap).map(pair =>
       this.routeService.queryOsrmRoute([pair.source, pair.target]).pipe(
         catchError(() => {
