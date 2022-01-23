@@ -8,14 +8,17 @@
   [gutterSize]="'0px'"
   [cols]="4"
 >
-  <mat-grid-tile rowspan="2" colspan="2">
+  <mat-grid-tile rowspan="4" colspan="2">
     <lines-card class="w-100 h-100"> </lines-card>
   </mat-grid-tile>
-  <mat-grid-tile colspan="2" rowspan="3">
+  <mat-grid-tile colspan="2" rowspan="6">
     <overview-map class="h-100 w-100"></overview-map>
   </mat-grid-tile>
-  <mat-grid-tile>
+  <mat-grid-tile rowspan="2">
     <settings-card class="w-100 h-100"></settings-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <station-card class="w-100 h-100"></station-card>
   </mat-grid-tile>
 </mat-grid-list>
 
