@@ -5,6 +5,8 @@
 <line-stop
   class="pointer-cursor"
   [stopType]="station?.isWaypoint ? 'waypoint' : 'real'"
+  [isFirstStop]="true"
+  [isLastStop]="true"
   (mouseenter)="focusStation.emit()"
   (mouseleave)="unfocusStation.emit()"
   (click)="centerOnStation.emit()"

@@ -7,14 +7,22 @@ planning, I wondered how much detour passengers accept on public transport route
 For this, I created PTL Editor which should help to answer the question. I have currently some ideas
 for further features.
 
+### Evolution ###
+
+This project is currently on its way to version 2, which will not only be incompatible
+with version 1, but will also get a new name "Public Transport Line Editor". This 
+README describes the current development version 2 (main branch). For a description
+of the old version 1, please refer to the release of version 1.1.0.
+
 ## Features
 
 * Define unlimited lines with custom color and names:
 ![Example of some lines created in RDA](./img/lines.png)
-* Intuitive line editor to define the stops and route of a line:
+* Create stations, rename them, drag them to new locations, toggle between real stations or just waypoint-stations 
+  (used to fine tune line routes)
+  ![Stations Editing](./img/stations.gif)
+* Intuitive line editor to connect stations to lines:
 ![Creating a line](./img/line-creation.gif)  
-* Fine-tune lines by using way points (these are not counted as stops)  
-![Use waypoints to define detailed routs](./img/waypoints.gif)  
 * Parameterizable analysis
 * Min, median, average, and maximal detour per line
 ![Parameters change the results of the analysis](./img/analysis.gif)  

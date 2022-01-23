@@ -9,7 +9,7 @@
   >{{ text }}</span
 >
 <span *ngIf="!editMode && !text" class="flex-grow-1" (click)="toggleEdit()"
-  ><i>{{ emptyPlaceholder }}</i></span
+  ><em>{{ emptyPlaceholder }}</em></span
 >
 <mat-form-field *ngIf="editMode" class="mr-2 flex-grow-1"
   ><input
