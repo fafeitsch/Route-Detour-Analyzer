@@ -3,7 +3,6 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { RouteEditorStore } from '../route-editor.store';
 import { FormControl } from '@angular/forms';
 import { tap } from 'rxjs/operators';
@@ -25,14 +24,12 @@ export class StopListComponent {
   distance$ = this.routeEditorStore.totalDistance$;
   colorControl = new FormControl();
 
-  editedStops = 0;
-
   constructor(private readonly routeEditorStore: RouteEditorStore) {
     this.routeEditorStore.changeLineColor$(this.colorControl.valueChanges);
   }
 
-  drop(event: CdkDragDrop<Station[]>) {
-    this.routeEditorStore.moveStopOfLine$({ from: event.previousIndex, to: event.currentIndex });
+  changeStopOrder(event: { from: number; to: number }) {
+    this.routeEditorStore.moveStopOfLine$(event);
   }
 
   deleteStop(index: number) {

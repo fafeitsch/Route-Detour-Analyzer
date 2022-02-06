@@ -23,6 +23,10 @@ const routes: Routes = [
         path: 'stations',
         loadChildren: () => import('../station-manager/station-manager.module').then(m => m.StationManagerModule),
       },
+      {
+        path: 'timetable/:line',
+        loadChildren: () => import('../timetable/timetable.module').then(m => m.TimetableModule),
+      },
     ],
   },
 ];

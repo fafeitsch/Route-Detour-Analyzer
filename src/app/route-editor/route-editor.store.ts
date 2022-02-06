@@ -24,6 +24,7 @@ const defaultLine = {
   stops: [],
   path: { waypoints: [], distTable: [] },
   color: '#000000',
+  timetable: [],
 };
 
 @Injectable()

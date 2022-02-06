@@ -1,0 +1,25 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<mat-sidenav-container class="h-100" *ngIf="line$ | async as line">
+  <mat-sidenav
+    mode="side"
+    [style.width.px]="400"
+    [opened]="true"
+    [disableClose]="true"
+  >
+    <route-diagram
+      *ngIf="durationToNext$ | async as durList"
+      class="h-100"
+      [stations]="line.stops"
+      [color]="line.color"
+      [stationTemplate]="stationTemplate"
+    >
+      <ng-template #stationTemplate let-index="index">
+        {{ index < durList.length - 1 ? durList[index] : '' }}
+      </ng-template>
+    </route-diagram>
+  </mat-sidenav>
+  <mat-sidenav-content class="d-flex flex-column"> </mat-sidenav-content>
+</mat-sidenav-container>

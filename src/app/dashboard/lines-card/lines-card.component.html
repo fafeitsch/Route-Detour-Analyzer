@@ -28,11 +28,17 @@
 
         <div class="d-flex flex-column w-100">
           <span>{{ line.name }}</span>
-          <div class="d-flex align-items-center flex-gap-2">
+          <div class="d-flex align-items-center flex-gap-4">
             <a
               class="themed mat-body-strong"
               [routerLink]="['route-editor', line.name]"
               >Route Editor</a
+            >
+            <a
+              class="themed mat-body-strong"
+              [routerLink]="['timetable', line.name]"
+            >
+              Timetable</a
             >
             <div class="flex-grow-1"></div>
           </div>

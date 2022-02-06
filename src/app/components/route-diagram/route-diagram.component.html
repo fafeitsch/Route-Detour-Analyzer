@@ -1,0 +1,41 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<div cdkDropListGroup class="h-100">
+  <div cdkDropList cdkDropListLockAxis="y" (cdkDropListDropped)="drop($event)">
+    <div
+      *ngFor="let stop of stations; index as i; last as last; first as first"
+      cdkDrag
+      [class.focused-stop]="focusedStation?.key === stop?.key"
+      [cdkDragDisabled]="dragDisabled"
+      [class.grab-cursor]="!dragDisabled"
+    >
+      <div
+        class="d-flex align-items-center"
+        (mouseenter)="hover(stop)"
+        (mouseleave)="unhover()"
+      >
+        <line-stop
+          [stopType]="stop.isWaypoint ? 'waypoint' : 'real'"
+          [isFirstStop]="first"
+          [isLastStop]="last"
+          [lineColor]="color"
+        ></line-stop>
+        <ng-container *ngIf="stop.name">
+          {{ stop.name }}
+        </ng-container>
+        <ng-container *ngIf="!stop.name" class="disabled"
+          >Unnamed Station
+        </ng-container>
+        <div class="flex-grow-1"></div>
+        <ng-container
+          *ngTemplateOutlet="
+            stationTemplate;
+            context: { index: i, station: stop }
+          "
+        ></ng-container>
+      </div>
+    </div>
+  </div>
+</div>

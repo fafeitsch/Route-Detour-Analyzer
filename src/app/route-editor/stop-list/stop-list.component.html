@@ -2,8 +2,8 @@
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
   ~ Find the full license text in the LICENSE file of the project root.
   -->
+
 <div
-  cdkDropListGroup
   *ngIf="line$ | async as line"
   class="p-3 flex-grow-1 d-flex flex-column overflow-hidden"
 >
@@ -28,31 +28,20 @@
   <div *ngIf="!line.stops.length" class="w-100 pt-2 pb-2 disabled">
     Click on the map to add a stop.
   </div>
-  <div
-    cdkDropList
-    cdkDropListLockAxis="y"
+  <route-diagram
     class="flex-grow-1 overflow-auto"
-    (cdkDropListDropped)="drop($event)"
+    [stations]="line.stops"
+    [color]="line.color"
+    [dragDisabled]="false"
+    [focusedStation]="focusedStop"
+    [stationTemplate]="deleteTemplate"
+    (focusStation)="setFocusedStop($event)"
+    (changeOrder)="changeStopOrder($event)"
   >
-    <div
-      *ngFor="let stop of line.stops; index as i; last as last"
-      cdkDrag
-      [class.focused-stop]="focusedStop?.key === stop?.key"
-      [cdkDragDisabled]="editedStops !== 0"
-    >
-      <stop-editor
-        [ngClass]="editedStops === 0 ? 'grab-cursor' : ''"
-        [stopName]="stop.name"
-        [isFirstStop]="i === 0"
-        [isLastStop]="last"
-        [lineColor]="line.color"
-        [isRealStop]="!stop.isWaypoint"
-        (click)="stationClicked(stop)"
-        (mouseenter)="setFocusedStop(stop)"
-        (mouseleave)="setFocusedStop(undefined)"
-        (delete)="deleteStop(i)"
-      >
-      </stop-editor>
-    </div>
-  </div>
+    <ng-template #deleteTemplate let-index="index">
+      <button mat-stroked-button color="primary" (click)="deleteStop(index)">
+        Delete
+      </button>
+    </ng-template>
+  </route-diagram>
 </div>

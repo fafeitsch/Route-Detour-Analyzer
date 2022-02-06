@@ -6,7 +6,6 @@ import { LatLng, Station } from '../+store/workbench';
 @Component({
   selector: 'station-manager',
   templateUrl: './station-manager.component.html',
-  styleUrls: ['./station-manager.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [StationManagerStore],
 })

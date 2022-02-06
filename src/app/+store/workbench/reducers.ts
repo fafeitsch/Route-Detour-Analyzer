@@ -15,6 +15,7 @@ export namespace DataModel {
   export interface Line {
     name: string;
     color: string;
+    timetable: Tour[];
     stops: Stop[];
     path: QueriedPath;
   }
@@ -26,6 +27,7 @@ export namespace Domain {
   export interface Line {
     name: string;
     color: string;
+    timetable: Tour[];
     stops: Station[];
     path: QueriedPath;
   }
@@ -56,6 +58,15 @@ export interface Station extends LatLng {
 export interface Workbench {
   stations: Station[];
   lines: DataModel.Line[];
+}
+
+export interface Tour {
+  stops: ArrivalDeparture[];
+}
+
+export interface ArrivalDeparture {
+  arrival: number;
+  departure: number;
 }
 
 const initialState: Workbench = { lines: [], stations: [] };
