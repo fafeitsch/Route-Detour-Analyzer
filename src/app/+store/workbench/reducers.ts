@@ -35,7 +35,6 @@ export namespace Domain {
 
 export interface QueriedPath {
   waypoints: Waypoint[];
-  distTable: number[][];
 }
 
 export interface LatLng {

@@ -3,31 +3,72 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { DetourService, SubPath } from './detour.service';
-import { Stop } from './route.service';
+import { RouteService } from './route.service';
+import { TestBed } from '@angular/core/testing';
+import { Station } from './+store/workbench';
 
 describe('DetourService#computeDetours', () => {
+  let service: DetourService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({ providers: [RouteService] });
+  });
+
   it('should return undefined if input is empty', () => {
-    const service = new DetourService();
-    const result = service.computeDetours([], []);
+    const result = service.computeDetours({ waypoints: [] }, []);
     expect(result).toBeUndefined();
   });
   it('should compute the correct result', () => {
     const input: SubPath[] = [
-      { startIndex: 1, endIndex: 5, path: { waypoints: [], distTable: [[0, 10], [0]] } },
-      { startIndex: 1, endIndex: 4, path: { waypoints: [], distTable: [[0, 8], [0]] } },
-      { startIndex: 2, endIndex: 3, path: { waypoints: [], distTable: [[0, 5], [0]] } },
-      { startIndex: 0, endIndex: 5, path: { waypoints: [], distTable: [[0, 18], [0]] } },
+      {
+        startIndex: 1,
+        endIndex: 5,
+        path: {
+          waypoints: [
+            { stop: true, dur: 10, dist: 10, lat: 0, lng: 0 },
+            { stop: true, dur: 0, dist: 0, lat: 0, lng: 0 },
+          ],
+        },
+      },
+      {
+        startIndex: 1,
+        endIndex: 4,
+        path: {
+          waypoints: [
+            { stop: true, dur: 8, dist: 8, lat: 0, lng: 0 },
+            { stop: true, dur: 0, dist: 0, lat: 0, lng: 0 },
+          ],
+        },
+      },
+      {
+        startIndex: 2,
+        endIndex: 3,
+        path: {
+          waypoints: [
+            { stop: true, dur: 5, dist: 5, lat: 0, lng: 0 },
+            { stop: true, dur: 0, dist: 0, lat: 0, lng: 0 },
+          ],
+        },
+      },
+      {
+        startIndex: 0,
+        endIndex: 5,
+        path: {
+          waypoints: [
+            { stop: true, dur: 18, dist: 18, lat: 0, lng: 0 },
+            { stop: true, dur: 0, dist: 0, lat: 0, lng: 0 },
+          ],
+        },
+      },
     ];
-    const originalDistances = [
-      [0, 10, 20, 30, 40, 50],
-      [0, 0, 10, 20, 30, 40],
-      [0, 0, 0, 10, 20, 30],
-      [0, 0, 0, 0, 10, 10],
-      [0, 0, 0, 0, 0, 10],
-      [0, 0, 0, 0, 0, 0],
-    ];
-    const service = new DetourService();
-    const result = service.computeDetours(originalDistances, input);
+    const path = {
+      waypoints: new Array(6)
+        .map((_, i) => (i + 1) * 10)
+        .map(dist => ({ stop: true, dist, dur: dist, lat: 0, lng: 0 })),
+    };
+    path.waypoints[path.waypoints.length - 1].dist = 0;
+    path.waypoints[path.waypoints.length - 1].dur = 0;
+    const result = service.computeDetours(path, input);
     expect(result).toBeDefined();
     expect(result!.averageDetour).toBeCloseTo(3.13, 0.001);
     expect(result!.smallestDetour!.absolute).toBe(5);
@@ -45,26 +86,30 @@ describe('DetourService#computeDetours', () => {
   });
 });
 
-const mockLine: Stop[] = [
-  { name: 'Main Station', realStop: true, lng: 0, lat: 0 },
-  { name: 'Waypoint', realStop: false, lng: 0, lat: 0 },
-  { name: 'Mall', realStop: true, lng: 0, lat: 0 },
-  { name: 'Castle', realStop: true, lng: 0, lat: 0 },
-  { name: 'Waypoint', realStop: false, lng: 0, lat: 0 },
-  { name: 'Court', realStop: true, lng: 0, lat: 0 },
-  { name: 'Waypoint', realStop: false, lng: 0, lat: 0 },
-  { name: 'Theater', realStop: true, lng: 0, lat: 0 },
-];
+const mockLine: Station[] = [
+  { name: 'Main Station' },
+  { name: 'Waypoint', isWaypoint: true },
+  { name: 'Mall' },
+  { name: 'Castle' },
+  { name: 'Waypoint', isWaypoint: true },
+  { name: 'Court' },
+  { name: 'Waypoint', isWaypoint: true },
+  { name: 'Theater' },
+].map(station => ({ ...station, key: station.name, lat: 0, lng: 0 }));
 
 describe('DetourService#createQueryPairs', () => {
+  let service: DetourService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({ providers: [RouteService] });
+  });
+
   it('should not crash with index out of bounds', () => {
-    const service = new DetourService();
     const queryPairs = service.createQueryPairs(mockLine, -1);
     expect(queryPairs.length).toBeFalsy();
   });
 
   it('should give only the whole line', () => {
-    const service = new DetourService();
     const queryPairs = service.createQueryPairs([...mockLine], 0);
     expect(queryPairs.length).toBe(1);
     expect(queryPairs[0].source.lat).toBe(mockLine[0].lat);
@@ -74,7 +119,6 @@ describe('DetourService#createQueryPairs', () => {
   });
 
   it('should ignore non-stops', () => {
-    const service = new DetourService();
     const queryPairs = service.createQueryPairs([...mockLine], 3);
     expect(queryPairs.length).toBe(10);
     expect(queryPairs[4].source.lat).toBe(mockLine[2].lat);

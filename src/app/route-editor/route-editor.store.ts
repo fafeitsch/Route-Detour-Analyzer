@@ -31,8 +31,7 @@ const defaultLine = {
 export class RouteEditorStore extends ComponentStore<State> {
   readonly line$ = super.select(state => state.line);
   readonly totalDistance$ = this.line$.pipe(
-    map(line => line.path?.distTable || []),
-    map(table => (table.length === 0 ? 0 : table[0][table.length - 1]))
+    map(line => line.path.waypoints.map(wp => wp.dist).reduce((acc, curr) => acc + curr, 0))
   );
   readonly uncommitedChanges$ = super.select(state => state.uncommitedChanges);
   readonly lineError$ = super.select(state => state.lineError);

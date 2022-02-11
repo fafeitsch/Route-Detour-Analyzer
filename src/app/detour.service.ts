@@ -3,7 +3,8 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { Injectable } from '@angular/core';
-import { DataModel, QueriedPath, Station } from './+store/workbench';
+import { QueriedPath, Station } from './+store/workbench';
+import { RouteService } from './route.service';
 
 export interface DetourResult {
   averageDetour: number;
@@ -32,11 +33,15 @@ export interface SubPath {
 
 @Injectable({ providedIn: 'root' })
 export class DetourService {
-  computeDetours(originalDistances: number[][], paths: SubPath[]): DetourResult {
+  constructor(private readonly routeService: RouteService) {}
+
+  computeDetours(path: QueriedPath, paths: SubPath[]): DetourResult {
+    console.log(paths, path);
     if (!paths.length) {
       return { averageDetour: 0 };
     }
-    const mapToLength = (sub: SubPath) => sub.path.distTable[0][1];
+    const originalDistances = this.computeDistanceTable(path);
+    const mapToLength = (sub: SubPath) => this.computeDistanceTable(sub.path)[0][1];
     const detailedResults = paths
       .map(p => ({
         absolute: originalDistances[p.startIndex][p.endIndex] - mapToLength(p),
@@ -72,6 +77,20 @@ export class DetourService {
         result.push({ source: { ...stop, index }, target: { ...target, index: targetIndex + index + 1 } });
       });
     });
+    return result;
+  }
+
+  private computeDistanceTable(path: QueriedPath) {
+    const legs = this.routeService.buildRouteLegs(path);
+    const result: number[][] = [...legs.map(_ => [...legs.map(_ => 0), 0]), [0]];
+    for (let i = 0; i < legs.length; i++) {
+      let currentDistance = 0;
+      for (let j = i; j < legs.length; j++) {
+        result[i][j] = currentDistance;
+        currentDistance = currentDistance + legs[j].distance;
+      }
+      result[i][legs.length] = currentDistance;
+    }
     return result;
   }
 }

@@ -60,6 +60,26 @@ export class RouteService {
     );
   }
 
+  public buildRouteLegs(path: QueriedPath): { distance: number; duration: number }[] {
+    let duration = 0;
+    let distance = 0;
+    const result: { distance: number; duration: number }[] = [];
+    path.waypoints?.forEach((wp, index) => {
+      if (index === 0) {
+        return;
+      }
+      if (wp.stop) {
+        result.push({ duration, distance });
+        duration = 0;
+        distance = 0;
+      }
+      duration = duration + wp.dur;
+      distance = distance + wp.dist;
+    });
+    result.push({ duration, distance });
+    return result;
+  }
+
   private buildLegsDistanceTable(route: Route) {
     const result: number[][] = [...route.legs.map(_ => [...route.legs.map(_ => 0), 0]), [0]];
     for (let i = 0; i < route.legs.length; i++) {

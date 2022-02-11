@@ -3,7 +3,7 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { ComponentStore } from '@ngrx/component-store';
-import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { combineLatest, EMPTY, forkJoin, Observable } from 'rxjs';
 import { DetailResult, DetourResult, DetourService, SubPath } from '../../detour.service';
@@ -56,7 +56,6 @@ export class StatisticsViewerStore extends ComponentStore<State> {
 
   readonly setAverageDetour = super.effect(() =>
     combineLatest([this.cap$, this.store.line$]).pipe(
-      filter(([_, line]) => line.path?.distTable.length === line.stops.length),
       switchMap(([cap, line]) => {
         const sources = this.queryAllPaths(line.stops, cap);
         if (sources.length === 0) {
@@ -72,7 +71,7 @@ export class StatisticsViewerStore extends ComponentStore<State> {
       }),
       map<[SubPath[], Line], [Line, DetourResult]>(([sub, line]) => [
         line,
-        this.detourService.computeDetours(line.path?.distTable || [], sub),
+        this.detourService.computeDetours(line.path, sub),
       ]),
       tap(([line, detour]) =>
         super.patchState({
