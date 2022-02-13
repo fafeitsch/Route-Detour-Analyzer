@@ -2,24 +2,58 @@
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
   ~ Find the full license text in the LICENSE file of the project root.
   -->
-<mat-sidenav-container class="h-100" *ngIf="line$ | async as line">
+<mat-sidenav-container *ngIf="line$ | async as line" class="w-100">
+  <mat-sidenav-content>
+    <div class="p-3 primary-light-background w-100">Experimental View</div>
+    <div class="d-flex">
+      <route-diagram
+        *ngIf="durationToNext$ | async as durList"
+        class="flex-shrink-0 route-diagram"
+        [stations]="line.stops"
+        [color]="line.color"
+        [lowerTemplate]="durationTemplate"
+      >
+        <ng-template #durationTemplate let-index="index" let-last="last">
+          <div *ngIf="!last" class="disabled pr-3">
+            ↓ {{ durList[index] }} minute{{ durList[index] > 1 ? 's' : '' }}
+          </div>
+        </ng-template>
+      </route-diagram>
+      <div *ngIf="tours$ | async as tours" class="d-flex flex-gap-3 mt-2 ml-3">
+        <timetable-column
+          *ngFor="let tour of tours; index as index; trackBy: trackByUuid"
+          [tour]="tour"
+          [selected]="selectedTourIndex === index"
+          (selectTour)="selectTour(tour, index)"
+          (changeEvent)="modifyTime(index, $event.eventIndex, $event.event)"
+        ></timetable-column>
+      </div>
+    </div>
+  </mat-sidenav-content>
   <mat-sidenav
+    class="p-3"
     mode="side"
-    [style.width.px]="400"
+    position="end"
+    [style.width.px]="343"
     [opened]="true"
-    [disableClose]="true"
   >
-    <route-diagram
-      *ngIf="durationToNext$ | async as durList"
-      class="h-100"
-      [stations]="line.stops"
-      [color]="line.color"
-      [stationTemplate]="stationTemplate"
-    >
-      <ng-template #stationTemplate let-index="index">
-        {{ index < durList.length - 1 ? durList[index] : '' }}
-      </ng-template>
-    </route-diagram>
+    <edit-tour-panel
+      class="w-100"
+      [editMode]="selectedTourIndex !== undefined"
+      [tour]="selectedTour"
+      (tourChanged)="editTour($event)"
+      (deleteTour)="deleteTour()"
+    ></edit-tour-panel>
   </mat-sidenav>
-  <mat-sidenav-content class="d-flex flex-column"> </mat-sidenav-content>
 </mat-sidenav-container>
+
+<toolbar>
+  <button
+    mat-raised-button
+    color="accent"
+    [disabled]="!(dirty$ | async)"
+    (click)="commit()"
+  >
+    Save
+  </button>
+</toolbar>

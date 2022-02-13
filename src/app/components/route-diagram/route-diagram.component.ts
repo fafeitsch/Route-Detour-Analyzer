@@ -17,10 +17,13 @@ export class RouteDiagramComponent {
   @Input() stations: Station[] = [];
   @Input() dragDisabled = true;
   @Input() focusedStation: Station | undefined = undefined;
-  @Input() stationTemplate: TemplateRef<any> | undefined = undefined;
+  @Input() lowerTemplate: TemplateRef<any> | undefined = undefined;
+  @Input() rightTemplate: TemplateRef<any> | undefined = undefined;
 
   @Output() changeOrder = new EventEmitter<{ from: number; to: number }>();
   @Output() focusStation = new EventEmitter<Station | undefined>();
+
+  computedClass = 'test';
 
   drop(event: CdkDragDrop<Station[]>) {
     this.changeOrder.emit({ from: event.previousIndex, to: event.currentIndex });

@@ -8,13 +8,14 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'inline-editor',
   templateUrl: './inline-editor.component.html',
-  host: { class: 'd-flex align-items-flex-center w-100 ov-hidden' },
+  host: { class: 'd-flex align-items-center w-100 ov-hidden' },
   styles: ['.text{cursor: text}'],
 })
 export class InlineEditorComponent {
   @Input() text = '';
   @Input() emptyPlaceholder = '';
   @Input() additionalActionLabel: string | undefined = undefined;
+  @Input() fieldWidth: number | undefined = undefined;
   @Output() enterEditMode = new EventEmitter<void>();
   @Output() leaveEditMode = new EventEmitter<void>();
   @Output() changeText = new EventEmitter<string>();

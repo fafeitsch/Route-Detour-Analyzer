@@ -1,0 +1,28 @@
+/*!
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT).
+ * Find the full license text in the LICENSE file of the project root.
+ */
+
+.timetable-column {
+  min-width: 180px;
+  mat-form-field {
+    width: 60px;
+  }
+  .mat-form-field-infix{
+    padding: 0;
+    top: 0;
+    border-top: 0;
+  }
+  .mat-form-field-label-wrapper {
+    padding: 0;
+    top: 0;
+  }
+  .selector-handle {
+    width: 7px;
+    z-index: 5;
+  }
+
+  .vertical {
+    writing-mode: sideways-rl;
+  }
+}

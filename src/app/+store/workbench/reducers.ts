@@ -7,15 +7,17 @@ import {
   importSampleLines,
   lineDeleted,
   lineSavedInRouteEditor,
+  lineSavedInTimetableEditor,
   linesImported,
   persistStationManagerChange,
 } from './actions';
+import { TimeString } from './time';
 
 export namespace DataModel {
   export interface Line {
     name: string;
     color: string;
-    timetable: Tour[];
+    timetable: Timetable;
     stops: Stop[];
     path: QueriedPath;
   }
@@ -27,7 +29,7 @@ export namespace Domain {
   export interface Line {
     name: string;
     color: string;
-    timetable: Tour[];
+    timetable: Timetable;
     stops: Station[];
     path: QueriedPath;
   }
@@ -59,13 +61,19 @@ export interface Workbench {
   lines: DataModel.Line[];
 }
 
+export interface Timetable {
+  tours: Tour[];
+}
+
 export interface Tour {
-  stops: ArrivalDeparture[];
+  events: ArrivalDeparture[];
+  intervalMinutes?: number;
+  lastTour?: TimeString;
 }
 
 export interface ArrivalDeparture {
-  arrival: number;
-  departure: number;
+  arrival?: TimeString;
+  departure?: TimeString;
 }
 
 const initialState: Workbench = { lines: [], stations: [] };
@@ -75,7 +83,7 @@ export const WorkbenchReducer = createReducer(
   on(linesImported, importSampleLines, (state, { workbench }) => {
     return { ...state, ...workbench };
   }),
-  on(lineSavedInRouteEditor, (state, { oldName, line }) => {
+  on(lineSavedInRouteEditor, lineSavedInTimetableEditor, (state, { oldName, line }) => {
     oldName = oldName || line.name;
     return {
       ...state,

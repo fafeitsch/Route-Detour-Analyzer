@@ -13,6 +13,10 @@ export const lineSavedInRouteEditor = createAction(
   '[Route Editor] Change Line',
   props<{ oldName: string; line: Line }>()
 );
+export const lineSavedInTimetableEditor = createAction(
+  '[Timetable Editor] Change Line',
+  props<{ oldName: string; line: Line }>()
+);
 
 export const stationManagerChange = createAction(
   '[Station Manager] Commit',

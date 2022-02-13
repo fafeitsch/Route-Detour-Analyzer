@@ -1,0 +1,32 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<div
+  class="pointer-cursor selector-handle h-100"
+  [class.primary-light-background]="!selected"
+  [class.primary-background]="selected"
+  (click)="selectHandlerClicked()"
+></div>
+<div class="d-flex flex-column">
+  <div
+    *ngFor="let event of events || []; index as eventNo"
+    class="d-flex flex-gap-3 pl-2 pr-3"
+    [style.height.px]="55"
+    [class.primary-light-background]="selected"
+  >
+    <mat-form-field>
+      <label class="disabled mat-small">Arrival</label>
+      <input matInput [formControl]="arrivalControls[eventNo]" />
+      <mat-error *ngIf="!arrivalControls[eventNo].valid">Format!</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <label class="disabled mat-small">Departure</label>
+      <input matInput [formControl]="departureControls[eventNo]" />
+      <mat-error *ngIf="!departureControls[eventNo].valid">Format!</mat-error>
+    </mat-form-field>
+  </div>
+</div>
+<div *ngIf="lastTour && interval" class="disabled vertical">
+  Every {{ interval }} minutes until {{ lastTour }}
+</div>

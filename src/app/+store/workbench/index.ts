@@ -6,3 +6,4 @@ export * from './workbench-data.module';
 export * from './actions';
 export { lines } from './selectors';
 export * from './reducers';
+export * from './time';

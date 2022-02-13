@@ -8,8 +8,8 @@
       *ngFor="let stop of stations; index as i; last as last; first as first"
       cdkDrag
       [class.focused-stop]="focusedStation?.key === stop?.key"
-      [cdkDragDisabled]="dragDisabled"
       [class.grab-cursor]="!dragDisabled"
+      [cdkDragDisabled]="dragDisabled"
     >
       <div
         class="d-flex align-items-center"
@@ -22,17 +22,25 @@
           [isLastStop]="last"
           [lineColor]="color"
         ></line-stop>
-        <ng-container *ngIf="stop.name">
-          {{ stop.name }}
-        </ng-container>
-        <ng-container *ngIf="!stop.name" class="disabled"
-          >Unnamed Station
-        </ng-container>
+        <div class="d-flex flex-column justify-content-center flex-shrink-0">
+          <span *ngIf="stop.name">
+            {{ stop.name }}
+          </span>
+          <ng-container *ngIf="!stop.name" class="disabled"
+            >Unnamed Station
+          </ng-container>
+          <ng-container
+            *ngTemplateOutlet="
+              lowerTemplate;
+              context: { index: i, station: stop, last: last }
+            "
+          ></ng-container>
+        </div>
         <div class="flex-grow-1"></div>
         <ng-container
           *ngTemplateOutlet="
-            stationTemplate;
-            context: { index: i, station: stop }
+            rightTemplate;
+            context: { index: i, station: stop, last: last }
           "
         ></ng-container>
       </div>

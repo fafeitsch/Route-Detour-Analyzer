@@ -11,6 +11,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [RouteDiagramComponent],
   exports: [RouteDiagramComponent],
-  imports: [CommonModule, LineStopModule, DragDropModule],
+  imports: [CommonModule, DragDropModule, LineStopModule],
 })
 export class RouteDiagramModule {}

@@ -76,7 +76,13 @@ export class RouteService {
       duration = duration + wp.dur;
       distance = distance + wp.dist;
     });
-    result.push({ duration, distance });
+    // the last way point must be a stop, if not a bug happened somewhere else
+    if (distance || duration) {
+      console.error(
+        "The path is erroneous because it doesn't end with a stop (or a waypoint). Such lines should not exist. The built route legs might lead to strange results",
+        path
+      );
+    }
     return result;
   }
 

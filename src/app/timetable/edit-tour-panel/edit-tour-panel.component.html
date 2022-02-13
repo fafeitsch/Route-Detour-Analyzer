@@ -1,0 +1,84 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<form class="d-flex flex-column w-100" (ngSubmit)="save($event)">
+  <mat-form-field>
+    <input
+      matInput
+      type="text"
+      placeholder="Tour Begin*"
+      [formControl]="startControl //noinspection ValidateTypes"
+    />
+    <mat-error *ngIf="startControl.invalid">
+      <ng-container *ngIf="startControl.errors.required"
+        >Required.</ng-container
+      >
+      <ng-container *ngIf="startControl.errors.invalidTimeFormat"
+        >Time must be given in format hh:mm (24h format).</ng-container
+      >
+      <ng-container *ngIf="startControl.errors.impossibleConfig"
+        >The start time must be smaller than the last tour.</ng-container
+      >
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Interval"
+      [formControl]="intervalControl //noinspection ValidateTypes"
+    />
+    <mat-error *ngIf="intervalControl.invalid">
+      <ng-container *ngIf="intervalControl.errors.pattern"
+        >The interval must be given in minutes (numeric).</ng-container
+      >
+      <ng-container *ngIf="intervalControl.errors.min"
+        >The interval must be at least one minute.</ng-container
+      >
+      <ng-container *ngIf="intervalControl.errors.max"
+        >The interval must be at most 180 minutes.</ng-container
+      >
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      type="text"
+      placeholder="Last Tour"
+      [formControl]="lastTourControl //noinspection ValidateTypes"
+    />
+    <mat-error *ngIf="lastTourControl.errors">
+      <ng-container *ngIf="lastTourControl.errors.invalidTimeFormat"
+        >Time must be given in format hh:mm (24h format).</ng-container
+      >
+      <ng-container *ngIf="lastTourControl.errors.impossibleConfig"
+        >The start time must be smaller than the last tour.</ng-container
+      >
+    </mat-error>
+  </mat-form-field>
+  <div
+    *ngIf="actualLastTour && actualLastTour !== lastTourControl.value"
+    class="disabled"
+  >
+    The given interval doesn't fit with the time of the last tour. The actual
+    last tour will start at {{ actualLastTour }}.
+  </div>
+  <div class="d-flex justify-content-end flex-gap-2 mt-3">
+    <button
+      *ngIf="editMode"
+      mat-stroked-button
+      color="primary"
+      (click)="delete()"
+    >
+      Delete
+    </button>
+    <button
+      mat-stroked-button
+      color="primary"
+      type="submit"
+      [disabled]="formGroup.invalid"
+    >
+      {{ editMode ? 'Edit' : 'Create' }}
+    </button>
+  </div>
+</form>

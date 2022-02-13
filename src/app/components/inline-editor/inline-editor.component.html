@@ -11,7 +11,10 @@
 <span *ngIf="!editMode && !text" class="flex-grow-1" (click)="toggleEdit()"
   ><em>{{ emptyPlaceholder }}</em></span
 >
-<mat-form-field *ngIf="editMode" class="mr-2 flex-grow-1"
+<mat-form-field
+  *ngIf="editMode"
+  class="mr-2 flex-grow-1"
+  [style.width.px]="fieldWidth"
   ><input
     matInput
     [value]="text"

@@ -34,8 +34,6 @@ import { Component, Input } from '@angular/core';
   host: { style: 'height: 55px' },
 })
 export class LineStopComponent {
-  size = 55;
-
   @Input() stopType: 'real' | 'waypoint' | 'none' = 'none';
   @Input() isFirstStop: boolean = false;
   @Input() isLastStop: boolean = false;
@@ -51,6 +49,7 @@ export class LineStopComponent {
     }
   }
 
+  size = 55;
   color1 = 'rgb(15.294118%,38.431373%,20.784314%)';
   color2 = 'rgb(85.098039%,75.294118%,13.333333%)';
 }

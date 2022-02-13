@@ -2,3 +2,16 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
+.timetable-grid {
+  display: grid;
+}
+
+.route-diagram {
+  position: -webkit-sticky; //Safari
+  position: sticky;
+  left: 0;
+}
+
+mat-sidenav-container {
+  background: #FFFFFF;
+}

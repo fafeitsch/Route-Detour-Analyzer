@@ -36,7 +36,6 @@ export class DetourService {
   constructor(private readonly routeService: RouteService) {}
 
   computeDetours(path: QueriedPath, paths: SubPath[]): DetourResult {
-    console.log(paths, path);
     if (!paths.length) {
       return { averageDetour: 0 };
     }
