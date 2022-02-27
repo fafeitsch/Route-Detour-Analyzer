@@ -1,0 +1,15 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<mat-card class="mt-3 ml-3 d-flex flex-column">
+  <mat-card-title>Stations</mat-card-title>
+  <mat-card-content class="d-flex pt-5 flex-gap-3 justify-content-spaced">
+    <span
+      >{{ stations.length }} Stations and {{ waypoints.length }} Waypoints</span
+    >
+    <a class="mb-3 themed mat-body-strong" [routerLink]="['stations']">
+      Manage
+    </a>
+  </mat-card-content>
+</mat-card>

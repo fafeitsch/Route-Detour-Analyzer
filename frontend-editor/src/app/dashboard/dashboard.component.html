@@ -1,0 +1,27 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<mat-grid-list
+  class="flex-grow-1"
+  rowHeight="fit"
+  [gutterSize]="'0px'"
+  [cols]="4"
+>
+  <mat-grid-tile rowspan="4" colspan="2">
+    <lines-card [lines]="lines$ | async" class="w-100 h-100"> </lines-card>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="2" rowspan="6">
+    <overview-map [stations]="stations$ | async" [lines]="lines$ | async" class="h-100 w-100"></overview-map>
+  </mat-grid-tile>
+  <mat-grid-tile rowspan="2">
+    <settings-card class="w-100 h-100"></settings-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <station-card *ngIf="stations$ | async" [stations]="stations$ |async" [waypoints]="waypoints$ | async" class="w-100 h-100"></station-card>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<toolbar>
+  <import-export></import-export>
+</toolbar>
