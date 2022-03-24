@@ -34,10 +34,10 @@ func TestManager_DeleteStation(t *testing.T) {
 	require.NoError(t, err)
 	t.Run("delete existing station", func(t *testing.T) {
 		t.Parallel()
-		_, ok := manager.Station("belvedere")
+		_, ok := manager.Station("zmdfh1U3G6")
 		assert.True(t, ok)
-		manager.DeleteStation("belvedere")
-		_, ok = manager.Station("belvedere")
+		manager.DeleteStation("zmdfh1U3G6")
+		_, ok = manager.Station("zmdfh1U3G6")
 		assert.False(t, ok)
 	})
 	t.Run("delete non existing station", func(t *testing.T) {
@@ -58,7 +58,7 @@ func TestManager_SaveLine(t *testing.T) {
 		_, ok := manager.Line("randomKey")
 		assert.False(t, ok)
 		line := manager.SaveLine(Line{
-			Stops: []string{"belvedere", "brunnenstraße"},
+			Stops: []string{"zmdfh1U3G6", "ZcA9vNW4Da"},
 			Path:  nil,
 			Name:  "Line A: New",
 			Color: "blue",
@@ -75,7 +75,7 @@ func TestManager_SaveLine(t *testing.T) {
 	t.Run("save line with empty key", func(t *testing.T) {
 		t.Parallel()
 		line := manager.SaveLine(Line{
-			Stops: []string{"belvedere", "brunnenstraße"},
+			Stops: []string{"zmdfh1U3G6", "ZcA9vNW4Da"},
 			Path:  nil,
 			Name:  "Line A: New",
 			Color: "blue",
@@ -93,7 +93,7 @@ func TestManager_SaveLine(t *testing.T) {
 		t.Parallel()
 		assert.PanicsWithValue(t, "no stop with name \"any stop\" exists", func() {
 			manager.SaveLine(Line{
-				Stops: []string{"belvedere", "any stop"},
+				Stops: []string{"zmdfh1U3G6", "any stop"},
 			})
 		})
 	})
@@ -136,7 +136,7 @@ func TestStation_Lines(t *testing.T) {
 	manager, err := New(filepath.Join("../testdata/wuerzburg.json"))
 	require.NoError(t, err)
 
-	station, ok := manager.Station("annastraße")
+	station, ok := manager.Station("jubhF5kI2k")
 	assert.True(t, ok)
 	lines := station.Lines()
 	assert.Equal(t, 6, len(lines))

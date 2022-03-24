@@ -11,40 +11,34 @@ type Scenario struct {
 }
 
 type Station struct {
-	Key        string  `json:"key"`
-	Name       string  `json:"name"`
-	Lat        float64 `json:"lat"`
-	Lng        float64 `json:"lng"`
-	IsWaypoint bool    `json:"isWaypoint"`
+	Key        string `json:"key"`
+	Name       string `json:"name"`
+	LatLng     string `json:"latLng"`
+	IsWaypoint bool   `json:"isWaypoint"`
 }
 
 type Line struct {
-	Stops     []Stop    `json:"stops"`
+	Stops     []string  `json:"stops,omitempty"`
 	Path      Path      `json:"path"`
 	Name      string    `json:"name"`
 	Color     string    `json:"color"`
 	Key       string    `json:"key"`
-	Timetable Timetable `json:"timetable"`
-}
-
-type Stop struct {
-	Key string `json:"key"`
+	Timetable Timetable `json:"timetable,omitempty"`
 }
 
 type Path struct {
-	Waypoints []Waypoint `json:"waypoints"`
+	Geometry string      `json:"geometry"`
+	Meta     []MetaCoord `json:"meta"`
 }
 
-type Waypoint struct {
-	Lat  float64 `json:"lat"`
-	Lng  float64 `json:"lng"`
-	Dist float64 `json:"dist"`
-	Dur  float64 `json:"dur"`
-	Stop bool    `json:"stop"`
+type MetaCoord struct {
+	Dist float64 `json:"dist,omitempty"`
+	Dur  float64 `json:"dur,omitempty"`
+	Stop bool    `json:"stop,omitempty"`
 }
 
 type Timetable struct {
-	Tours []Tour `json:"tours"`
+	Tours []Tour `json:"tours,omitempty"`
 }
 
 type Tour struct {

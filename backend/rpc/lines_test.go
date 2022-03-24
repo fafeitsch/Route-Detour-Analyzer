@@ -1,7 +1,6 @@
 package rpc
 
 import (
-	"backend/persistence"
 	"backend/scenario"
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
@@ -42,7 +41,7 @@ func TestLineHandler_SaveLine(t *testing.T) {
 		dur := []float64{45, 0}
 		dist := []float64{32, 0}
 		changedLine := Line{
-			Stops: []string{"barbarossaplatz", "erthalstraße2", "belvedere"},
+			Stops: []string{"ORxFvp_ICt", "7kOE25kjY6", "zmdfh1U3G6"},
 			Path: []Waypoint{
 				{
 					Lat:  0,
@@ -63,17 +62,17 @@ func TestLineHandler_SaveLine(t *testing.T) {
 		createdLine, _ := manager.Line("7BNJI4rUT6")
 		assert.Equal(t, "Line A → Testland", createdLine.Name)
 		assert.Equal(t, 3, len(createdLine.Stops))
-		assert.Equal(t, "belvedere", createdLine.Stops[2])
+		assert.Equal(t, "zmdfh1U3G6", createdLine.Stops[2])
 		assert.Equal(t, "yellow", createdLine.Color)
 		assert.Equal(t, 2, len(createdLine.Path))
-		assert.Equal(t, persistence.Waypoint{
+		assert.Equal(t, scenario.Waypoint{
 			Lat:  0,
 			Lng:  1,
 			Dur:  45,
 			Dist: 32,
 			Stop: true,
 		}, createdLine.Path[0])
-		assert.Equal(t, persistence.Waypoint{
+		assert.Equal(t, scenario.Waypoint{
 			Lat:  1,
 			Lng:  2,
 			Dur:  0,
@@ -84,7 +83,7 @@ func TestLineHandler_SaveLine(t *testing.T) {
 	t.Run("stop not found", func(t *testing.T) {
 		changedLine := Line{
 			Key:   "7BNJI4rUT6",
-			Stops: []string{"barbarossaplatz", "does not exist", "belvedere"},
+			Stops: []string{"ORxFvp_ICt", "does not exist", "zmdfh1U3G6"},
 		}
 		result, err := handler.saveLine(mustMarshal(changedLine))
 		assert.Nil(t, result)
@@ -112,15 +111,15 @@ func TestLineHandler_QueryLine(t *testing.T) {
 		assert.Equal(t, "7BNJI4rUT6", line.Key)
 		assert.Equal(t, "Barbarossaplatz", line.Stations[2].Name)
 		assert.False(t, line.Stations[2].IsWaypoint)
-		assert.Equal(t, 49.797446, line.Stations[2].Lat)
+		assert.Equal(t, 49.79745, line.Stations[2].Lat)
 		assert.Equal(t, 9.93503, line.Stations[2].Lng)
 		assert.Equal(t, 15, len(line.Stations))
 		assert.Equal(t, 232, len(line.Path))
 		assert.Equal(t, 15, len(line.Stops))
 		zero := 0.0
 		assert.Equal(t, Waypoint{
-			Lat:  49.78949,
-			Lng:  9.980310,
+			Lat:  49.789489999999894,
+			Lng:  9.980310000000014,
 			Dist: &zero,
 			Dur:  &zero,
 			Stop: true,
@@ -157,8 +156,8 @@ func TestLineHandler_GetLinePaths(t *testing.T) {
 	assert.Nil(t, lines[5].Stops)
 	assert.Equal(t, "#179e20", lines[5].Color)
 	assert.Equal(t, Waypoint{
-		Lat:  49.77383,
-		Lng:  9.92666,
+		Lat:  49.77382999999999,
+		Lng:  9.926659999999998,
 		Dist: nil,
 		Dur:  nil,
 		Stop: false,

@@ -54,9 +54,9 @@ func mapToDtoLine(line scenario.Line) Line {
 }
 
 func mapToVoLine(line Line) scenario.Line {
-	path := make([]persistence.Waypoint, 0, len(line.Path))
+	path := make([]scenario.Waypoint, 0, len(line.Path))
 	for _, waypoint := range line.Path {
-		path = append(path, persistence.Waypoint{
+		path = append(path, scenario.Waypoint{
 			Lat:  waypoint.Lat,
 			Lng:  waypoint.Lng,
 			Dist: *waypoint.Dist,

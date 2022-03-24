@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	gonanoid "github.com/matoous/go-nanoid"
+	polyline2 "github.com/twpayne/go-polyline"
 	"os"
 	"sort"
 	"sync"
@@ -34,12 +35,20 @@ func (s *Station) Lines() []Line {
 
 type Line struct {
 	Stops     []string
-	Path      []persistence.Waypoint
+	Path      []Waypoint
 	Name      string
 	Color     string
 	Key       string
 	Timetable persistence.Timetable
 	manager   *Manager
+}
+
+type Waypoint struct {
+	Lat  float64
+	Lng  float64
+	Dist float64
+	Dur  float64
+	Stop bool
 }
 
 func (l *Line) Stations() []Station {
@@ -71,31 +80,56 @@ func New(path string) (*Manager, error) {
 	stations := make(map[string]Station)
 	manager := Manager{lines: lines, stations: stations, mutex: sync.RWMutex{}}
 	for _, line := range scenario.Lines {
-		stops := make([]string, 0, len(line.Stops))
-		for _, stop := range line.Stops {
-			stops = append(stops, stop.Key)
+		waypoints, err := convertWaypoints(line.Path)
+		if err != nil {
+			return nil, fmt.Errorf("could not understand path of line \"%s\": %v", line.Name, err)
 		}
 		lines[line.Key] = Line{
-			Path:      line.Path.Waypoints,
+			Path:      waypoints,
 			Name:      line.Name,
 			Color:     line.Color,
 			Key:       line.Key,
-			Stops:     stops,
+			Stops:     line.Stops,
 			manager:   &manager,
 			Timetable: line.Timetable,
 		}
 	}
 	for _, station := range scenario.Stations {
+		latLng, _, err := polyline2.DecodeCoord([]byte(station.LatLng))
+		if err != nil {
+			return nil, fmt.Errorf("could not parse latlng of station \"%s\": %v", station.Name, err)
+		}
 		stations[station.Key] = Station{
 			Key:        station.Key,
 			Name:       station.Name,
-			Lat:        station.Lat,
-			Lng:        station.Lng,
+			Lat:        latLng[0],
+			Lng:        latLng[1],
 			IsWaypoint: station.IsWaypoint,
 			manager:    &manager,
 		}
 	}
 	return &manager, nil
+}
+
+func convertWaypoints(path persistence.Path) ([]Waypoint, error) {
+	coords, _, err := polyline2.DecodeCoords([]byte(path.Geometry))
+	if err != nil {
+		return nil, fmt.Errorf("could not parse path geometry: %v", err)
+	}
+	if len(coords) != len(path.Meta) {
+		return nil, fmt.Errorf("the length of the path's meta %d is not equal to the geometry lenght %d", len(path.Meta), len(coords))
+	}
+	waypoints := make([]Waypoint, 0, len(coords))
+	for index, coord := range coords {
+		waypoints = append(waypoints, Waypoint{
+			Lat:  coord[0],
+			Lng:  coord[1],
+			Dist: path.Meta[index].Dist,
+			Dur:  path.Meta[index].Dur,
+			Stop: path.Meta[index].Stop,
+		})
+	}
+	return waypoints, nil
 }
 
 func (m *Manager) Line(key string) (Line, bool) {

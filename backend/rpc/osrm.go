@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"backend/persistence"
+	"backend/scenario"
 	"encoding/json"
 	"fmt"
 	polyline2 "github.com/twpayne/go-polyline"
@@ -66,7 +66,7 @@ func (o *osrmHandler) queryRoute(params json.RawMessage) (json.RawMessage, error
 	return result, nil
 }
 
-func QueryRoute(url string, request []LatLng) ([]persistence.Waypoint, error) {
+func QueryRoute(url string, request []LatLng) ([]scenario.Waypoint, error) {
 	raw := make([][]float64, 0, len(request))
 	for _, coordinate := range request {
 		raw = append(raw, []float64{coordinate.Lat, coordinate.Lng})
@@ -82,7 +82,7 @@ func QueryRoute(url string, request []LatLng) ([]persistence.Waypoint, error) {
 		return nil, fmt.Errorf("could not parse response from osrm: %v", err)
 	}
 	if len(osrmRoute.Routes) == 0 {
-		return []persistence.Waypoint{}, nil
+		return []scenario.Waypoint{}, nil
 	}
 	geometry, _, err := polyline2.DecodeCoords([]byte(osrmRoute.Routes[0].Geometry))
 	if err != nil {
@@ -143,8 +143,8 @@ func decodeLatLng(params json.RawMessage) (*LatLng, error) {
 	return &request, nil
 }
 
-func processRoute(geometry [][]float64, osrmRoute RouteResponse) []persistence.Waypoint {
-	waypoints := make([]persistence.Waypoint, 0, len(geometry))
+func processRoute(geometry [][]float64, osrmRoute RouteResponse) []scenario.Waypoint {
+	waypoints := make([]scenario.Waypoint, 0, len(geometry))
 	for _, wp := range geometry {
 		if len(waypoints) > 1 {
 			lastWp := waypoints[len(waypoints)-1]
@@ -153,7 +153,7 @@ func processRoute(geometry [][]float64, osrmRoute RouteResponse) []persistence.W
 				continue
 			}
 		}
-		waypoints = append(waypoints, persistence.Waypoint{
+		waypoints = append(waypoints, scenario.Waypoint{
 			Lat: wp[0],
 			Lng: wp[1],
 		})

@@ -9,7 +9,7 @@
       <route-diagram
         *ngIf="durationToNext$ | async as durList"
         class="flex-shrink-0 route-diagram"
-        [stations]="line.stops"
+        [stations]="line.stations"
         [color]="line.color"
         [lowerTemplate]="durationTemplate"
       >

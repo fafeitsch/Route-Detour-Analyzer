@@ -25,15 +25,15 @@ func TestStationHandler_QueryStations(t *testing.T) {
 		_ = json.Unmarshal(rawResult, &result)
 		assert.Equal(t, 311, len(result))
 		station := result[72]
-		assert.Equal(t, "erthalstraße3", station.Key)
+		assert.Equal(t, "f5-jLI7Dv7", station.Key)
 		assert.Equal(t, "Erthalstraße", station.Name)
 		assert.NotEqual(t, 0, station.Lat)
 		assert.NotEqual(t, 0, station.Lng)
 		assert.False(t, station.IsWaypoint)
 		assert.Equal(t, 2, len(station.Lines))
-		assert.Equal(t, "Linie 10: Sandering → Hubland", station.Lines[0].Name)
-		assert.Equal(t, "gFsR_Qqj15", station.Lines[0].Key)
-		assert.Equal(t, "Linie 34: Heidingsfeld → Lengfeld", station.Lines[1].Name)
+		assert.Equal(t, "Linie 6: Innenstadt → Gartenstadt Keesburg", station.Lines[0].Name)
+		assert.Equal(t, "tZReQNIxZk", station.Lines[0].Key)
+		assert.Equal(t, "Linie 16: Stadtmitte → Heidingsfeld", station.Lines[1].Name)
 	})
 	t.Run("dont include lines", func(t *testing.T) {
 		rawResult, _ := handler.queryStations(nil)
@@ -41,8 +41,8 @@ func TestStationHandler_QueryStations(t *testing.T) {
 		var result []Station
 		_ = json.Unmarshal(rawResult, &result)
 		assert.Equal(t, 311, len(result))
-		station := result[72]
-		assert.Equal(t, "erthalstraße3", station.Key)
+		station := result[71]
+		assert.Equal(t, "O_9XBOqYIp", station.Key)
 		assert.Equal(t, "Erthalstraße", station.Name)
 		assert.NotEqual(t, 0, station.Lat)
 		assert.NotEqual(t, 0, station.Lng)
@@ -70,10 +70,10 @@ func TestStationHandler_UpdateStations(t *testing.T) {
 	})
 	t.Run("test station still in use", func(t *testing.T) {
 		request, _ := json.Marshal(StationUpdate{
-			Deleted: []string{"barbarossaplatz"},
+			Deleted: []string{"ORxFvp_ICt"},
 		})
 		_, err := handler.UpdateStations(request)
-		assert.EqualError(t, err, "could not delete station \"barbarossaplatz\" because it's still used by a line")
+		assert.EqualError(t, err, "could not delete station \"ORxFvp_ICt\" because it's still used by a line")
 	})
 	t.Run("should do nothing with empty input", func(t *testing.T) {
 		request := json.RawMessage("{}")
@@ -96,7 +96,7 @@ func TestStationHandler_UpdateStations(t *testing.T) {
 	handler.OsrmUrl = osrmServer.URL
 
 	line29, _ := manager.Line("luhFjA1KKO")
-	assert.Equal(t, "elferweg", line29.Stops[1])
+	assert.Equal(t, "3ej_MC2BRN", line29.Stops[1])
 	assert.Equal(t, 239, len(line29.Path))
 
 	t.Run("should update and delete stations", func(t *testing.T) {
@@ -108,7 +108,7 @@ func TestStationHandler_UpdateStations(t *testing.T) {
 				{
 					Lat:        10,
 					Lng:        20,
-					Key:        "barbarossaplatz",
+					Key:        "ORxFvp_ICt",
 					Name:       "Glaskuppeldach",
 					IsWaypoint: true,
 				},
@@ -123,7 +123,7 @@ func TestStationHandler_UpdateStations(t *testing.T) {
 		_, err := handler.UpdateStations(request)
 		assert.NoError(t, err)
 		assert.Equal(t, 7, osrmCalled)
-		barbarossaPlatz, _ := manager.Station("barbarossaplatz")
+		barbarossaPlatz, _ := manager.Station("ORxFvp_ICt")
 		assert.Equal(t, 10.0, barbarossaPlatz.Lat)
 		assert.Equal(t, 20.0, barbarossaPlatz.Lng)
 		assert.Equal(t, "Glaskuppeldach", barbarossaPlatz.Name)

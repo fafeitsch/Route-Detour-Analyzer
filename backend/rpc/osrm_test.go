@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"backend/persistence"
+	"backend/scenario"
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -27,13 +27,13 @@ func TestOsrmHandler_QueryRoute(t *testing.T) {
 		body, _ := json.Marshal([]LatLng{{Lat: 5, Lng: 6}, {Lat: 7, Lng: 8}})
 		raw, err := handler.queryRoute(body)
 		require.NoError(t, err)
-		var response []persistence.Waypoint
+		var response []scenario.Waypoint
 		_ = json.Unmarshal(raw, &response)
 		assert.NoError(t, err)
 		assert.Equal(t, 3, len(response), "there should be four waypoints in the response")
-		assert.Equal(t, persistence.Waypoint{Dist: 22.283466, Dur: 2.1, Lat: 49.80182, Lng: 9.92265, Stop: true}, response[0], "first domain.Waypoint")
-		assert.Equal(t, persistence.Waypoint{Dist: 6.688107, Dur: 0.6, Lat: 49.80197, Lng: 9.922450000000001, Stop: false}, response[1], "second domain.Waypoint")
-		assert.Equal(t, persistence.Waypoint{Dist: 0.0, Dur: 0.0, Lat: 49.80202, Lng: 9.922390000000002, Stop: true}, response[2], "third domain.Waypoint")
+		assert.Equal(t, scenario.Waypoint{Dist: 22.283466, Dur: 2.1, Lat: 49.80182, Lng: 9.92265, Stop: true}, response[0], "first domain.Waypoint")
+		assert.Equal(t, scenario.Waypoint{Dist: 6.688107, Dur: 0.6, Lat: 49.80197, Lng: 9.922450000000001, Stop: false}, response[1], "second domain.Waypoint")
+		assert.Equal(t, scenario.Waypoint{Dist: 0.0, Dur: 0.0, Lat: 49.80202, Lng: 9.922390000000002, Stop: true}, response[2], "third domain.Waypoint")
 	})
 
 	t.Run("invalid request", func(t *testing.T) {
