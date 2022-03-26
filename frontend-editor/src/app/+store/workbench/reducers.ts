@@ -3,11 +3,7 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { createReducer, on } from '@ngrx/store';
-import {
-  importSampleLines,
-  lineSavedInTimetableEditor,
-  linesImported,
-} from './actions';
+import { linesImported } from './actions';
 import { TimeString } from './time';
 
 export namespace DataModel {
@@ -77,19 +73,8 @@ const initialState: Workbench = { lines: [], stations: [] };
 
 export const workbenchReducer = createReducer(
   initialState,
-  on(linesImported, importSampleLines, (state, { workbench }) => ({
+  on(linesImported, (state, { workbench }) => ({
     ...state,
     ...workbench,
-  })),
-  on(lineSavedInTimetableEditor, (state, { oldName, line }) => {
-    oldName = oldName || line.name;
-    return {
-      ...state,
-      lines: state.lines.some((l) => l.name === oldName)
-        ? state.lines.map((oldLine) =>
-            oldLine.name === oldName ? line : oldLine
-          )
-        : [...state.lines, line],
-    };
-  })
+  }))
 );

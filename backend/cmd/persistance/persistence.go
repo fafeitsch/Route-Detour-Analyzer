@@ -3,6 +3,7 @@ package main
 import (
 	"backend/rpc"
 	"backend/scenario"
+	"encoding/json"
 	"fmt"
 	"github.com/urfave/cli/v2"
 	"log"
@@ -55,6 +56,11 @@ func globalHandler() http.HandlerFunc {
 	return func(resp http.ResponseWriter, req *http.Request) {
 		if strings.HasPrefix(req.URL.RequestURI(), "/rpc") {
 			rpc.HandleFunc(manager, osrmUrl).ServeHTTP(resp, req)
+			return
+		} else if strings.HasPrefix(req.URL.RequestURI(), "/export") {
+			resp.Header().Set("Content-Type", "text/json")
+			resp.Header().Set("Content-Disposition", "attachment; filename=\"scenario.json\"")
+			_ = json.NewEncoder(resp).Encode(manager.Export())
 			return
 		}
 		http.NotFound(resp, req)

@@ -1,13 +1,8 @@
 package persistence
 
-import (
-	"sync"
-)
-
 type Scenario struct {
-	Stations []Station    `json:"stations"`
-	Lines    []Line       `json:"lines"`
-	Lock     sync.RWMutex `json:"-"`
+	Stations []Station `json:"stations"`
+	Lines    []Line    `json:"lines"`
 }
 
 type Station struct {

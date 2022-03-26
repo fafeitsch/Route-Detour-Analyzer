@@ -38,6 +38,7 @@ type rpcMethod struct {
 	input       reflect.Type
 	output      reflect.Type
 	method      Method
+	attachment  bool
 }
 
 type Method func(message json.RawMessage) (json.RawMessage, error)
@@ -83,6 +84,9 @@ func HandleFunc(manager *scenario.Manager, osrmUrl string) http.HandlerFunc {
 		if err != nil {
 			writeError(resp, -32603, request.Id, "the method \"%s\" could not be executed properly: %v", request.Method, err)
 			return
+		}
+		if method.attachment {
+
 		}
 		response := Response{Id: request.Id, Jsonrpc: "2.0", Result: result}
 		_ = json.NewEncoder(resp).Encode(response)

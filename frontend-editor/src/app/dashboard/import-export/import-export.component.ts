@@ -2,11 +2,10 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import {ChangeDetectionStrategy, Component, ViewChild} from '@angular/core';
-import {Domain, linesImported, Workbench} from '../../+store/workbench';
-import {Store} from '@ngrx/store';
-import {workbenchForExport} from '../../+store/workbench/selectors';
-import FileSaver from 'file-saver';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { Domain, linesImported, Workbench } from '../../+store/workbench';
+import { Store } from '@ngrx/store';
+import { environment } from '../../../environments/environment';
 import Line = Domain.Line;
 
 @Component({
@@ -19,7 +18,7 @@ export class ImportExportComponent {
   @ViewChild('fileInput')
   private fileInput: any;
 
-  workbench$ = this.store.select(workbenchForExport);
+  exportLink = environment.backend + '/export';
 
   file: File | null = null;
 
@@ -55,11 +54,11 @@ export class ImportExportComponent {
       if (!lineNames.length) {
         return 'The imported file contained no lines.';
       }
-      let withoutColor = lineNames.filter(name => !lines[name].color);
+      let withoutColor = lineNames.filter((name) => !lines[name].color);
       if (withoutColor.length) {
         return 'The following keys have no color: ' + withoutColor.join(', ');
       }
-      let withoutStops = lineNames.filter(name => !lines[name].stops);
+      let withoutStops = lineNames.filter((name) => !lines[name].stops);
       if (withoutStops.length) {
         return 'The following keys have no stops: ' + withoutStops.join(', ');
       }
@@ -76,37 +75,43 @@ export class ImportExportComponent {
           line,
           index,
         }))
-        .filter(tuple => !tuple.line.name)
-        .map(tuple => tuple.index);
+        .filter((tuple) => !tuple.line.name)
+        .map((tuple) => tuple.index);
       if (noNames.length) {
-        return 'The following entries in the array have no line name: ' + noNames.join(', ');
+        return (
+          'The following entries in the array have no line name: ' +
+          noNames.join(', ')
+        );
       }
       const lineNameCounter: { [name: string]: number } = {};
-      lines.forEach(line => (lineNameCounter[line.name] = (lineNameCounter[line.name] || 0) + 1));
+      lines.forEach(
+        (line) =>
+          (lineNameCounter[line.name] = (lineNameCounter[line.name] || 0) + 1)
+      );
       const duplicateLines = Object.keys(lineNameCounter)
-        .filter(key => lineNameCounter[key] > 1)
+        .filter((key) => lineNameCounter[key] > 1)
         .join(', ');
       if (duplicateLines) {
         return 'The following line names are not distinct: ' + duplicateLines;
       }
-      const noColor = lines.filter(line => !line.color).map(line => line.name);
+      const noColor = lines
+        .filter((line) => !line.color)
+        .map((line) => line.name);
       if (noColor.length) {
         return 'The lines in the array have no color: ' + noColor.join(', ');
       }
-      const noStops = lines.filter(line => !line.stops).map(line => line.name);
+      const noStops = lines
+        .filter((line) => !line.stops)
+        .map((line) => line.name);
       if (noStops.length) {
-        return 'The following entries in the array have no stops name: ' + noStops.join(', ');
+        return (
+          'The following entries in the array have no stops name: ' +
+          noStops.join(', ')
+        );
       }
     } catch (error) {
       return `Could not parse the workspace data: ${error}.`;
     }
     return undefined;
-  }
-
-  exportWorkbench(workbench: Workbench) {
-    const blob = new Blob([JSON.stringify(workbench)], {
-      type: 'application/json;charset=utf-8',
-    });
-    FileSaver.saveAs(blob, 'rda-network.json');
   }
 }

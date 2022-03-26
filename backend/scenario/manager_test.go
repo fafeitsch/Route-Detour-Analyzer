@@ -1,8 +1,10 @@
 package scenario
 
 import (
+	"backend/persistence"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	polyline2 "github.com/twpayne/go-polyline"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -160,4 +162,32 @@ func TestManager_Lines(t *testing.T) {
 	require.NoError(t, err)
 	lines := manager.Lines()
 	assert.Equal(t, 36, len(lines))
+}
+
+func TestManager_Export(t *testing.T) {
+	manager, err := New(filepath.Join("..", "testdata", "wuerzburg.json"))
+	require.NoError(t, err)
+	result := manager.Export()
+	assert.Equal(t, 310, len(result.Stations))
+	assert.Equal(t, persistence.Station{
+		Key:        "Z4Dg3WrM6c",
+		Name:       "Blosenbergpfad",
+		LatLng:     "cuunHatr{@",
+		IsWaypoint: false,
+	}, result.Stations[44])
+	assert.Equal(t, 36, len(result.Lines))
+	assert.Equal(t, "Linie 16: Stadtmitte → Heidingsfeld", result.Lines[14].Name)
+	assert.Equal(t, persistence.MetaCoord{
+		Dist: 6.319016,
+		Dur:  2.3,
+		Stop: false,
+	}, result.Lines[14].Path.Meta[6])
+	geo, _, err := polyline2.DecodeCoords([]byte(result.Lines[14].Path.Geometry))
+	assert.NotEmpty(t, geo)
+	assert.NoError(t, err)
+	assert.Equal(t, 327, len(geo))
+	assert.Equal(t, 17, len(result.Lines[15].Stops))
+	assert.Equal(t, "cZNY7z6o_t", result.Lines[15].Stops[5])
+	assert.Equal(t, "#dace33", result.Lines[14].Color)
+	assert.Equal(t, "S9BbG58UKu", result.Lines[14].Key)
 }

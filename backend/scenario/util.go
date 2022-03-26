@@ -24,6 +24,17 @@ func sortLines(lines []Line) func(i, j int) bool {
 	}
 }
 
+func sortStations(stations []Station) func(i, j int) bool {
+	return func(i, j int) bool {
+		a := stations[i]
+		b := stations[j]
+		if a.Name == b.Name {
+			return a.Key < b.Key
+		}
+		return a.Name < b.Name
+	}
+}
+
 func mustBeNumber(text string) int {
 	number, _ := strconv.Atoi(text)
 	return number

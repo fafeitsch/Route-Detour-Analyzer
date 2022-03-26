@@ -56,6 +56,7 @@ func (l *Line) Stations() []Station {
 	for _, stop := range l.Stops {
 		result = append(result, l.manager.stations[stop])
 	}
+	sort.Slice(result, sortStations(result))
 	return result
 }
 
@@ -186,6 +187,7 @@ func (m *Manager) Stations() []Station {
 	for _, station := range m.stations {
 		stations = append(stations, station)
 	}
+	sort.Slice(stations, sortStations(stations))
 	return stations
 }
 
@@ -204,4 +206,46 @@ func (m *Manager) DeleteStation(key string) {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 	delete(m.stations, key)
+}
+
+func (m *Manager) Export() persistence.Scenario {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
+	stations := make([]persistence.Station, 0, len(m.stations))
+	for _, station := range m.Stations() {
+		stations = append(stations, persistence.Station{
+			Key:        station.Key,
+			Name:       station.Name,
+			LatLng:     string(polyline2.EncodeCoord([]float64{station.Lat, station.Lng})),
+			IsWaypoint: station.IsWaypoint,
+		})
+	}
+	lines := make([]persistence.Line, 0, len(m.lines))
+	for _, line := range m.Lines() {
+		coords := make([][]float64, 0, len(line.Path))
+		meta := make([]persistence.MetaCoord, 0, len(line.Path))
+		for _, wp := range line.Path {
+			coords = append(coords, []float64{wp.Lat, wp.Lng})
+			meta = append(meta, persistence.MetaCoord{
+				Dist: wp.Dist,
+				Dur:  wp.Dur,
+				Stop: wp.Stop,
+			})
+		}
+		lines = append(lines, persistence.Line{
+			Stops: line.Stops,
+			Path: persistence.Path{
+				Geometry: string(polyline2.EncodeCoords(coords)),
+				Meta:     meta,
+			},
+			Name:      line.Name,
+			Color:     line.Color,
+			Key:       line.Key,
+			Timetable: line.Timetable,
+		})
+	}
+	return persistence.Scenario{
+		Stations: stations,
+		Lines:    lines,
+	}
 }

@@ -2,14 +2,7 @@
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
   ~ Find the full license text in the LICENSE file of the project root.
   -->
-<button
-  *ngIf="workbench$ | async as workbench"
-  mat-raised-button
-  color="accent"
-  (click)="exportWorkbench(workbench)"
->
-  Save
-</button>
+<a mat-raised-button color="accent" [href]="exportLink" [download]="true">Export</a>
 
 <input
   type="file"
