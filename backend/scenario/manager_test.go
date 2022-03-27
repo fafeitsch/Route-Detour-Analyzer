@@ -11,7 +11,7 @@ import (
 )
 
 func TestManager_DeleteLine(t *testing.T) {
-	manager, err := New(filepath.Join("../testdata/wuerzburg.json"))
+	manager, err := LoadFile(filepath.Join("../testdata/wuerzburg.json"))
 	require.NoError(t, err)
 	t.Run("delete existing line", func(t *testing.T) {
 		t.Parallel()
@@ -32,7 +32,7 @@ func TestManager_DeleteLine(t *testing.T) {
 }
 
 func TestManager_DeleteStation(t *testing.T) {
-	manager, err := New(filepath.Join("../testdata/wuerzburg.json"))
+	manager, err := LoadFile(filepath.Join("../testdata/wuerzburg.json"))
 	require.NoError(t, err)
 	t.Run("delete existing station", func(t *testing.T) {
 		t.Parallel()
@@ -53,7 +53,7 @@ func TestManager_DeleteStation(t *testing.T) {
 }
 
 func TestManager_SaveLine(t *testing.T) {
-	manager, err := New(filepath.Join("../testdata/wuerzburg.json"))
+	manager, err := LoadFile(filepath.Join("../testdata/wuerzburg.json"))
 	require.NoError(t, err)
 	t.Run("save new line", func(t *testing.T) {
 		t.Parallel()
@@ -102,7 +102,7 @@ func TestManager_SaveLine(t *testing.T) {
 }
 
 func TestManager_SaveStation(t *testing.T) {
-	manager, err := New(filepath.Join("../testdata/wuerzburg.json"))
+	manager, err := LoadFile(filepath.Join("../testdata/wuerzburg.json"))
 	require.NoError(t, err)
 	t.Run("save new station", func(t *testing.T) {
 		t.Parallel()
@@ -135,7 +135,7 @@ func TestManager_SaveStation(t *testing.T) {
 
 func TestStation_Lines(t *testing.T) {
 	t.Parallel()
-	manager, err := New(filepath.Join("../testdata/wuerzburg.json"))
+	manager, err := LoadFile(filepath.Join("../testdata/wuerzburg.json"))
 	require.NoError(t, err)
 
 	station, ok := manager.Station("jubhF5kI2k")
@@ -150,7 +150,7 @@ func TestStation_Lines(t *testing.T) {
 }
 
 func TestLine_Stations(t *testing.T) {
-	manager, err := New(filepath.Join("../testdata/wuerzburg.json"))
+	manager, err := LoadFile(filepath.Join("../testdata/wuerzburg.json"))
 	require.NoError(t, err)
 
 	stations := manager.Stations()
@@ -158,14 +158,14 @@ func TestLine_Stations(t *testing.T) {
 }
 
 func TestManager_Lines(t *testing.T) {
-	manager, err := New(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, err := LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
 	require.NoError(t, err)
 	lines := manager.Lines()
 	assert.Equal(t, 36, len(lines))
 }
 
 func TestManager_Export(t *testing.T) {
-	manager, err := New(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, err := LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
 	require.NoError(t, err)
 	result := manager.Export()
 	assert.Equal(t, 310, len(result.Stations))

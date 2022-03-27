@@ -1,19 +1,22 @@
 package rpc
 
 import (
+	"backend/persistence"
 	"backend/scenario"
 	"bytes"
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"path/filepath"
 	"testing"
 )
 
 func TestHandleFunc(t *testing.T) {
-	manager, err := scenario.New(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, err := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
 	require.NoError(t, err)
 
 	handler := HandleFunc(manager, "")
@@ -41,6 +44,31 @@ func TestHandleFunc(t *testing.T) {
 		var line Line
 		_ = json.Unmarshal(response.Result, &line)
 		assert.Equal(t, "Linie 29: Busbahnhof → Hubland Nord", line.Name)
+	})
+
+	t.Run("normal execution with persistence", func(t *testing.T) {
+		dir, _ := ioutil.TempDir(os.TempDir(), "*")
+		defer func() { _ = os.RemoveAll(dir) }()
+		manager, err := scenario.LoadFile(filepath.Join(dir, "empty.json"))
+		persistHandler := HandleFunc(manager, "")
+		require.NoError(t, err)
+		id := "id"
+		rpcRequest := Request{
+			Jsonrpc: "2.0",
+			Method:  "createLine",
+			Params:  nil,
+			Id:      &id,
+		}
+		payload := mustMarshal(rpcRequest)
+		request := httptest.NewRequest("POST", "http://localhost/lines", bytes.NewReader(payload))
+		recorder := httptest.NewRecorder()
+		persistHandler.ServeHTTP(recorder, request)
+		assert.Equal(t, http.StatusOK, recorder.Code)
+		file, err := os.Open(filepath.Join(dir, "empty.json"))
+		require.NoError(t, err)
+		var sc persistence.Scenario
+		_ = json.NewDecoder(file).Decode(&sc)
+		assert.Equal(t, 1, len(sc.Lines))
 	})
 
 	t.Run("handler not found", func(t *testing.T) {

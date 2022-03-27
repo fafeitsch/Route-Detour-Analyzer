@@ -11,7 +11,7 @@ import (
 )
 
 func TestStationHandler_QueryStations(t *testing.T) {
-	manager, _ := scenario.New(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
 	handler := stationHandler{Manager: manager}
 
 	manager.SaveStation(scenario.Station{Key: "an unused station"})
@@ -52,7 +52,7 @@ func TestStationHandler_QueryStations(t *testing.T) {
 }
 
 func TestStationHandler_UpdateStations(t *testing.T) {
-	manager, _ := scenario.New(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
 	handler := stationHandler{Manager: manager}
 
 	t.Run("test unparsable request", func(t *testing.T) {

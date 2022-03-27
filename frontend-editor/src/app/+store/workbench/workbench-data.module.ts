@@ -6,15 +6,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { workbenchReducer } from './reducers';
-import { EffectsModule } from '@ngrx/effects';
-import { WorkbenchEffects } from './effects';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
     StoreModule.forFeature('workbench', workbenchReducer),
-    EffectsModule.forFeature([WorkbenchEffects]),
   ],
 })
 export class WorkbenchDataModule {}

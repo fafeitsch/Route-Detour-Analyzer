@@ -23,8 +23,9 @@ func (s *stationHandler) Methods() map[string]rpcMethod {
 		"updateStations": {
 			description: "Updates all stations in the list. Stations with empty key will be created. Stations with" +
 				"an existing key will be updated. If the list contains a station with non-existing, non-empty key, an error is returned.",
-			input:  reflect.TypeOf([]Station{}),
-			method: s.UpdateStations,
+			input:          reflect.TypeOf([]Station{}),
+			method:         s.UpdateStations,
+			persistChanged: true,
 		},
 	}
 }

@@ -2,18 +2,17 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpClientModule} from '@angular/common/http';
-import {StoreModule} from '@ngrx/store';
-import {OptionsDataModule} from './+store/options/options-data.module';
-import {environment} from '../environments/environment';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {EffectsModule} from '@ngrx/effects';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { OptionsDataModule } from './+store/options';
+import { environment } from '../environments/environment';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +20,6 @@ import {EffectsModule} from '@ngrx/effects';
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot({}),
-    EffectsModule.forRoot([]),
     OptionsDataModule,
     BrowserAnimationsModule,
     HttpClientModule,

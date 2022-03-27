@@ -25,18 +25,21 @@ func (h *lineHandler) Methods() map[string]rpcMethod {
 				"If the key already exists, the line will be overwritten. " +
 				"If the key is empty, a new line will be created. " +
 				"Ignores the stations field of the line. The stops referenced in the stops list must exist.",
-			input:  reflect.TypeOf(Line{}),
-			method: h.saveLine,
+			input:          reflect.TypeOf(Line{}),
+			method:         h.saveLine,
+			persistChanged: true,
 		},
 		"createLine": {
-			description: `Creates an empty line and returns it.`,
-			output:      reflect.TypeOf(Line{}),
-			method:      h.createLine,
+			description:    `Creates an empty line and returns it.`,
+			output:         reflect.TypeOf(Line{}),
+			method:         h.createLine,
+			persistChanged: true,
 		},
 		"deleteLine": {
-			description: "Deletes the line identified by the key in the identifier.",
-			input:       reflect.TypeOf(LineIdentifier{}),
-			method:      h.deleteLine,
+			description:    "Deletes the line identified by the key in the identifier.",
+			input:          reflect.TypeOf(LineIdentifier{}),
+			method:         h.deleteLine,
+			persistChanged: true,
 		},
 		"getLinePaths": {
 			description: "Returns all lines with only the information needed to draw a line network onto a map." +

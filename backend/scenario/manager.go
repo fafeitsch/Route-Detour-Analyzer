@@ -3,6 +3,7 @@ package scenario
 import (
 	"backend/persistence"
 	"encoding/json"
+	"errors"
 	"fmt"
 	gonanoid "github.com/matoous/go-nanoid"
 	polyline2 "github.com/twpayne/go-polyline"
@@ -21,6 +22,8 @@ type Station struct {
 }
 
 func (s *Station) Lines() []Line {
+	s.manager.mutex.RLock()
+	s.manager.mutex.RUnlock()
 	result := make([]Line, 0, 0)
 	for _, line := range s.manager.lines {
 		for _, stop := range line.Stops {
@@ -52,6 +55,8 @@ type Waypoint struct {
 }
 
 func (l *Line) Stations() []Station {
+	l.manager.mutex.RLock()
+	defer l.manager.mutex.RUnlock()
 	result := make([]Station, 0, 0)
 	for _, stop := range l.Stops {
 		result = append(result, l.manager.stations[stop])
@@ -67,19 +72,23 @@ type Manager struct {
 	mutex    sync.RWMutex
 }
 
-func New(path string) (*Manager, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, fmt.Errorf("could not open file \"%s\": %v", path, err)
-	}
+func LoadFile(path string) (*Manager, error) {
 	var scenario persistence.Scenario
-	err = json.NewDecoder(file).Decode(&scenario)
-	if err != nil {
-		return nil, fmt.Errorf("could not parse json file: %v", err)
+	file, err := os.Open(path)
+	if errors.Is(err, os.ErrNotExist) {
+		scenario = persistence.Scenario{}
+	} else if err != nil {
+		return nil, fmt.Errorf("could not open file \"%s\": %v", path, err)
+	} else {
+		err = json.NewDecoder(file).Decode(&scenario)
+		if err != nil {
+			return nil, fmt.Errorf("could not parse json file: %v", err)
+		}
 	}
+	defer func() { _ = file.Close() }()
 	lines := make(map[string]Line)
 	stations := make(map[string]Station)
-	manager := Manager{lines: lines, stations: stations, mutex: sync.RWMutex{}}
+	manager := Manager{lines: lines, stations: stations, mutex: sync.RWMutex{}, filePath: path}
 	for _, line := range scenario.Lines {
 		waypoints, err := convertWaypoints(line.Path)
 		if err != nil {
@@ -131,6 +140,16 @@ func convertWaypoints(path persistence.Path) ([]Waypoint, error) {
 		})
 	}
 	return waypoints, nil
+}
+
+func (m *Manager) Persist() error {
+	file, err := os.OpenFile(m.filePath, os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0755)
+	if err != nil {
+		return fmt.Errorf("could not open file \"%s\": %v", m.filePath, err)
+	}
+	defer func() { _ = file.Close() }()
+	scenario := m.Export()
+	return json.NewEncoder(file).Encode(scenario)
 }
 
 func (m *Manager) Line(key string) (Line, bool) {
@@ -214,9 +233,12 @@ func (m *Manager) Export() persistence.Scenario {
 	stations := make([]persistence.Station, 0, len(m.stations))
 	for _, station := range m.Stations() {
 		stations = append(stations, persistence.Station{
-			Key:        station.Key,
-			Name:       station.Name,
-			LatLng:     string(polyline2.EncodeCoord([]float64{station.Lat, station.Lng})),
+			Key:  station.Key,
+			Name: station.Name,
+			LatLng: string(polyline2.EncodeCoord([]float64{
+				station.Lat,
+				station.Lng,
+			})),
 			IsWaypoint: station.IsWaypoint,
 		})
 	}

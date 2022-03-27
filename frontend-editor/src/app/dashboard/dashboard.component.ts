@@ -11,6 +11,7 @@ import { LinesService, StationsService } from '../shared';
 import { map, share, startWith } from 'rxjs/operators';
 import { isDefined } from '../shared/utils';
 import { forkJoin } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,6 +22,7 @@ import { forkJoin } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
 })
 export class DashboardComponent {
+  exportLink = environment.backend + '/export';
   private readonly dashboard$ = forkJoin([
     this.linesService.getLinePaths(),
     this.stationsService.queryStations(),

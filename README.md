@@ -10,7 +10,7 @@ for further features.
 ### Evolution ###
 
 This project is currently on its way to version 2, which will not only be incompatible
-with version 1, but will also get a new name "Public Transport Line Editor". This 
+with version 1, but will also get a new name which I don't know yet. This 
 README describes the current development version 2 (main branch). For a description
 of the old version 1, please refer to the release of version 1.1.0.
 
@@ -41,18 +41,26 @@ Version 1.x.x
 
 Version 2.x.x
 
-* Rework of the app's structure
-* BREAKING CHANGE: Importing a single line is not supported anymore (in the old format). Workaround: Edit the text file so that
-  it contains an array of the line, i.e. ```{name: Line 1, stops: …}``` becomes ```[{Line 1, stops: …}]```. Import
-  the edited file with the "Add" Import.
-* BREAKING CHANGE: application settings (tile server, OSRM, cap) was removed from the query params. 
-  Instead, OSRM and tile server URLS are stored in local storage.
+* Rework of the app's structure: there is now a backend and a frontend.
+  **Note on the backend's API**: The backend implements Json-RPC 2.0 to communicate with the
+  frontend. This API is not intended for public use and may change at any point without prior notice.
+* BREAKING CHANGE: the scenario file format has been changed drastically. There is no automatic
+  migration. Please write a migration yourself if you need to.
+* BREAKING CHANGE: application settings (tile server, OSRM, cap) was removed from the query params.
+  OSRM is now entirely handled in the backend, the tile server and the cap are stored in the local
+  storage.
 
 ## Building the app
 
-If you want to build the app yourself, you just need an Angular workbench set up and then
-call `npm i && ng serve` for a local demo server or `npm i && ng build --configuration production` to build
-a production environment.
+### Backend
+
+To build the backend, you need Go 1.16 or higher. Go to the `backend` directory and
+execute `go run cmd/persistance/persistence.go --scenario ./scenarios/wuerzburg.json`. This
+will serve the backend with a default scenario.
+
+### Frontend
+
+In the `frontend` directory, issue `npm i && ng serve`.
 
 ## Usage
 

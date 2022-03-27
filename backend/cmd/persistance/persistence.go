@@ -38,7 +38,7 @@ func main() {
 		Flags: []cli.Flag{portFlag, osrmServerFlag, scenarioFileFlag},
 		Action: func(ctx *cli.Context) error {
 			var err error
-			manager, err = scenario.New(ctx.String(scenarioFileFlag.Name))
+			manager, err = scenario.LoadFile(ctx.String(scenarioFileFlag.Name))
 			if err != nil {
 				return fmt.Errorf("could not read scenario file: %v", err)
 			}

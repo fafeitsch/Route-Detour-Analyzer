@@ -34,11 +34,11 @@ type Handler interface {
 }
 
 type rpcMethod struct {
-	description string
-	input       reflect.Type
-	output      reflect.Type
-	method      Method
-	attachment  bool
+	description    string
+	input          reflect.Type
+	output         reflect.Type
+	method         Method
+	persistChanged bool
 }
 
 type Method func(message json.RawMessage) (json.RawMessage, error)
@@ -85,8 +85,11 @@ func HandleFunc(manager *scenario.Manager, osrmUrl string) http.HandlerFunc {
 			writeError(resp, -32603, request.Id, "the method \"%s\" could not be executed properly: %v", request.Method, err)
 			return
 		}
-		if method.attachment {
-
+		if method.persistChanged {
+			err = manager.Persist()
+			if err != nil {
+				writeError(resp, 1, request.Id, "the method \"%s\" was executed properly, but the changes could not be persisted to file: %v", request.Method, err)
+			}
 		}
 		response := Response{Id: request.Id, Jsonrpc: "2.0", Result: result}
 		_ = json.NewEncoder(resp).Encode(response)
