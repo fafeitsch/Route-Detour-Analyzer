@@ -8,14 +8,24 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  Output
+  Output,
 } from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {merge, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {TourScaffold} from '../timetable.store';
-import {timeFormatValidator} from '../time-validator';
-import {computeTime, formatTime, TimeString, Tour} from '../../+store/workbench';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { merge, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TourScaffold } from '../timetable.store';
+import { timeFormatValidator } from '../time-validator';
+import {
+  computeTime,
+  formatTime,
+  TimeString,
+  Tour,
+} from '../../+store/workbench';
 
 @Component({
   selector: 'edit-tour-panel',
@@ -60,9 +70,25 @@ export class EditTourPanelComponent implements OnDestroy {
 
   constructor(formBuilder: FormBuilder) {
     this.formGroup = formBuilder.group({
-      start: ['6:00', Validators.compose([Validators.required, timeFormatValidator()])],
-      lastTour: ['', Validators.compose([timeFormatValidator(), this.startBeforeEnd.bind(this)])],
-      interval: ['', Validators.compose([Validators.min(1), Validators.max(180), Validators.pattern(/^-?[0-9]*$/)])],
+      start: [
+        '6:00',
+        Validators.compose([Validators.required, timeFormatValidator()]),
+      ],
+      lastTour: [
+        '',
+        Validators.compose([
+          timeFormatValidator(),
+          this.startBeforeEnd.bind(this),
+        ]),
+      ],
+      interval: [
+        '',
+        Validators.compose([
+          Validators.min(1),
+          Validators.max(180),
+          Validators.pattern(/^-?\d*$/),
+        ]),
+      ],
     });
     this.formGroup.markAllAsTouched();
     this.startControl = this.formGroup.controls.start;
@@ -70,16 +96,22 @@ export class EditTourPanelComponent implements OnDestroy {
     this.intervalControl = this.formGroup.controls.interval;
 
     this.lastTourControl.disable();
-    this.intervalControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
-      if (value) {
-        this.lastTourControl.enable();
-      } else {
-        this.lastTourControl.setValue('');
-        this.lastTourControl.disable();
-      }
-    });
+    this.intervalControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value) {
+          this.lastTourControl.enable();
+        } else {
+          this.lastTourControl.setValue('');
+          this.lastTourControl.disable();
+        }
+      });
 
-    merge(this.startControl.valueChanges, this.lastTourControl.valueChanges, this.intervalControl.valueChanges)
+    merge(
+      this.startControl.valueChanges,
+      this.lastTourControl.valueChanges,
+      this.intervalControl.valueChanges
+    )
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.lastTourControl.updateValueAndValidity({ emitEvent: false });

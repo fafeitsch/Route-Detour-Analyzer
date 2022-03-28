@@ -7,10 +7,10 @@ import {
   Component,
   ViewEncapsulation,
 } from '@angular/core';
-import { LinesService, StationsService } from '../shared';
-import { map, share, startWith } from 'rxjs/operators';
+import { LinesService, NotificationService, StationsService } from '../shared';
+import { catchError, map, share, startWith } from 'rxjs/operators';
 import { isDefined } from '../shared/utils';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -27,6 +27,13 @@ export class DashboardComponent {
     this.linesService.getLinePaths(),
     this.stationsService.queryStations(),
   ]).pipe(
+    catchError((err) => {
+      this.notificationService.raiseNotification(
+        'Could not load dashboard data: ' + err,
+        'error'
+      );
+      return of([[], []]);
+    }),
     map(([lines, stations]) => ({ lines, stations })),
     share()
   );
@@ -47,6 +54,7 @@ export class DashboardComponent {
 
   constructor(
     private linesService: LinesService,
-    private readonly stationsService: StationsService
+    private readonly stationsService: StationsService,
+    private readonly notificationService: NotificationService
   ) {}
 }

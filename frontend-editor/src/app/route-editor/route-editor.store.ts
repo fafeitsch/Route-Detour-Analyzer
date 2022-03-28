@@ -3,20 +3,14 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import {
-  catchError,
-  map,
-  switchMap,
-  take,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { RouteService } from '../shared/route.service';
 import { Line, LinesService, Station } from '../shared';
 import { isDefined } from '../shared/utils';
+import { NotificationService } from '../shared/notification-area/notification.service';
 
 interface State {
   line: Line | undefined;
@@ -43,8 +37,14 @@ export class RouteEditorStore extends ComponentStore<State> {
       map((params) => params.get('line') || ''),
       switchMap((lineKey: string) =>
         this.linesService.getLine(lineKey).pipe(
-          catchError(() => of(undefined)),
-          tap((line) => super.patchState({ line }))
+          tapResponse(
+            (line) => super.patchState({ line }),
+            (err) =>
+              this.notificationService.raiseNotification(
+                'Could not fetch line: ' + err,
+                'error'
+              )
+          )
         )
       )
     )
@@ -87,8 +87,18 @@ export class RouteEditorStore extends ComponentStore<State> {
       switchMap((line) =>
         this.linesService.saveLine(line).pipe(
           tapResponse(
-            () => super.patchState({ uncommitedChanges: false }),
-            () => void 0
+            () => {
+              super.patchState({ uncommitedChanges: false });
+              this.notificationService.raiseNotification(
+                'Line saved successfully',
+                'success'
+              );
+            },
+            (err) =>
+              this.notificationService.raiseNotification(
+                'The line could not be saved: ' + err,
+                'error'
+              )
           )
         )
       )
@@ -122,7 +132,8 @@ export class RouteEditorStore extends ComponentStore<State> {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly routeService: RouteService,
-    private readonly linesService: LinesService
+    private readonly linesService: LinesService,
+    private readonly notificationService: NotificationService
   ) {
     super({
       line: undefined,
@@ -163,7 +174,11 @@ export class RouteEditorStore extends ComponentStore<State> {
                     path,
                   },
                 }),
-              () => void 0
+              (err) =>
+                this.notificationService.raiseNotification(
+                  'Could not query route: ' + err,
+                  'error'
+                )
             )
           )
         )

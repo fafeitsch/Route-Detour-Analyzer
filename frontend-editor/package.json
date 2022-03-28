@@ -7,13 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "e2e": "ng e2e",
-    "lint-staged": "lint-staged",
     "build:stats": "ng build --stats-json",
     "analyze": "webpack-bundle-analyzer dist/route-detour-analyzer/stats.json"
-  },
-  "lint-staged": {
-    "*.ts": "prettier --config prettierrc.json --write",
-    "*.html": "prettier --config prettierrc.json --write"
   },
   "private": true,
   "dependencies": {

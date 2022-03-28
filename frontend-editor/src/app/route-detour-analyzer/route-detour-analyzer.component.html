@@ -3,7 +3,7 @@
   ~ Find the full license text in the LICENSE file of the project root.
   -->
 <div class="h-100 d-flex flex-column">
-  <mat-toolbar color="primary" class="d-flex justify-content-spaced">
+  <mat-toolbar color="primary" class="d-flex flex-gap-3">
     <div class="d-flex flex-column">
       <a [routerLink]="['']">Public Transport Line Editor</a>
       <div class="d-flex align-items-center mat-body justify-content-spaced">
@@ -21,12 +21,14 @@
         <span class="disabled">v{{ version }}</span>
       </div>
     </div>
+    <div class="flex-grow-1"></div>
     <div
       class="d-flex mat-body align-items-center flex-gap-2"
       id="application-toolbar"
     >
       <!-- placeholder for the actual toolbar actions -->
     </div>
+    <notification-area class="mat-body"></notification-area>
   </mat-toolbar>
 
   <div class="flex-grow-1 overflow-hidden">

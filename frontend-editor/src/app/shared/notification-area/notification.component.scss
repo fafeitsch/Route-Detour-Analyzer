@@ -1,0 +1,71 @@
+/*!
+ * Licensed under the MIT License (https://opensource.org/licenses/MIT).
+ * Find the full license text in the LICENSE file of the project root.
+ */
+@use "@angular/material" as mat;
+@import "src/app/custom-theme/variables";
+
+$error: mat.get-color-from-palette($theme-warn);
+$neutral: mat.get-color-from-palette($theme-primary);
+$success: #164f16;
+
+.notification-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  width: 450px;
+  border-radius: 5px;
+}
+
+.notification {
+  height: 60px;
+  overflow: hidden;
+
+  .indicator {
+    width: 15px;
+    height: 60px;
+  }
+}
+
+.toolbar-icon.error {
+  color: $error;
+}
+
+.toolbar-icon.success {
+  color: lighten($success, 20%);
+}
+
+.toolbar-icon.neutral {
+  color: black;
+}
+
+.error {
+  .indicator {
+    background-color: $error;
+  }
+}
+
+.notification.error {
+  border: 2px solid $error;
+  border-radius: 10px;
+}
+
+.neutral {
+  .indicator {
+    background-color: $neutral;
+  }
+}
+
+.notification.neutral {
+  border: 2px solid $neutral;
+  border-radius: 10px;
+}
+
+.success {
+  .indicator {
+    background-color: $success;
+  }
+}
+
+.notification.success {
+  border: 2px solid $success;
+  border-radius: 10px;
+}

@@ -16,10 +16,13 @@ export function uuid() {
     if (k === 8 || k === 12 || k === 16 || k === 20) {
       uuidValue += '-';
     }
-    uuidValue += // eslint-disable-next-line no-bitwise
-    (k === 12 ? 4 : k === 16 ? (randomValue & 3) | 8 : randomValue).toString(
-      16
-    );
+    if (k === 16) {
+      // eslint-disable-next-line no-bitwise
+      uuidValue += ((randomValue & 3) | 8).toString(16); // eslint-disable-next-line no-bitwise
+    } else {
+      // eslint-disable-next-line no-bitwise
+      uuidValue += (k === 12 ? 4 : randomValue).toString(16); // eslint-disable-next-line no-bitwise
+    }
   }
   return uuidValue;
 }

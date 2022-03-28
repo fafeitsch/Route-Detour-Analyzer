@@ -8,6 +8,7 @@ import { RouteDetourAnalyzerComponent } from './route-detour-analyzer.component'
 import { RouteDetourAnalyzerRoutingModule } from './route-detour-analyzer-routing.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ToolbarModule } from '../shared/toolbar/toolbar.module';
+import { NotificationModule } from '../shared/notification-area/notification.module';
 
 @NgModule({
   declarations: [RouteDetourAnalyzerComponent],
@@ -16,6 +17,7 @@ import { ToolbarModule } from '../shared/toolbar/toolbar.module';
     MatToolbarModule,
     RouteDetourAnalyzerRoutingModule,
     ToolbarModule,
+    NotificationModule,
   ],
 })
 export class RouteDetourAnalyzerModule {}

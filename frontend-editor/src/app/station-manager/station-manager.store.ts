@@ -2,12 +2,17 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import { ComponentStore } from '@ngrx/component-store';
+import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { combineLatest, Observable, of } from 'rxjs';
 import { RouteService } from '../shared/route.service';
-import { LatLng, Station, StationsService } from '../shared/';
+import {
+  LatLng,
+  NotificationService,
+  Station,
+  StationsService,
+} from '../shared/';
 
 interface State {
   stations: (Station & { dirty?: boolean })[];
@@ -67,9 +72,16 @@ export class StationManagerStore extends ComponentStore<State> {
   }));
 
   loadStations = super.effect(() =>
-    this.stationsService
-      .queryStations(true)
-      .pipe(tap((stations) => super.patchState({ stations })))
+    this.stationsService.queryStations(true).pipe(
+      tapResponse(
+        (stations) => super.patchState({ stations }),
+        (err) =>
+          this.notificationService.raiseNotification(
+            'Could not load stations: ' + err,
+            'error'
+          )
+      )
+    )
   );
 
   readonly commit$ = super.effect((trigger$: Observable<void>) =>
@@ -82,10 +94,25 @@ export class StationManagerStore extends ComponentStore<State> {
       ),
       tap((x) => console.log(x)),
       switchMap(([stations, deleted]) =>
-        this.stationsService.updateStations({
-          changedOrAdded: stations.filter((station) => station.dirty),
-          deleted,
-        })
+        this.stationsService
+          .updateStations({
+            changedOrAdded: stations.filter((station) => station.dirty),
+            deleted,
+          })
+          .pipe(
+            tapResponse(
+              () =>
+                this.notificationService.raiseNotification(
+                  'Stations saved successfully',
+                  'success'
+                ),
+              (err) =>
+                this.notificationService.raiseNotification(
+                  'Stations could not be saved: ' + err,
+                  'error'
+                )
+            )
+          )
       )
     )
   );
@@ -95,7 +122,10 @@ export class StationManagerStore extends ComponentStore<State> {
       switchMap((latLng) =>
         this.routeService.queryNearestStreet(latLng).pipe(
           catchError((err) => {
-            console.error(err);
+            this.notificationService.raiseNotification(
+              'Could not load station name: ' + err,
+              'error'
+            );
             return of('');
           }),
           map((name) => ({
@@ -118,7 +148,8 @@ export class StationManagerStore extends ComponentStore<State> {
 
   constructor(
     private readonly routeService: RouteService,
-    private readonly stationsService: StationsService
+    private readonly stationsService: StationsService,
+    private readonly notificationService: NotificationService
   ) {
     super({
       stations: [],

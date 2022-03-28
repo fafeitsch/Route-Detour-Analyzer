@@ -13,7 +13,7 @@ import {
 import { LatLng } from '../../+store/workbench';
 import { BehaviorSubject } from 'rxjs';
 import { StationManagerStore } from '../station-manager.store';
-import { Line, LinesService, Station } from '../../shared';
+import { Line, LinesService, NotificationService, Station } from '../../shared';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { first } from 'rxjs/operators';
 
@@ -35,7 +35,8 @@ export class StationMapComponent {
 
   constructor(
     private readonly stationManagerStore: StationManagerStore,
-    private readonly linesService: LinesService
+    private readonly linesService: LinesService,
+    private readonly notificationService: NotificationService
   ) {}
 
   stationDragged({ lat, lng, index }: LatLng & { index: number }) {
@@ -55,6 +56,13 @@ export class StationMapComponent {
     this.linesService
       .getLinePaths()
       .pipe(first())
-      .subscribe((paths) => this.readonlyLines$.next(paths));
+      .subscribe(
+        (paths) => this.readonlyLines$.next(paths),
+        (err) =>
+          this.notificationService.raiseNotification(
+            'Could not load line paths: ' + err,
+            'error'
+          )
+      );
   }
 }

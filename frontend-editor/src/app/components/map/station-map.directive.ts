@@ -13,8 +13,7 @@ import {
 import { MapDirective } from '@rda/components/map/map.directive';
 import { Store } from '@ngrx/store';
 import { OptionsState } from '../../+store/options';
-import { NotificationService } from '../../notification.service';
-import { LatLng, Station } from '../../shared';
+import { LatLng, NotificationService, Station } from '../../shared';
 import { divIcon, icon, marker, Marker } from 'leaflet';
 
 @Directive({

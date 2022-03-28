@@ -8,7 +8,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { Line, LinesService } from '../../shared';
+import { Line, LinesService, NotificationService } from '../../shared';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 
@@ -24,15 +24,28 @@ export class LinesCardComponent {
   constructor(
     private readonly cd: ChangeDetectorRef,
     private readonly linesService: LinesService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly notificationService: NotificationService
   ) {}
 
   async deleteLine(index: number, key: string) {
     const result = await this.linesService
       .deleteLine(key)
       .toPromise()
-      .then(() => true)
-      .catch(() => false);
+      .then(() => {
+        this.notificationService.raiseNotification(
+          'Line deleted successfully',
+          'success'
+        );
+        return true;
+      })
+      .catch((err) => {
+        this.notificationService.raiseNotification(
+          'Line could not be deleted: ' + err,
+          'error'
+        );
+        return false;
+      });
     if (result) {
       this.lines = [...this.lines];
       this.lines.splice(index, 1);
@@ -44,6 +57,13 @@ export class LinesCardComponent {
     this.linesService
       .createLine()
       .pipe(take(1))
-      .subscribe((line) => this.router.navigate(['route-editor', line.key]));
+      .subscribe(
+        (line) => this.router.navigate(['route-editor', line.key]),
+        (err) =>
+          this.notificationService.raiseNotification(
+            'Line could not be created: ' + err,
+            'error'
+          )
+      );
   }
 }

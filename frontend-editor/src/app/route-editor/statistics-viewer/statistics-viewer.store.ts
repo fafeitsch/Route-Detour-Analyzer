@@ -12,7 +12,6 @@ import {
   DetourService,
   SubPath,
 } from '../../detour.service';
-import { NotificationService } from '../../notification.service';
 import { Store } from '@ngrx/store';
 import {
   OptionsState,
@@ -21,7 +20,7 @@ import {
 } from '../../+store/options';
 import { RouteEditorStore } from '../route-editor.store';
 import { RouteService } from '../../shared/route.service';
-import { Line, Station, Waypoint } from '../../shared';
+import { Line, NotificationService, Station, Waypoint } from '../../shared';
 import { isDefined } from '../../shared/utils';
 
 export interface DetourWithStop extends DetailResult {
@@ -138,9 +137,10 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   private queryAllPaths(line: Station[], cap: number): Observable<SubPath>[] {
     return this.detourService.createQueryPairs(line, cap).map((pair) =>
       this.routeService.queryOsrmRoute([pair.source, pair.target]).pipe(
-        catchError(() => {
+        catchError((err) => {
           this.notificationService.raiseNotification(
-            "Could not query paths. Make sure that you called the site with a query param 'osrm=URL', where URL points to an OSRM server."
+            'Could not query paths. ' + err,
+            'error'
           );
           return EMPTY;
         }),

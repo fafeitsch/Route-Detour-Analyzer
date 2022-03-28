@@ -2,7 +2,7 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import { ComponentStore } from '@ngrx/component-store';
+import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
@@ -14,6 +14,7 @@ import {
   ArrivalDeparture,
   Line,
   LinesService,
+  NotificationService,
   TimeString,
   Tour,
 } from '../shared';
@@ -83,7 +84,13 @@ export class TimetableStore extends ComponentStore<State> {
       isDefined(),
       switchMap((lineKey) =>
         this.lineService.getLine(lineKey).pipe(
-          tap((line) => super.patchState({ line })),
+          tapResponse(
+            (line) => super.patchState({ line }),
+            (err) =>
+              this.notificationService.raiseNotification(
+                'Could not fetch line: ' + err
+              )
+          ),
           tap((line) =>
             super.patchState({
               tours: line
@@ -157,9 +164,22 @@ export class TimetableStore extends ComponentStore<State> {
             line.timetable.tours.forEach((tour) => delete tour['uuid'])
           ),
           switchMap((line) =>
-            this.lineService
-              .saveLine(line)
-              .pipe(tap(() => super.patchState({ dirty: false })))
+            this.lineService.saveLine(line).pipe(
+              tapResponse(
+                () => {
+                  super.patchState({ dirty: false });
+                  this.notificationService.raiseNotification(
+                    'Line saved successfully',
+                    'success'
+                  );
+                },
+                (err) =>
+                  this.notificationService.raiseNotification(
+                    'Line could not be saved: ' + err,
+                    'error'
+                  )
+              )
+            )
           )
         )
       )
@@ -169,7 +189,8 @@ export class TimetableStore extends ComponentStore<State> {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly routeService: RouteService,
-    private readonly lineService: LinesService
+    private readonly lineService: LinesService,
+    private readonly notificationService: NotificationService
   ) {
     super({ line: undefined, tours: [], dirty: false });
   }

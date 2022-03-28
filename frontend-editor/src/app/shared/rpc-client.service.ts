@@ -5,8 +5,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { uuid } from './utils';
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 export interface Request {
@@ -45,6 +45,12 @@ export class RpcClientService {
       .post<Response>(`${environment.backend}/rpc/${topic}`, request)
       .pipe(
         filter((response) => response.id === request.id),
+        catchError(() =>
+          of({
+            error: 'HTTP request failed. Check logs.',
+            result: undefined,
+          })
+        ),
         map((response) => {
           if (response.result) {
             return response.result as any;

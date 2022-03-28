@@ -12,16 +12,27 @@
     <lines-card [lines]="lines$ | async" class="w-100 h-100"> </lines-card>
   </mat-grid-tile>
   <mat-grid-tile colspan="2" rowspan="6">
-    <overview-map [stations]="stations$ | async" [lines]="lines$ | async" class="h-100 w-100"></overview-map>
+    <overview-map
+      [stations]="stations$ | async"
+      [lines]="lines$ | async"
+      class="h-100 w-100"
+    ></overview-map>
   </mat-grid-tile>
   <mat-grid-tile rowspan="2">
     <settings-card class="w-100 h-100"></settings-card>
   </mat-grid-tile>
   <mat-grid-tile>
-    <station-card *ngIf="stations$ | async" [stations]="stations$ |async" [waypoints]="waypoints$ | async" class="w-100 h-100"></station-card>
+    <station-card
+      *ngIf="stations$ | async"
+      [stations]="stations$ | async"
+      [waypoints]="waypoints$ | async"
+      class="w-100 h-100"
+    ></station-card>
   </mat-grid-tile>
 </mat-grid-list>
 
 <toolbar>
-  <a mat-raised-button color="accent" [href]="exportLink" [download]="true">Export</a>
+  <a mat-raised-button color="accent" [href]="exportLink" [download]="true"
+    >Export</a
+  >
 </toolbar>

@@ -12,9 +12,15 @@ import {
 } from '@angular/core';
 import { Layer, Map, polyline } from 'leaflet';
 import { RouteEditorStore } from '../route-editor.store';
-import { BehaviorSubject } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { Line, LinesService, Station, StationsService } from '../../shared';
+import { BehaviorSubject, of } from 'rxjs';
+import { catchError, first } from 'rxjs/operators';
+import {
+  Line,
+  LinesService,
+  NotificationService,
+  Station,
+  StationsService,
+} from '../../shared';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
@@ -42,14 +48,23 @@ export class RouteMapComponent {
   showAllStations = true;
   readonlyLines$ = new BehaviorSubject<Line[]>([]);
 
-  allStations$ = this.stationsService.queryStations(false);
+  allStations$ = this.stationsService.queryStations(false).pipe(
+    catchError((err) => {
+      this.notificationService.raiseNotification(
+        'Could not load stations: ' + err,
+        'error'
+      );
+      return of([]);
+    })
+  );
   private map: Map | undefined = undefined;
   private pathLayer: Layer | undefined;
 
   constructor(
     private readonly routeStore: RouteEditorStore,
     private readonly linesService: LinesService,
-    private readonly stationsService: StationsService
+    private readonly stationsService: StationsService,
+    private readonly notificationService: NotificationService
   ) {}
 
   private drawLine() {
@@ -85,11 +100,18 @@ export class RouteMapComponent {
     this.linesService
       .getLinePaths()
       .pipe(first())
-      .subscribe((paths) => {
-        this.readonlyLines$.next(
-          paths.filter((path) => path.key !== this.line?.key)
-        );
-      });
+      .subscribe(
+        (paths) => {
+          this.readonlyLines$.next(
+            paths.filter((path) => path.key !== this.line?.key)
+          );
+        },
+        (err) =>
+          this.notificationService.raiseNotification(
+            'Could not load line paths: ' + err,
+            'error'
+          )
+      );
   }
 
   toggleViewAllStations() {

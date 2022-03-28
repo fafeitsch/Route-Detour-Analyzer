@@ -1,0 +1,43 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<button
+  mat-icon-button
+  cdkOverlayOrigin
+  class="mr-3"
+  #trigger="cdkOverlayOrigin"
+  (click)="toggleOverlay()"
+>
+  <mat-icon
+    [ngClass]="'toolbar-icon ' + (toolbarIconColor$ | async)"
+    >notifications</mat-icon
+  >
+</button>
+
+<ng-template
+  #overlayList
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="showOverlay$ | async"
+>
+  <div class="notification-container overflow-auto">
+    <div
+      *ngFor="let notification of notifications$ | async; index as index"
+      [ngClass]="'notification m-3 d-flex ' + notification.type"
+    >
+      <div class="indicator flex-shrink-0"></div>
+      <div
+        class="ml-3 flex-grow-1 overflow-hidden d-flex flex-column justify-content-center flex-gap-2"
+      >
+        <div class="text-ellipses" [matTooltip]="notification.text">
+          {{ notification.text }}
+        </div>
+        <div class="disabled">{{ notification.time | date: "HH:MM:ss" }}</div>
+      </div>
+      <button mat-icon-button (click)="clearNotification(index)">
+        <mat-icon>clear </mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-template>

@@ -28,8 +28,7 @@ import {
 import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { NotificationService } from '../../notification.service';
-import { LatLng, Line } from '../../shared';
+import { LatLng, Line, NotificationService } from '../../shared';
 
 @Directive({
   selector: '[osmMap]',
@@ -91,8 +90,8 @@ export class MapDirective implements AfterViewInit, OnDestroy {
         this.tileLayer.addTo(this.map!);
         this.tileLayer.on('tileerror', () =>
           this.notificationService.raiseNotification(
-            `There was a problem fetching map tiles. Make sure that you called the site with a query param 'tiles=URL', where URL
-            points to a tile server.`
+            'There was a problem fetching map tiles. Make sure that your OSM URL points to a reachable tile server.',
+            'error'
           )
         );
       });
