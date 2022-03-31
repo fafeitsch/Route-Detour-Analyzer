@@ -2,7 +2,8 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import { TimeString } from '../+store/workbench';
+
+import { TimeString } from './time';
 
 export interface Line {
   name: string;
@@ -68,4 +69,18 @@ export interface StationUpdate {
 
 export interface StationDelete {
   key: string;
+}
+
+export interface DetourResult {
+  averageDetour: number;
+  medianDetour: DetailResult;
+  biggestDetour: DetailResult;
+  smallestDetour: DetailResult;
+}
+
+export interface DetailResult {
+  absolute: number;
+  relative: number;
+  source: number;
+  target: number;
 }

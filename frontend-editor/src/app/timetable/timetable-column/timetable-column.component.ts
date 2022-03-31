@@ -8,13 +8,13 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
-import {ArrivalDeparture, TimeString, Tour} from '../../+store/workbench';
-import {FormControl} from '@angular/forms';
-import {timeFormatValidator} from '../time-validator';
-import {merge, Observable, Subject} from 'rxjs';
-import {filter, map, switchMap} from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
+import { timeFormatValidator } from '../time-validator';
+import { merge, Observable, Subject } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
+import { ArrivalDeparture, TimeString, Tour } from '../../shared';
 
 @Component({
   selector: 'timetable-column',
@@ -38,19 +38,31 @@ export class TimetableColumnComponent {
     }
     this.events = value?.events || [];
     this.uuid = value.uuid;
-    this.arrivalControls = value.events.map(event => new FormControl(event.arrival, timeFormatValidator()));
-    this.arrivalControls.forEach(ctrl => ctrl.markAsTouched());
-    this.departureControls.forEach(ctrl => ctrl.markAsTouched());
-    this.departureControls = value.events.map(event => new FormControl(event.departure, timeFormatValidator()));
+    this.arrivalControls = value.events.map(
+      (event) => new FormControl(event.arrival, timeFormatValidator())
+    );
+    this.arrivalControls.forEach((ctrl) => ctrl.markAsTouched());
+    this.departureControls.forEach((ctrl) => ctrl.markAsTouched());
+    this.departureControls = value.events.map(
+      (event) => new FormControl(event.departure, timeFormatValidator())
+    );
     this.internalChange.next(
       merge(
         ...[
-          ...this.arrivalControls.map((control, index) => control.valueChanges.pipe(map(_ => index))),
-          ...this.departureControls.map((control, index) => control.valueChanges.pipe(map(_ => index))),
+          ...this.arrivalControls.map((control, index) =>
+            control.valueChanges.pipe(map(() => index))
+          ),
+          ...this.departureControls.map((control, index) =>
+            control.valueChanges.pipe(map(() => index))
+          ),
         ]
       ).pipe(
-        filter(eventIndex => this.arrivalControls[eventIndex].valid && this.departureControls[eventIndex].valid),
-        map(eventIndex => ({
+        filter(
+          (eventIndex) =>
+            this.arrivalControls[eventIndex].valid &&
+            this.departureControls[eventIndex].valid
+        ),
+        map((eventIndex) => ({
           eventIndex,
           event: {
             arrival: this.arrivalControls[eventIndex].value,
@@ -66,10 +78,13 @@ export class TimetableColumnComponent {
 
   @Output() selectTour = new EventEmitter<void>();
 
-  private internalChange = new Subject<Observable<{ eventIndex: number; event: ArrivalDeparture }>>();
-  @Output() changeEvent: Observable<{ eventIndex: number; event: ArrivalDeparture }> = this.internalChange.pipe(
-    switchMap(obs => obs)
-  );
+  private internalChange = new Subject<
+    Observable<{ eventIndex: number; event: ArrivalDeparture }>
+  >();
+  @Output() changeEvent: Observable<{
+    eventIndex: number;
+    event: ArrivalDeparture;
+  }> = this.internalChange.pipe(switchMap((obs) => obs));
 
   arrivalControls: FormControl[] = [];
   departureControls: FormControl[] = [];

@@ -1,64 +1,48 @@
 package rpc
 
 import (
+	"backend/rpc/osrmutils"
+	"backend/rpc/types"
 	"backend/scenario"
 	"encoding/json"
 	"fmt"
-	polyline2 "github.com/twpayne/go-polyline"
-	"net/http"
+	"math"
 	"reflect"
-	"time"
+	"sort"
 )
 
-var netClient = &http.Client{
-	Timeout: time.Second * 10,
-}
-
-type Annotation struct {
-	Distance []float64 `json:"distance"`
-	Duration []float64 `json:"duration"`
-}
-
-type Leg struct {
-	Annotation Annotation `json:"Annotation"`
-}
-
-type Route struct {
-	Legs     []Leg  `json:"legs"`
-	Geometry string `json:"geometry"`
-}
-
-type RouteResponse struct {
-	Routes []Route `json:"routes"`
-}
-
 type osrmHandler struct {
-	Url string
+	Url     string
+	manager *scenario.Manager
 }
 
 func (o *osrmHandler) Methods() map[string]rpcMethod {
 	return map[string]rpcMethod{
 		"queryRoute": {
 			description: "Queries the route connecting the given lat/lng pairs.",
-			input:       reflect.TypeOf([]LatLng{}),
-			output:      reflect.TypeOf([]Waypoint{}),
+			input:       reflect.TypeOf([]types.LatLng{}),
+			output:      reflect.TypeOf([]types.Waypoint{}),
 			method:      o.queryRoute,
 		},
 		"queryAddress": {
 			description: "Queries the name of the nearest street of the given lat/lng pair.",
-			input:       reflect.TypeOf(LatLng{}),
-			output:      reflect.TypeOf(AddressResponse{}),
+			input:       reflect.TypeOf(types.LatLng{}),
+			output:      reflect.TypeOf(types.AddressResponse{}),
 			method:      o.queryAddress,
+		},
+		"computeDetours": {
+			description: "Computes the detours for a line identified by a key.",
+			input:       reflect.TypeOf(types.DetourRequest{}),
+			output:      reflect.TypeOf(types.DetourResponse{}),
+			method:      o.computeDetour,
 		},
 	}
 }
 
 func (o *osrmHandler) queryRoute(params json.RawMessage) (json.RawMessage, error) {
-	request, err := decodeLatLngSlice(params)
-	if err != nil {
-		return nil, err
-	}
-	waypoints, err := QueryRoute(o.Url, request)
+	var request []types.LatLng
+	_ = json.Unmarshal(params, &request)
+	waypoints, err := osrmutils.QueryRoute(o.Url, request)
 	if err != nil {
 		return nil, err
 	}
@@ -66,66 +50,12 @@ func (o *osrmHandler) queryRoute(params json.RawMessage) (json.RawMessage, error
 	return result, nil
 }
 
-func QueryRoute(url string, request []LatLng) ([]scenario.Waypoint, error) {
-	raw := make([][]float64, 0, len(request))
-	for _, coordinate := range request {
-		raw = append(raw, []float64{coordinate.Lat, coordinate.Lng})
-	}
-	polyline := polyline2.EncodeCoords(raw)
-	osrmResp, err := netClient.Get(fmt.Sprintf("%s/route/v1/driving/polyline(%s)?overview=full&annotations=true", url, polyline))
-	if err != nil {
-		return nil, fmt.Errorf("could not query OSRM route: %v", err)
-	}
-	var osrmRoute RouteResponse
-	err = json.NewDecoder(osrmResp.Body).Decode(&osrmRoute)
-	if err != nil {
-		return nil, fmt.Errorf("could not parse response from osrm: %v", err)
-	}
-	if len(osrmRoute.Routes) == 0 {
-		return []scenario.Waypoint{}, nil
-	}
-	geometry, _, err := polyline2.DecodeCoords([]byte(osrmRoute.Routes[0].Geometry))
-	if err != nil {
-		return nil, fmt.Errorf("could not parse polyline from osrm: %v", err)
-	}
-	return processRoute(geometry, osrmRoute), nil
-}
-
-func decodeLatLngSlice(params json.RawMessage) ([]LatLng, error) {
-	if params == nil {
-		return nil, fmt.Errorf("the parameters are nil")
-	}
-	var request []LatLng
-	err := json.Unmarshal(params, &request)
-	if err != nil {
-		return nil, fmt.Errorf("could not understand lat/lng request: %v", err)
-	}
-	return request, nil
-}
-
-type osrmAddressResponse struct {
-	Waypoints []struct {
-		Name string `json:"name"`
-	} `json:"waypoints"`
-}
-
 func (o *osrmHandler) queryAddress(params json.RawMessage) (json.RawMessage, error) {
-	request, err := decodeLatLng(params)
+	var request types.LatLng
+	_ = json.Unmarshal(params, &request)
+	name, err := osrmutils.QueryAddress(o.Url, request)
 	if err != nil {
 		return nil, err
-	}
-	osrmResp, err := netClient.Get(fmt.Sprintf("%s/nearest/v1/driving/%f,%f.json?number=1", o.Url, request.Lng, request.Lat))
-	if err != nil {
-		return nil, fmt.Errorf("could not query OSRM Route: %v", err)
-	}
-	var osrmWaypoints osrmAddressResponse
-	err = json.NewDecoder(osrmResp.Body).Decode(&osrmWaypoints)
-	if err != nil {
-		return nil, fmt.Errorf("could not parse response from osrm: %v", err)
-	}
-	name := ""
-	if len(osrmWaypoints.Waypoints) > 0 {
-		name = osrmWaypoints.Waypoints[0].Name
 	}
 	response := struct {
 		Name string `json:"name"`
@@ -134,47 +64,55 @@ func (o *osrmHandler) queryAddress(params json.RawMessage) (json.RawMessage, err
 	return result, nil
 }
 
-func decodeLatLng(params json.RawMessage) (*LatLng, error) {
-	var request LatLng
-	err := json.Unmarshal(params, &request)
-	if err != nil {
-		return nil, fmt.Errorf("could not understand lat/lng request: %v", err)
+func (o *osrmHandler) computeDetour(params json.RawMessage) (json.RawMessage, error) {
+	var request types.DetourRequest
+	_ = json.Unmarshal(params, &request)
+	line, ok := o.manager.Line(request.Key)
+	if !ok {
+		return nil, fmt.Errorf("line with key \"%s\" not found", request.Key)
 	}
-	return &request, nil
-}
-
-func processRoute(geometry [][]float64, osrmRoute RouteResponse) []scenario.Waypoint {
-	waypoints := make([]scenario.Waypoint, 0, len(geometry))
-	for _, wp := range geometry {
-		if len(waypoints) > 1 {
-			lastWp := waypoints[len(waypoints)-1]
-			// sometimes we get two identical waypoints. We filter them out.
-			if lastWp.Lat == wp[0] && lastWp.Lng == wp[1] {
+	stations := line.Stations()
+	pairs := osrmutils.CreateQueryPairs(stations, request.Cap)
+	distances := osrmutils.DistanceBetweenStations(line.Path)
+	detours := make([]types.Detour, 0, len(pairs))
+	detourSum := 0.0
+	for _, pair := range pairs {
+		source := stations[pair[0]]
+		target := stations[pair[1]]
+		route, err := osrmutils.QueryRoute(o.Url, []types.LatLng{
+			{
+				Lat: source.Lat,
+				Lng: source.Lng,
+			},
+			{Lat: target.Lat, Lng: target.Lng},
+		})
+		if err != nil {
+			return nil, fmt.Errorf("could not query detour: %v", err)
+		}
+		routeLength := 0.0
+		for _, waypoint := range route {
+			if waypoint.Dist == nil {
 				continue
 			}
+			routeLength = routeLength + *waypoint.Dist
 		}
-		waypoints = append(waypoints, scenario.Waypoint{
-			Lat: wp[0],
-			Lng: wp[1],
+		absolute := distances[pair[1]] - distances[pair[0]] - routeLength
+		relative := (distances[pair[1]] - distances[pair[0]]) / routeLength
+		detourSum = detourSum + relative
+		detours = append(detours, types.Detour{
+			Absolute: absolute,
+			Relative: relative,
+			Source:   pair[0],
+			Target:   pair[1],
 		})
 	}
-
-	wpIndex := 0
-	for _, leg := range osrmRoute.Routes[0].Legs {
-		waypoints[wpIndex].Stop = true
-		// have to check the wpIndex here and after the for loop. Because of the
-		// filtered waypoints (see above) their length isn't equal to the number
-		// of legs any more
-		for index := 0; wpIndex < len(waypoints) && index < len(leg.Annotation.
-			Distance); index++ {
-			waypoints[wpIndex].Dur = leg.Annotation.Duration[index]
-			waypoints[wpIndex].Dist = leg.Annotation.Distance[index]
-			wpIndex = wpIndex + 1
-		}
-		if wpIndex >= len(waypoints) {
-			break
-		}
-	}
-	waypoints[len(waypoints)-1].Stop = true
-	return waypoints
+	sort.Slice(detours, func(i, j int) bool {
+		return detours[i].Relative < detours[j].Relative
+	})
+	return mustMarshal(types.DetourResponse{
+		AverageDetour:  detourSum / float64(len(detours)),
+		BiggestDetour:  detours[len(detours)-1],
+		MedianDetour:   detours[int(math.Floor(float64(len(detours)/2)))],
+		SmallestDetour: detours[0],
+	}), nil
 }

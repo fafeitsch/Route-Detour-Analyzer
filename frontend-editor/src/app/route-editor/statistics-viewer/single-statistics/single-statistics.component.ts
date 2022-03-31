@@ -3,10 +3,10 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {DetourWithStop} from '../statistics-viewer.store';
-import {RouteEditorStore} from '../../route-editor.store';
-import {Station} from '../../../+store/workbench';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DetourWithStop } from '../statistics-viewer.store';
+import { RouteEditorStore } from '../../route-editor.store';
+import { Station } from '../../../shared';
 
 @Component({
   selector: 'single-statistics',

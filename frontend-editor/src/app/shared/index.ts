@@ -8,3 +8,4 @@ export * from './stations.service';
 export * from './types';
 export * from './time';
 export { NotificationService } from './notification-area/notification.service';
+export * from './detour.service';

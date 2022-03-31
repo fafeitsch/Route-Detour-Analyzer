@@ -1,6 +1,8 @@
 package rpc
 
 import (
+	"backend/rpc/osrmutils"
+	"backend/rpc/types"
 	"backend/scenario"
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
@@ -21,7 +23,7 @@ func TestStationHandler_QueryStations(t *testing.T) {
 		params, _ := json.Marshal(request)
 		rawResult, _ := handler.queryStations(params)
 
-		var result []Station
+		var result []types.Station
 		_ = json.Unmarshal(rawResult, &result)
 		assert.Equal(t, 311, len(result))
 		station := result[72]
@@ -38,7 +40,7 @@ func TestStationHandler_QueryStations(t *testing.T) {
 	t.Run("dont include lines", func(t *testing.T) {
 		rawResult, _ := handler.queryStations(nil)
 
-		var result []Station
+		var result []types.Station
 		_ = json.Unmarshal(rawResult, &result)
 		assert.Equal(t, 311, len(result))
 		station := result[71]
@@ -55,21 +57,15 @@ func TestStationHandler_UpdateStations(t *testing.T) {
 	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
 	handler := stationHandler{Manager: manager}
 
-	t.Run("test unparsable request", func(t *testing.T) {
-		request := json.RawMessage("test")
-		_, err := handler.UpdateStations(request)
-		assert.EqualError(t, err, "could not parse station update: invalid character 'e' in literal true (expecting 'r')")
-	})
-
 	t.Run("test unknown deleted station", func(t *testing.T) {
-		request, _ := json.Marshal(StationUpdate{
+		request, _ := json.Marshal(types.StationUpdate{
 			Deleted: []string{"not there"},
 		})
 		_, err := handler.UpdateStations(request)
 		assert.EqualError(t, err, "could not find station to delete with key \"not there\"")
 	})
 	t.Run("test station still in use", func(t *testing.T) {
-		request, _ := json.Marshal(StationUpdate{
+		request, _ := json.Marshal(types.StationUpdate{
 			Deleted: []string{"ORxFvp_ICt"},
 		})
 		_, err := handler.UpdateStations(request)
@@ -84,10 +80,10 @@ func TestStationHandler_UpdateStations(t *testing.T) {
 
 	osrmCalled := 0
 	osrmServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		route := RouteResponse{Routes: []Route{{Geometry: "k|}nHq_q{@]f@IJ??",
-			Legs: []Leg{
-				{Annotation: Annotation{Distance: []float64{22.283466, 6.688107}, Duration: []float64{2.1, 0.6}}},
-				{Annotation: Annotation{Distance: []float64{0}, Duration: []float64{0}}}}}}}
+		route := osrmutils.RouteResponse{Routes: []osrmutils.Route{{Geometry: "k|}nHq_q{@]f@IJ??",
+			Legs: []osrmutils.Leg{
+				{Annotation: osrmutils.Annotation{Distance: []float64{22.283466, 6.688107}, Duration: []float64{2.1, 0.6}}},
+				{Annotation: osrmutils.Annotation{Distance: []float64{0}, Duration: []float64{0}}}}}}}
 
 		_ = json.NewEncoder(w).Encode(route)
 		osrmCalled = osrmCalled + 1
@@ -102,9 +98,9 @@ func TestStationHandler_UpdateStations(t *testing.T) {
 	t.Run("should update and delete stations", func(t *testing.T) {
 		manager.SaveStation(scenario.Station{Key: "ready to delete"})
 		assert.Equal(t, 311, len(manager.Stations()))
-		request := mustMarshal(StationUpdate{
+		request := mustMarshal(types.StationUpdate{
 			Deleted: []string{"ready to delete"},
-			ChangedOrAdded: []Station{
+			ChangedOrAdded: []types.Station{
 				{
 					Lat:        10,
 					Lng:        20,

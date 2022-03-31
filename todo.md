@@ -1,6 +1,5 @@
 To Do
 ===
 
-- [ ] Add error messages to frontend
 - [ ] Add file consistency check to backend
-- [ ] Move statistics computation to the backend
+- [ ] Remove global NGRX store, is not worth it just for one string

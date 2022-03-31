@@ -61,7 +61,6 @@ func (l *Line) Stations() []Station {
 	for _, stop := range l.Stops {
 		result = append(result, l.manager.stations[stop])
 	}
-	sort.Slice(result, sortStations(result))
 	return result
 }
 

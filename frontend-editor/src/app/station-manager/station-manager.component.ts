@@ -5,8 +5,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { StationManagerStore } from './station-manager.store';
 import { map } from 'rxjs/operators';
-import { LatLng } from '../+store/workbench';
-import { Station } from '../shared';
+import { LatLng, Station } from '../shared';
 
 @Component({
   selector: 'station-manager',

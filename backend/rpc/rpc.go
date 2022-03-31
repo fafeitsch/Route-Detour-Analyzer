@@ -45,7 +45,7 @@ type Method func(message json.RawMessage) (json.RawMessage, error)
 
 func HandleFunc(manager *scenario.Manager, osrmUrl string) http.HandlerFunc {
 	handlers := make(map[string]Handler)
-	handlers["osrm"] = &osrmHandler{Url: osrmUrl}
+	handlers["osrm"] = &osrmHandler{Url: osrmUrl, manager: manager}
 	handlers["lines"] = &lineHandler{OsrmUrl: osrmUrl, Manager: manager}
 	handlers["stations"] = &stationHandler{OsrmUrl: osrmUrl, Manager: manager}
 	handlers["docs"] = &docHandler{handlers: handlers}
@@ -58,12 +58,7 @@ func HandleFunc(manager *scenario.Manager, osrmUrl string) http.HandlerFunc {
 			return
 		}
 		var request Request
-		defer func() {
-			if r := recover(); r != nil {
-				writeError(resp, -32603, request.Id, "a fatal error occurred during the method execution.")
-				fmt.Printf("panic during RPC call: %v\n%v", r, string(debug.Stack()))
-			}
-		}()
+		defer handlePanic(resp, request)
 		err := json.NewDecoder(req.Body).Decode(&request)
 		if err != nil {
 			writeError(resp, -32700, nil, "could not parse JSON-RPC request: %v", err)
@@ -93,6 +88,13 @@ func HandleFunc(manager *scenario.Manager, osrmUrl string) http.HandlerFunc {
 		}
 		response := Response{Id: request.Id, Jsonrpc: "2.0", Result: result}
 		_ = json.NewEncoder(resp).Encode(response)
+	}
+}
+
+func handlePanic(resp http.ResponseWriter, request Request) {
+	if r := recover(); r != nil {
+		writeError(resp, -32603, request.Id, "a fatal error occurred during the method execution.")
+		fmt.Printf("panic during RPC call: %v\n%v", r, string(debug.Stack()))
 	}
 }
 

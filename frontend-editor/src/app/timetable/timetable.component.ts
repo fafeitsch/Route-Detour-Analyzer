@@ -2,10 +2,10 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {TimetableStore, TourScaffold} from './timetable.store';
-import {MatDialog} from '@angular/material/dialog';
-import {ArrivalDeparture, Tour} from '../+store/workbench';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TimetableStore, TourScaffold } from './timetable.store';
+import { MatDialog } from '@angular/material/dialog';
+import { ArrivalDeparture, Tour } from '../shared';
 
 @Component({
   selector: 'timetable',
@@ -24,7 +24,10 @@ export class TimetableComponent {
   selectedTourIndex: number | undefined = undefined;
   selectedTour: Tour | undefined = undefined;
 
-  constructor(private readonly store: TimetableStore, private readonly dialog: MatDialog) {}
+  constructor(
+    private readonly store: TimetableStore,
+    private readonly dialog: MatDialog
+  ) {}
 
   editTour(tour: TourScaffold) {
     if (!this.selectedTour) {
@@ -36,12 +39,17 @@ export class TimetableComponent {
     }
   }
 
-  modifyTime(index: number, eventIndex: number, changedEvent: ArrivalDeparture) {
+  modifyTime(
+    index: number,
+    eventIndex: number,
+    changedEvent: ArrivalDeparture
+  ) {
     this.store.modifyTime$({ index, eventIndex, changedEvent });
   }
 
   selectTour(tour: Tour, index: number) {
-    this.selectedTourIndex = this.selectedTourIndex === index ? undefined : index;
+    this.selectedTourIndex =
+      this.selectedTourIndex === index ? undefined : index;
     this.selectedTour = this.selectedTourIndex === undefined ? undefined : tour;
   }
 

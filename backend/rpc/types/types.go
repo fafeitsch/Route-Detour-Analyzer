@@ -1,4 +1,4 @@
-package rpc
+package types
 
 type LatLng struct {
 	Lat float64 `json:"lat"`
@@ -59,4 +59,23 @@ type Tour struct {
 type ArrivalDeparture struct {
 	Arrival   *string `json:"arrival"`
 	Departure *string `json:"departure"`
+}
+
+type DetourRequest struct {
+	LineIdentifier
+	Cap int `json:"cap"`
+}
+
+type DetourResponse struct {
+	AverageDetour  float64 `json:"averageDetour"`
+	BiggestDetour  Detour  `json:"biggestDetour"`
+	MedianDetour   Detour  `json:"medianDetour"`
+	SmallestDetour Detour  `json:"smallestDetour"`
+}
+
+type Detour struct {
+	Absolute float64 `json:"absolute"`
+	Relative float64 `json:"relative"`
+	Source   int     `json:"source"`
+	Target   int     `json:"target"`
 }

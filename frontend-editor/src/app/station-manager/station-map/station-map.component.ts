@@ -10,10 +10,15 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { LatLng } from '../../+store/workbench';
 import { BehaviorSubject } from 'rxjs';
 import { StationManagerStore } from '../station-manager.store';
-import { Line, LinesService, NotificationService, Station } from '../../shared';
+import {
+  LatLng,
+  Line,
+  LinesService,
+  NotificationService,
+  Station,
+} from '../../shared';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { first } from 'rxjs/operators';
 

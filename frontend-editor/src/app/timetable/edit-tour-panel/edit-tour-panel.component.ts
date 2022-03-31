@@ -20,12 +20,7 @@ import { merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TourScaffold } from '../timetable.store';
 import { timeFormatValidator } from '../time-validator';
-import {
-  computeTime,
-  formatTime,
-  TimeString,
-  Tour,
-} from '../../+store/workbench';
+import { computeTime, formatTime, TimeString, Tour } from '../../shared';
 
 @Component({
   selector: 'edit-tour-panel',

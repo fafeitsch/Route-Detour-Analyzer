@@ -2,6 +2,7 @@ package rpc
 
 import (
 	"backend/persistence"
+	"backend/rpc/types"
 	"backend/scenario"
 	"bytes"
 	"encoding/json"
@@ -24,7 +25,7 @@ func TestHandleFunc(t *testing.T) {
 	t.Run("normal execution", func(t *testing.T) {
 		t.Parallel()
 		id := "555"
-		params := LineIdentifier{Key: "7BNJI4rUT6"}
+		params := types.LineIdentifier{Key: "7BNJI4rUT6"}
 		rpcRequest := Request{
 			Jsonrpc: "2.0",
 			Method:  "getLine",
@@ -41,7 +42,7 @@ func TestHandleFunc(t *testing.T) {
 		assert.Equal(t, "555", *response.Id)
 		assert.Nil(t, response.Error)
 		assert.Equal(t, "2.0", response.Jsonrpc)
-		var line Line
+		var line types.Line
 		_ = json.Unmarshal(response.Result, &line)
 		assert.Equal(t, "Linie 29: Busbahnhof → Hubland Nord", line.Name)
 	})
@@ -118,7 +119,7 @@ func TestHandleFunc(t *testing.T) {
 	t.Run("method execution not working", func(t *testing.T) {
 		t.Parallel()
 		id := "888"
-		params := LineIdentifier{Key: "not existing"}
+		params := types.LineIdentifier{Key: "not existing"}
 		rpcRequest := Request{
 			Jsonrpc: "2.0",
 			Method:  "getLine",

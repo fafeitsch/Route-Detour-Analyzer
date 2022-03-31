@@ -1,6 +1,7 @@
 package rpc
 
 import (
+	"backend/rpc/types"
 	"backend/scenario"
 	"encoding/json"
 	"fmt"
@@ -16,8 +17,8 @@ func (h *lineHandler) Methods() map[string]rpcMethod {
 	return map[string]rpcMethod{
 		"getLine": {
 			description: "Finds a line with the given identifier (only the key is used). Expands the stations and returns the line.",
-			input:       reflect.TypeOf(LineIdentifier{}),
-			output:      reflect.TypeOf(Line{}),
+			input:       reflect.TypeOf(types.LineIdentifier{}),
+			output:      reflect.TypeOf(types.Line{}),
 			method:      h.queryLine,
 		},
 		"saveLine": {
@@ -25,37 +26,34 @@ func (h *lineHandler) Methods() map[string]rpcMethod {
 				"If the key already exists, the line will be overwritten. " +
 				"If the key is empty, a new line will be created. " +
 				"Ignores the stations field of the line. The stops referenced in the stops list must exist.",
-			input:          reflect.TypeOf(Line{}),
+			input:          reflect.TypeOf(types.Line{}),
 			method:         h.saveLine,
 			persistChanged: true,
 		},
 		"createLine": {
 			description:    `Creates an empty line and returns it.`,
-			output:         reflect.TypeOf(Line{}),
+			output:         reflect.TypeOf(types.Line{}),
 			method:         h.createLine,
 			persistChanged: true,
 		},
 		"deleteLine": {
 			description:    "Deletes the line identified by the key in the identifier.",
-			input:          reflect.TypeOf(LineIdentifier{}),
+			input:          reflect.TypeOf(types.LineIdentifier{}),
 			method:         h.deleteLine,
 			persistChanged: true,
 		},
 		"getLinePaths": {
 			description: "Returns all lines with only the information needed to draw a line network onto a map." +
 				"Stations and Stops as well es distances and durations between them are not included.",
-			output: reflect.TypeOf([]Line{}),
+			output: reflect.TypeOf([]types.Line{}),
 			method: h.getLinePaths,
 		},
 	}
 }
 
 func (h *lineHandler) queryLine(params json.RawMessage) (json.RawMessage, error) {
-	var request LineIdentifier
-	err := json.Unmarshal(params, &request)
-	if err != nil {
-		return nil, fmt.Errorf("could not parse request: %v", err)
-	}
+	var request types.LineIdentifier
+	_ = json.Unmarshal(params, &request)
 	line, ok := h.Manager.Line(request.Key)
 	if !ok {
 		return nil, fmt.Errorf("no line with name \"%s\" found", request.Key)
@@ -64,11 +62,8 @@ func (h *lineHandler) queryLine(params json.RawMessage) (json.RawMessage, error)
 }
 
 func (h *lineHandler) saveLine(params json.RawMessage) (json.RawMessage, error) {
-	var line Line
-	err := json.Unmarshal(params, &line)
-	if err != nil {
-		return nil, fmt.Errorf("could not parse line: %v", err)
-	}
+	var line types.Line
+	_ = json.Unmarshal(params, &line)
 	for _, stop := range line.Stops {
 		if _, ok := h.Manager.Station(stop); !ok {
 			return nil, fmt.Errorf("a station with key \"%s\" does not exist", stop)
@@ -80,9 +75,9 @@ func (h *lineHandler) saveLine(params json.RawMessage) (json.RawMessage, error) 
 
 func (h *lineHandler) createLine(params json.RawMessage) (json.RawMessage, error) {
 	line := h.Manager.SaveLine(scenario.Line{})
-	result := Line{
-		Stations: []Station{},
-		Path:     []Waypoint{},
+	result := types.Line{
+		Stations: []types.Station{},
+		Path:     []types.Waypoint{},
 		Name:     line.Name,
 		Color:    line.Color,
 		Key:      line.Key,
@@ -91,27 +86,24 @@ func (h *lineHandler) createLine(params json.RawMessage) (json.RawMessage, error
 }
 
 func (h *lineHandler) deleteLine(params json.RawMessage) (json.RawMessage, error) {
-	var request LineIdentifier
-	err := json.Unmarshal(params, &request)
-	if err != nil {
-		return nil, fmt.Errorf("could not parse request: %v", err)
-	}
+	var request types.LineIdentifier
+	_ = json.Unmarshal(params, &request)
 	h.Manager.DeleteLine(request.Key)
 	return nil, nil
 }
 
 func (h *lineHandler) getLinePaths(params json.RawMessage) (json.RawMessage, error) {
 	lines := h.Manager.Lines()
-	paths := make([]Line, 0, len(lines))
+	paths := make([]types.Line, 0, len(lines))
 	for _, line := range lines {
-		waypoints := make([]Waypoint, 0, len(line.Path))
+		waypoints := make([]types.Waypoint, 0, len(line.Path))
 		for _, wp := range line.Path {
-			waypoints = append(waypoints, Waypoint{
+			waypoints = append(waypoints, types.Waypoint{
 				Lat: wp.Lat,
 				Lng: wp.Lng,
 			})
 		}
-		paths = append(paths, Line{
+		paths = append(paths, types.Line{
 			Name:  line.Name,
 			Color: line.Color,
 			Path:  waypoints,

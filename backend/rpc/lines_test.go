@@ -1,6 +1,7 @@
 package rpc
 
 import (
+	"backend/rpc/types"
 	"backend/scenario"
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
@@ -15,7 +16,7 @@ func TestLineHandler_CreateLine(t *testing.T) {
 	handler := lineHandler{Manager: manager}
 	lineObj, err := handler.createLine(nil)
 	require.NoError(t, err)
-	var line Line
+	var line types.Line
 	err = json.Unmarshal(lineObj, &line)
 	assert.Equal(t, "", line.Name)
 	assert.NotEmpty(t, line.Key)
@@ -40,9 +41,9 @@ func TestLineHandler_SaveLine(t *testing.T) {
 		require.Equal(t, "#c233da", line29.Color)
 		dur := []float64{45, 0}
 		dist := []float64{32, 0}
-		changedLine := Line{
+		changedLine := types.Line{
 			Stops: []string{"ORxFvp_ICt", "7kOE25kjY6", "zmdfh1U3G6"},
-			Path: []Waypoint{
+			Path: []types.Waypoint{
 				{
 					Lat:  0,
 					Lng:  1,
@@ -81,7 +82,7 @@ func TestLineHandler_SaveLine(t *testing.T) {
 		}, createdLine.Path[1])
 	})
 	t.Run("stop not found", func(t *testing.T) {
-		changedLine := Line{
+		changedLine := types.Line{
 			Key:   "7BNJI4rUT6",
 			Stops: []string{"ORxFvp_ICt", "does not exist", "zmdfh1U3G6"},
 		}
@@ -89,22 +90,16 @@ func TestLineHandler_SaveLine(t *testing.T) {
 		assert.Nil(t, result)
 		assert.EqualError(t, err, "a station with key \"does not exist\" does not exist")
 	})
-	t.Run("unparsable line", func(t *testing.T) {
-		message := []byte("test")
-		result, err := handler.saveLine(message)
-		assert.Nil(t, result)
-		assert.EqualError(t, err, "could not parse line: invalid character 'e' in literal true (expecting 'r')")
-	})
 }
 
 func TestLineHandler_QueryLine(t *testing.T) {
 	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
 	handler := lineHandler{Manager: manager}
 	t.Run("success", func(t *testing.T) {
-		request := LineIdentifier{Key: "7BNJI4rUT6"}
+		request := types.LineIdentifier{Key: "7BNJI4rUT6"}
 		result, err := handler.queryLine(mustMarshal(request))
 		assert.NoError(t, err)
-		var line Line
+		var line types.Line
 		err = json.Unmarshal(result, &line)
 		assert.NoError(t, err)
 		assert.Equal(t, "Linie 29: Busbahnhof → Hubland Nord", line.Name)
@@ -117,7 +112,7 @@ func TestLineHandler_QueryLine(t *testing.T) {
 		assert.Equal(t, 232, len(line.Path))
 		assert.Equal(t, 15, len(line.Stops))
 		zero := 0.0
-		assert.Equal(t, Waypoint{
+		assert.Equal(t, types.Waypoint{
 			Lat:  49.789489999999894,
 			Lng:  9.980310000000014,
 			Dist: &zero,
@@ -127,17 +122,11 @@ func TestLineHandler_QueryLine(t *testing.T) {
 		assert.Equal(t, "#c233da", line.Color)
 	})
 	t.Run("line not found", func(t *testing.T) {
-		request := LineIdentifier{Key: "not found"}
+		request := types.LineIdentifier{Key: "not found"}
 		msg, _ := json.Marshal(request)
 		result, err := handler.queryLine(msg)
 		assert.Nil(t, result)
 		assert.EqualError(t, err, "no line with name \"not found\" found")
-	})
-	t.Run("line request not parsable", func(t *testing.T) {
-		msg := []byte("test")
-		result, err := handler.queryLine(msg)
-		assert.Nil(t, result)
-		assert.EqualError(t, err, "could not parse request: invalid character 'e' in literal true (expecting 'r')")
 	})
 }
 
@@ -147,7 +136,7 @@ func TestLineHandler_GetLinePaths(t *testing.T) {
 
 	response, err := handler.getLinePaths(nil)
 	assert.Nil(t, err)
-	var lines []Line
+	var lines []types.Line
 	err = json.Unmarshal(response, &lines)
 	assert.Nil(t, err)
 	assert.Equal(t, 36, len(lines))
@@ -155,7 +144,7 @@ func TestLineHandler_GetLinePaths(t *testing.T) {
 	assert.Nil(t, lines[5].Stations)
 	assert.Nil(t, lines[5].Stops)
 	assert.Equal(t, "#179e20", lines[5].Color)
-	assert.Equal(t, Waypoint{
+	assert.Equal(t, types.Waypoint{
 		Lat:  49.77382999999999,
 		Lng:  9.926659999999998,
 		Dist: nil,
@@ -170,18 +159,12 @@ func TestLineHandler_DeleteLine(t *testing.T) {
 	handler := lineHandler{Manager: manager}
 	count := len(manager.Lines())
 	t.Run("success", func(t *testing.T) {
-		request := LineIdentifier{Key: "7BNJI4rUT6"}
+		request := types.LineIdentifier{Key: "7BNJI4rUT6"}
 		result, err := handler.deleteLine(mustMarshal(request))
 		assert.NoError(t, err)
 		assert.Nil(t, result)
 		assert.Equal(t, count-1, len(manager.Lines()))
 		_, ok := manager.Line("7BNJI4rUT6")
 		assert.False(t, ok)
-	})
-	t.Run("line request not parsable", func(t *testing.T) {
-		msg := []byte("test")
-		result, err := handler.deleteLine(msg)
-		assert.Nil(t, result)
-		assert.EqualError(t, err, "could not parse request: invalid character 'e' in literal true (expecting 'r')")
 	})
 }
