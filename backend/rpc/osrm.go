@@ -12,8 +12,15 @@ import (
 )
 
 type osrmHandler struct {
-	Url     string
+	url     string
 	manager *scenario.Manager
+}
+
+func newOsrmHandler(manager *scenario.Manager, url string) *osrmHandler {
+	return &osrmHandler{
+		url:     url,
+		manager: manager,
+	}
 }
 
 func (o *osrmHandler) Methods() map[string]rpcMethod {
@@ -42,7 +49,7 @@ func (o *osrmHandler) Methods() map[string]rpcMethod {
 func (o *osrmHandler) queryRoute(params json.RawMessage) (json.RawMessage, error) {
 	var request []types.LatLng
 	_ = json.Unmarshal(params, &request)
-	waypoints, err := osrmutils.QueryRoute(o.Url, request)
+	waypoints, err := osrmutils.QueryRoute(o.url, request)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +60,7 @@ func (o *osrmHandler) queryRoute(params json.RawMessage) (json.RawMessage, error
 func (o *osrmHandler) queryAddress(params json.RawMessage) (json.RawMessage, error) {
 	var request types.LatLng
 	_ = json.Unmarshal(params, &request)
-	name, err := osrmutils.QueryAddress(o.Url, request)
+	name, err := osrmutils.QueryAddress(o.url, request)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +86,7 @@ func (o *osrmHandler) computeDetour(params json.RawMessage) (json.RawMessage, er
 	for _, pair := range pairs {
 		source := stations[pair[0]]
 		target := stations[pair[1]]
-		route, err := osrmutils.QueryRoute(o.Url, []types.LatLng{
+		route, err := osrmutils.QueryRoute(o.url, []types.LatLng{
 			{
 				Lat: source.Lat,
 				Lng: source.Lng,

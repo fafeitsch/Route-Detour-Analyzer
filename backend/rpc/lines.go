@@ -1,6 +1,7 @@
 package rpc
 
 import (
+	"backend/rpc/mapper"
 	"backend/rpc/types"
 	"backend/scenario"
 	"encoding/json"
@@ -9,8 +10,17 @@ import (
 )
 
 type lineHandler struct {
-	Manager *scenario.Manager
-	OsrmUrl string
+	manager *scenario.Manager
+	osrmUrl string
+	mapper  mapper.Mapper
+}
+
+func newLineHandler(manager *scenario.Manager, osrmUrl string) *lineHandler {
+	return &lineHandler{
+		manager: manager,
+		osrmUrl: osrmUrl,
+		mapper:  mapper.New(manager),
+	}
 }
 
 func (h *lineHandler) Methods() map[string]rpcMethod {
@@ -54,27 +64,27 @@ func (h *lineHandler) Methods() map[string]rpcMethod {
 func (h *lineHandler) queryLine(params json.RawMessage) (json.RawMessage, error) {
 	var request types.LineIdentifier
 	_ = json.Unmarshal(params, &request)
-	line, ok := h.Manager.Line(request.Key)
+	line, ok := h.manager.Line(request.Key)
 	if !ok {
 		return nil, fmt.Errorf("no line with name \"%s\" found", request.Key)
 	}
-	return mustMarshal(mapToDtoLine(line)), nil
+	return mustMarshal(h.mapper.ToDtoLine(line)), nil
 }
 
 func (h *lineHandler) saveLine(params json.RawMessage) (json.RawMessage, error) {
 	var line types.Line
 	_ = json.Unmarshal(params, &line)
 	for _, stop := range line.Stops {
-		if _, ok := h.Manager.Station(stop); !ok {
+		if _, ok := h.manager.Station(stop); !ok {
 			return nil, fmt.Errorf("a station with key \"%s\" does not exist", stop)
 		}
 	}
-	h.Manager.SaveLine(mapToVoLine(line))
+	h.manager.SaveLine(h.mapper.ToVoLine(line))
 	return nil, nil
 }
 
 func (h *lineHandler) createLine(params json.RawMessage) (json.RawMessage, error) {
-	line := h.Manager.SaveLine(scenario.Line{})
+	line := h.manager.SaveLine(scenario.Line{})
 	result := types.Line{
 		Stations: []types.Station{},
 		Path:     []types.Waypoint{},
@@ -88,12 +98,12 @@ func (h *lineHandler) createLine(params json.RawMessage) (json.RawMessage, error
 func (h *lineHandler) deleteLine(params json.RawMessage) (json.RawMessage, error) {
 	var request types.LineIdentifier
 	_ = json.Unmarshal(params, &request)
-	h.Manager.DeleteLine(request.Key)
+	h.manager.DeleteLine(request.Key)
 	return nil, nil
 }
 
 func (h *lineHandler) getLinePaths(params json.RawMessage) (json.RawMessage, error) {
-	lines := h.Manager.Lines()
+	lines := h.manager.Lines()
 	paths := make([]types.Line, 0, len(lines))
 	for _, line := range lines {
 		waypoints := make([]types.Waypoint, 0, len(line.Path))

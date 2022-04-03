@@ -1,6 +1,7 @@
 package rpc
 
 import (
+	"backend/rpc/mapper"
 	"backend/rpc/osrmutils"
 	"backend/rpc/types"
 	"backend/scenario"
@@ -11,8 +12,17 @@ import (
 )
 
 type stationHandler struct {
-	Manager *scenario.Manager
-	OsrmUrl string
+	manager *scenario.Manager
+	osrmUrl string
+	mapper  mapper.Mapper
+}
+
+func newStationHandler(manager *scenario.Manager, osrmUrl string) *stationHandler {
+	return &stationHandler{
+		manager: manager,
+		osrmUrl: osrmUrl,
+		mapper:  mapper.New(manager),
+	}
 }
 
 func (s *stationHandler) Methods() map[string]rpcMethod {
@@ -35,7 +45,7 @@ func (s *stationHandler) Methods() map[string]rpcMethod {
 func (s *stationHandler) queryStations(params json.RawMessage) (json.RawMessage, error) {
 	var request map[string]bool
 	_ = json.Unmarshal(params, &request)
-	stations := s.Manager.Stations()
+	stations := s.manager.Stations()
 	result := make([]types.Station, 0, len(stations))
 	for _, station := range stations {
 		var convertedLines []types.LineIdentifier
@@ -71,7 +81,7 @@ func (s *stationHandler) UpdateStations(params json.RawMessage) (json.RawMessage
 	var request types.StationUpdate
 	_ = json.Unmarshal(params, &request)
 	for _, deleted := range request.Deleted {
-		station, ok := s.Manager.Station(deleted)
+		station, ok := s.manager.Station(deleted)
 		if !ok {
 			return nil, fmt.Errorf("could not find station to delete with key \"%s\"", deleted)
 		}
@@ -88,16 +98,16 @@ func (s *stationHandler) UpdateStations(params json.RawMessage) (json.RawMessage
 			Lng:        station.Lng,
 			IsWaypoint: station.IsWaypoint,
 		}
-		domainStation = s.Manager.SaveStation(domainStation)
+		domainStation = s.manager.SaveStation(domainStation)
 		for _, line := range domainStation.Lines() {
 			affectedLines[line.Key] = line.Key
 		}
 	}
 	for _, deletion := range request.Deleted {
-		s.Manager.DeleteStation(deletion)
+		s.manager.DeleteStation(deletion)
 	}
 	for _, lineKey := range affectedLines {
-		line, _ := s.Manager.Line(lineKey)
+		line, _ := s.manager.Line(lineKey)
 		stations := line.Stations()
 		latlngs := make([]types.LatLng, 0, len(stations))
 		for _, station := range stations {
@@ -106,12 +116,12 @@ func (s *stationHandler) UpdateStations(params json.RawMessage) (json.RawMessage
 				Lng: station.Lng,
 			})
 		}
-		waypoints, err := osrmutils.QueryRoute(s.OsrmUrl, latlngs)
+		waypoints, err := osrmutils.QueryRoute(s.osrmUrl, latlngs)
 		if err != nil {
 			return nil, fmt.Errorf("could not update the route line \"%s\" → the line's route is deprecated now", line.Key)
 		}
-		line.Path = mapToVoWaypoints(waypoints)
-		s.Manager.SaveLine(line)
+		line.Path = s.mapper.ToVoWaypoints(waypoints)
+		s.manager.SaveLine(line)
 	}
 	return nil, nil
 }

@@ -14,7 +14,7 @@ import (
 
 func TestStationHandler_QueryStations(t *testing.T) {
 	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
-	handler := stationHandler{Manager: manager}
+	handler := newStationHandler(manager, "")
 
 	manager.SaveStation(scenario.Station{Key: "an unused station"})
 
@@ -55,7 +55,7 @@ func TestStationHandler_QueryStations(t *testing.T) {
 
 func TestStationHandler_UpdateStations(t *testing.T) {
 	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
-	handler := stationHandler{Manager: manager}
+	handler := newStationHandler(manager, "")
 
 	t.Run("test unknown deleted station", func(t *testing.T) {
 		request, _ := json.Marshal(types.StationUpdate{
@@ -89,7 +89,7 @@ func TestStationHandler_UpdateStations(t *testing.T) {
 		osrmCalled = osrmCalled + 1
 	}))
 	defer osrmServer.Close()
-	handler.OsrmUrl = osrmServer.URL
+	handler.osrmUrl = osrmServer.URL
 
 	line29, _ := manager.Line("luhFjA1KKO")
 	assert.Equal(t, "3ej_MC2BRN", line29.Stops[1])

@@ -45,7 +45,7 @@ func TestOsrmHandler_QueryRoute(t *testing.T) {
 		}
 	}))
 	defer osrmServer.Close()
-	handler := osrmHandler{Url: osrmServer.URL}
+	handler := newOsrmHandler(nil, osrmServer.URL)
 
 	t.Run("happy path", func(t *testing.T) {
 		body, _ := json.Marshal([]types.LatLng{
@@ -108,7 +108,7 @@ func TestOsrmHandler_QueryAddress(t *testing.T) {
 		}
 	}))
 	defer osrmServer.Close()
-	handler := osrmHandler{Url: osrmServer.URL}
+	handler := newOsrmHandler(nil, osrmServer.URL)
 
 	t.Run("happy path", func(t *testing.T) {
 		body, _ := json.Marshal(types.LatLng{Lat: 43, Lng: 42})
@@ -175,7 +175,7 @@ func TestOsrmHandler_computeDetour(t *testing.T) {
 	}))
 	defer osrmServer.Close()
 
-	handler := osrmHandler{Url: osrmServer.URL, manager: manager}
+	handler := newOsrmHandler(manager, osrmServer.URL)
 
 	t.Run("happy path", func(t *testing.T) {
 		request := types.DetourRequest{

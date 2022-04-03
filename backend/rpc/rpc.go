@@ -45,9 +45,9 @@ type Method func(message json.RawMessage) (json.RawMessage, error)
 
 func HandleFunc(manager *scenario.Manager, osrmUrl string) http.HandlerFunc {
 	handlers := make(map[string]Handler)
-	handlers["osrm"] = &osrmHandler{Url: osrmUrl, manager: manager}
-	handlers["lines"] = &lineHandler{OsrmUrl: osrmUrl, Manager: manager}
-	handlers["stations"] = &stationHandler{OsrmUrl: osrmUrl, Manager: manager}
+	handlers["osrm"] = newOsrmHandler(manager, osrmUrl)
+	handlers["lines"] = newLineHandler(manager, osrmUrl)
+	handlers["stations"] = newStationHandler(manager, osrmUrl)
 	handlers["docs"] = &docHandler{handlers: handlers}
 	return func(resp http.ResponseWriter, req *http.Request) {
 		resp.Header().Set("Content-Type", "application/json")

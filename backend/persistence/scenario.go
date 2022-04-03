@@ -1,8 +1,9 @@
 package persistence
 
 type Scenario struct {
-	Stations []Station `json:"stations"`
-	Lines    []Line    `json:"lines"`
+	Stations   []Station   `json:"stations"`
+	Lines      []Line      `json:"lines"`
+	Timetables []Timetable `json:"timetable,omitempty"`
 }
 
 type Station struct {
@@ -13,12 +14,11 @@ type Station struct {
 }
 
 type Line struct {
-	Stops     []string  `json:"stops,omitempty"`
-	Path      Path      `json:"path"`
-	Name      string    `json:"name"`
-	Color     string    `json:"color"`
-	Key       string    `json:"key"`
-	Timetable Timetable `json:"timetable,omitempty"`
+	Stops []string `json:"stops,omitempty"`
+	Path  Path     `json:"path"`
+	Name  string   `json:"name"`
+	Color string   `json:"color"`
+	Key   string   `json:"key"`
 }
 
 type Path struct {
@@ -33,18 +33,19 @@ type MetaCoord struct {
 }
 
 type Timetable struct {
+	Key   string `json:"key"`
+	Line  string `json:"line"`
+	Name  string `json:"name"`
 	Tours []Tour `json:"tours,omitempty"`
 }
 
 type Tour struct {
 	IntervalMinutes int                `json:"intervalMinutes"`
-	LastTour        TimeString         `json:"lastTour"`
+	LastTour        string             `json:"lastTour"`
 	Events          []ArrivalDeparture `json:"events"`
 }
 
 type ArrivalDeparture struct {
-	Arrival   *TimeString `json:"arrival"`
-	Departure *TimeString `json:"departure"`
+	Arrival   string `json:"arrival"`
+	Departure string `json:"departure"`
 }
-
-type TimeString string

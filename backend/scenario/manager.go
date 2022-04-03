@@ -37,13 +37,12 @@ func (s *Station) Lines() []Line {
 }
 
 type Line struct {
-	Stops     []string
-	Path      []Waypoint
-	Name      string
-	Color     string
-	Key       string
-	Timetable persistence.Timetable
-	manager   *Manager
+	Stops   []string
+	Path    []Waypoint
+	Name    string
+	Color   string
+	Key     string
+	manager *Manager
 }
 
 type Waypoint struct {
@@ -64,12 +63,33 @@ func (l *Line) Stations() []Station {
 	return result
 }
 
-type Manager struct {
-	filePath string
-	lines    map[string]Line
-	stations map[string]Station
-	mutex    sync.RWMutex
+type Timetable struct {
+	Key   string `json:"key"`
+	Line  string `json:"line"`
+	Name  string `json:"name"`
+	Tours []Tour `json:"tours,omitempty"`
 }
+
+type Tour struct {
+	IntervalMinutes int
+	LastTour        TimeString
+	Events          []ArrivalDeparture
+}
+
+type ArrivalDeparture struct {
+	Arrival   *TimeString
+	Departure *TimeString
+}
+
+type Manager struct {
+	filePath   string
+	lines      map[string]Line
+	stations   map[string]Station
+	timetables map[string]Timetable
+	mutex      sync.RWMutex
+}
+
+type TimeString string
 
 func LoadFile(path string) (*Manager, error) {
 	var scenario persistence.Scenario
@@ -94,13 +114,12 @@ func LoadFile(path string) (*Manager, error) {
 			return nil, fmt.Errorf("could not understand path of line \"%s\": %v", line.Name, err)
 		}
 		lines[line.Key] = Line{
-			Path:      waypoints,
-			Name:      line.Name,
-			Color:     line.Color,
-			Key:       line.Key,
-			Stops:     line.Stops,
-			manager:   &manager,
-			Timetable: line.Timetable,
+			Path:    waypoints,
+			Name:    line.Name,
+			Color:   line.Color,
+			Key:     line.Key,
+			Stops:   line.Stops,
+			manager: &manager,
 		}
 	}
 	for _, station := range scenario.Stations {
@@ -259,10 +278,9 @@ func (m *Manager) Export() persistence.Scenario {
 				Geometry: string(polyline2.EncodeCoords(coords)),
 				Meta:     meta,
 			},
-			Name:      line.Name,
-			Color:     line.Color,
-			Key:       line.Key,
-			Timetable: line.Timetable,
+			Name:  line.Name,
+			Color: line.Color,
+			Key:   line.Key,
 		})
 	}
 	return persistence.Scenario{

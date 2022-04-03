@@ -28,13 +28,12 @@ type LineIdentifier struct {
 }
 
 type Line struct {
-	Stations  []Station  `json:"stations"`
-	Stops     []string   `json:"stops"`
-	Path      []Waypoint `json:"path"`
-	Key       string     `json:"key"`
-	Name      string     `json:"name"`
-	Color     string     `json:"color"`
-	Timetable Timetable  `json:"timetable"`
+	Stations []Station  `json:"stations"`
+	Stops    []string   `json:"stops"`
+	Path     []Waypoint `json:"path"`
+	Key      string     `json:"key"`
+	Name     string     `json:"name"`
+	Color    string     `json:"color"`
 }
 
 type AddressResponse struct {
@@ -47,7 +46,11 @@ type StationUpdate struct {
 }
 
 type Timetable struct {
-	Tours []Tour `json:"tours"`
+	Key      string `json:"key"`
+	Name     string `json:"name"`
+	LineKey  string `json:"lineKey"`
+	LineName string `json:"lineName"`
+	Tours    []Tour `json:"tours"`
 }
 
 type Tour struct {
