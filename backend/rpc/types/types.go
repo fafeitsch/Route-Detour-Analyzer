@@ -46,11 +46,11 @@ type StationUpdate struct {
 }
 
 type Timetable struct {
-	Key      string `json:"key"`
-	Name     string `json:"name"`
-	LineKey  string `json:"lineKey"`
-	LineName string `json:"lineName"`
-	Tours    []Tour `json:"tours"`
+	Key      string  `json:"key"`
+	Name     string  `json:"name"`
+	LineKey  *string `json:"lineKey,omitempty"`
+	LineName *string `json:"lineName,omitempty"`
+	Tours    []Tour  `json:"tours"`
 }
 
 type Tour struct {
@@ -65,11 +65,13 @@ type ArrivalDeparture struct {
 }
 
 type DetourRequest struct {
-	LineIdentifier
-	Cap int `json:"cap"`
+	Stations []Station  `json:"stations"`
+	Path     []Waypoint `json:"path"`
+	Cap      int        `json:"cap"`
 }
 
 type DetourResponse struct {
+	EmptyResult    bool    `json:"emptyResult"`
 	AverageDetour  float64 `json:"averageDetour"`
 	BiggestDetour  Detour  `json:"biggestDetour"`
 	MedianDetour   Detour  `json:"medianDetour"`

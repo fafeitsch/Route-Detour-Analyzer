@@ -3,7 +3,7 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { combineLatest } from 'rxjs';
 import { RouteEditorStore } from '../route-editor.store';
@@ -55,7 +55,8 @@ export class StatisticsViewerStore extends ComponentStore<State> {
   readonly setAverageDetour = super.effect(() =>
     combineLatest([this.cap$, this.store.line$.pipe(isDefined())]).pipe(
       switchMap(([cap, line]) =>
-        this.detourService.queryDetours(line.key, cap).pipe(
+        this.detourService.queryDetours(line, cap).pipe(
+          filter((result) => !result.emptyResult),
           map((result) => ({
             averageDetour: result.averageDetour,
             biggestDetour: {

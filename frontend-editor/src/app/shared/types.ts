@@ -72,6 +72,7 @@ export interface StationDelete {
 }
 
 export interface DetourResult {
+  emptyResult: boolean;
   averageDetour: number;
   medianDetour: DetailResult;
   biggestDetour: DetailResult;

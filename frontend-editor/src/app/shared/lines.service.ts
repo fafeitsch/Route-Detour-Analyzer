@@ -26,7 +26,7 @@ export class LinesService {
   }
 
   createLine() {
-    return this.rpc.request<Line>('lines', 'createLine');
+    return this.rpc.request<Line>('lines', 'saveLine');
   }
 
   deleteLine(key: string) {

@@ -1,6 +1,7 @@
 package rpc
 
 import (
+	"backend/rpc/mapper"
 	"backend/rpc/osrmutils"
 	"backend/rpc/types"
 	"backend/scenario"
@@ -178,9 +179,13 @@ func TestOsrmHandler_computeDetour(t *testing.T) {
 	handler := newOsrmHandler(manager, osrmServer.URL)
 
 	t.Run("happy path", func(t *testing.T) {
+		existingLine, _ := manager.Line("t2A39YXN2D")
+		myMapper := mapper.New(manager)
+		line := myMapper.ToDtoLine(existingLine)
 		request := types.DetourRequest{
-			LineIdentifier: types.LineIdentifier{Key: "t2A39YXN2D"},
-			Cap:            4,
+			Stations: line.Stations,
+			Path:     line.Path,
+			Cap:      4,
 		}
 		result, err := handler.computeDetour(mustMarshal(request))
 		require.NoError(t, err)
@@ -209,21 +214,27 @@ func TestOsrmHandler_computeDetour(t *testing.T) {
 		}, response)
 	})
 
-	t.Run("line not found", func(t *testing.T) {
-		request := types.DetourRequest{
-			LineIdentifier: types.LineIdentifier{Key: "no line"},
-			Cap:            4,
-		}
-		_, err := handler.computeDetour(mustMarshal(request))
-		require.EqualError(t, err, "line with key \"no line\" not found")
-	})
-
 	t.Run("unable to retrieve osrm data", func(t *testing.T) {
+		existingLine, _ := manager.Line("S9BbG58UKu")
+		myMapper := mapper.New(manager)
+		line := myMapper.ToDtoLine(existingLine)
 		request := types.DetourRequest{
-			LineIdentifier: types.LineIdentifier{Key: "S9BbG58UKu"},
-			Cap:            4,
+			Stations: line.Stations,
+			Path:     line.Path,
+			Cap:      4,
 		}
 		_, err := handler.computeDetour(mustMarshal(request))
 		require.EqualError(t, err, "could not query detour: could not parse response from osrm: invalid character 'p' looking for beginning of value")
+	})
+
+	t.Run("empty result", func(t *testing.T) {
+		request := types.DetourRequest{
+			Cap: 0,
+		}
+		response, err := handler.computeDetour(mustMarshal(request))
+		require.NoError(t, err)
+		var detour types.DetourResponse
+		_ = json.Unmarshal(response, &detour)
+		assert.True(t, detour.EmptyResult)
 	})
 }

@@ -37,13 +37,8 @@ func (h *lineHandler) Methods() map[string]rpcMethod {
 				"If the key is empty, a new line will be created. " +
 				"Ignores the stations field of the line. The stops referenced in the stops list must exist.",
 			input:          reflect.TypeOf(types.Line{}),
-			method:         h.saveLine,
-			persistChanged: true,
-		},
-		"createLine": {
-			description:    `Creates an empty line and returns it.`,
 			output:         reflect.TypeOf(types.Line{}),
-			method:         h.createLine,
+			method:         h.saveLine,
 			persistChanged: true,
 		},
 		"deleteLine": {
@@ -79,20 +74,8 @@ func (h *lineHandler) saveLine(params json.RawMessage) (json.RawMessage, error) 
 			return nil, fmt.Errorf("a station with key \"%s\" does not exist", stop)
 		}
 	}
-	h.manager.SaveLine(h.mapper.ToVoLine(line))
-	return nil, nil
-}
-
-func (h *lineHandler) createLine(params json.RawMessage) (json.RawMessage, error) {
-	line := h.manager.SaveLine(scenario.Line{})
-	result := types.Line{
-		Stations: []types.Station{},
-		Path:     []types.Waypoint{},
-		Name:     line.Name,
-		Color:    line.Color,
-		Key:      line.Key,
-	}
-	return mustMarshal(result), nil
+	result := h.manager.SaveLine(h.mapper.ToVoLine(line))
+	return mustMarshal(h.mapper.ToDtoLine(result)), nil
 }
 
 func (h *lineHandler) deleteLine(params json.RawMessage) (json.RawMessage, error) {

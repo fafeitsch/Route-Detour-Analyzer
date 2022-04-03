@@ -10,25 +10,6 @@ import (
 	"testing"
 )
 
-func TestLineHandler_CreateLine(t *testing.T) {
-	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
-	count := len(manager.Lines())
-	handler := newLineHandler(manager, "")
-	lineObj, err := handler.createLine(nil)
-	require.NoError(t, err)
-	var line types.Line
-	err = json.Unmarshal(lineObj, &line)
-	assert.Equal(t, "", line.Name)
-	assert.NotEmpty(t, line.Key)
-	assert.Equal(t, 0, len(line.Stops))
-	assert.Equal(t, 0, len(line.Stations))
-	assert.Equal(t, "", line.Color)
-	assert.Equal(t, 0, len(line.Path))
-	assert.Equal(t, count+1, len(manager.Lines()))
-	_, ok := manager.Line(line.Key)
-	assert.True(t, ok)
-}
-
 func TestLineHandler_SaveLine(t *testing.T) {
 	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
 	count := len(manager.Lines())
@@ -80,6 +61,21 @@ func TestLineHandler_SaveLine(t *testing.T) {
 			Dist: 0,
 			Stop: false,
 		}, createdLine.Path[1])
+	})
+	t.Run("create line", func(t *testing.T) {
+		lineObj, err := handler.saveLine(nil)
+		require.NoError(t, err)
+		var line types.Line
+		err = json.Unmarshal(lineObj, &line)
+		assert.Equal(t, "", line.Name)
+		assert.NotEmpty(t, line.Key)
+		assert.Equal(t, 0, len(line.Stops))
+		assert.Equal(t, 0, len(line.Stations))
+		assert.Equal(t, "", line.Color)
+		assert.Equal(t, 0, len(line.Path))
+		assert.Equal(t, count+1, len(manager.Lines()))
+		_, ok := manager.Line(line.Key)
+		assert.True(t, ok)
 	})
 	t.Run("stop not found", func(t *testing.T) {
 		changedLine := types.Line{

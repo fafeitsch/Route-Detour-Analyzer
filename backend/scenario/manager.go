@@ -64,10 +64,10 @@ func (l *Line) Stations() []Station {
 }
 
 type Timetable struct {
-	Key   string `json:"key"`
-	Line  string `json:"line"`
-	Name  string `json:"name"`
-	Tours []Tour `json:"tours,omitempty"`
+	Key   string
+	Line  *string
+	Name  string
+	Tours []Tour
 }
 
 type Tour struct {
@@ -107,7 +107,12 @@ func LoadFile(path string) (*Manager, error) {
 	defer func() { _ = file.Close() }()
 	lines := make(map[string]Line)
 	stations := make(map[string]Station)
-	manager := Manager{lines: lines, stations: stations, mutex: sync.RWMutex{}, filePath: path}
+	manager := Manager{
+		lines:    lines,
+		stations: stations,
+		mutex:    sync.RWMutex{},
+		filePath: path,
+	}
 	for _, line := range scenario.Lines {
 		waypoints, err := convertWaypoints(line.Path)
 		if err != nil {
@@ -287,4 +292,12 @@ func (m *Manager) Export() persistence.Scenario {
 		Stations: stations,
 		Lines:    lines,
 	}
+}
+
+func (m *Manager) Timetables() []Timetable {
+	result := make([]Timetable, 0, len(m.timetables))
+	for _, tt := range m.timetables {
+		result = append(result, tt)
+	}
+	return result
 }

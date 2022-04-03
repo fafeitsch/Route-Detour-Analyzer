@@ -5,13 +5,17 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RpcClientService } from './rpc-client.service';
-import { DetourResult } from './types';
+import { DetourResult, Line } from './types';
 
 @Injectable({ providedIn: 'root' })
 export class DetourService {
   constructor(private readonly rpc: RpcClientService) {}
 
-  queryDetours(key: string, cap: number): Observable<DetourResult> {
-    return this.rpc.request('osrm', 'computeDetours', { key, cap });
+  queryDetours(line: Line, cap: number): Observable<DetourResult> {
+    return this.rpc.request('osrm', 'computeDetours', {
+      stations: line.stations,
+      path: line.path,
+      cap,
+    });
   }
 }

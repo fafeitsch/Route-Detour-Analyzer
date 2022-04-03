@@ -56,7 +56,7 @@ func TestHandleFunc(t *testing.T) {
 		id := "id"
 		rpcRequest := Request{
 			Jsonrpc: "2.0",
-			Method:  "createLine",
+			Method:  "saveLine",
 			Params:  nil,
 			Id:      &id,
 		}

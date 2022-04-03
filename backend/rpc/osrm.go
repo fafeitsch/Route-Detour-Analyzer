@@ -74,13 +74,12 @@ func (o *osrmHandler) queryAddress(params json.RawMessage) (json.RawMessage, err
 func (o *osrmHandler) computeDetour(params json.RawMessage) (json.RawMessage, error) {
 	var request types.DetourRequest
 	_ = json.Unmarshal(params, &request)
-	line, ok := o.manager.Line(request.Key)
-	if !ok {
-		return nil, fmt.Errorf("line with key \"%s\" not found", request.Key)
+	if len(request.Stations) < 2 {
+		return mustMarshal(types.DetourResponse{EmptyResult: true}), nil
 	}
-	stations := line.Stations()
+	stations := request.Stations
 	pairs := osrmutils.CreateQueryPairs(stations, request.Cap)
-	distances := osrmutils.DistanceBetweenStations(line.Path)
+	distances := osrmutils.DistanceBetweenStations(request.Path)
 	detours := make([]types.Detour, 0, len(pairs))
 	detourSum := 0.0
 	for _, pair := range pairs {

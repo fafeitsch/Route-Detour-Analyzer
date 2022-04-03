@@ -145,12 +145,17 @@ func ExampleDistanceBetweenStations() {
 		{Dist: 3},
 		{Dist: 0, Stop: true},
 	}
-	fmt.Printf("%v", DistanceBetweenStations(waypoints))
+	wp := make([]types.Waypoint, 0, len(waypoints))
+	for _, waypoint := range waypoints {
+		waypoint := waypoint
+		wp = append(wp, types.Waypoint{Dist: &waypoint.Dist, Stop: waypoint.Stop})
+	}
+	fmt.Printf("%v", DistanceBetweenStations(wp))
 	// Output: [0 19 39 50]
 }
 
 func TestOsrmHandler_createQueryPairs(t *testing.T) {
-	stations := []scenario.Station{
+	stations := []types.Station{
 		{},
 		{},
 		{},

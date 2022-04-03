@@ -95,14 +95,17 @@ func (m *Mapper) ToDtoTimeTable(timetable scenario.Timetable) types.Timetable {
 			Events:          events,
 		})
 	}
-	line, _ := m.manager.Line(timetable.Line)
-	return types.Timetable{
-		Key:      timetable.Key,
-		Name:     timetable.Name,
-		LineKey:  timetable.Line,
-		LineName: line.Name,
-		Tours:    tours,
+	result := types.Timetable{
+		Key:   timetable.Key,
+		Name:  timetable.Name,
+		Tours: tours,
 	}
+	if timetable.Line != nil {
+		line, _ := m.manager.Line(*timetable.Line)
+		result.LineKey = &line.Key
+		result.LineName = &line.Name
+	}
+	return result
 }
 
 func (m *Mapper) ToVoTimeTable(timetable types.Timetable) (scenario.Timetable, error) {

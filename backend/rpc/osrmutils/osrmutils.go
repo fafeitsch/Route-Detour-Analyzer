@@ -2,7 +2,6 @@ package osrmutils
 
 import (
 	"backend/rpc/types"
-	"backend/scenario"
 	"encoding/json"
 	"fmt"
 	polyline2 "github.com/twpayne/go-polyline"
@@ -116,19 +115,25 @@ func QueryAddress(url string, latLng types.LatLng) (string, error) {
 	return name, nil
 }
 
-func DistanceBetweenStations(path []scenario.Waypoint) []float64 {
+func DistanceBetweenStations(path []types.Waypoint) []float64 {
 	result := make([]float64, 0, 0)
 	current := 0.0
 	for _, waypoint := range path {
 		if waypoint.Stop {
 			result = append(result, current)
 		}
-		current = current + waypoint.Dist
+		var dist float64
+		if waypoint.Dist == nil {
+			dist = 0.0
+		} else {
+			dist = *waypoint.Dist
+		}
+		current = current + dist
 	}
 	return result
 }
 
-func CreateQueryPairs(stops []scenario.Station, cap int) [][2]int {
+func CreateQueryPairs(stops []types.Station, cap int) [][2]int {
 	numberOfStops := 0
 	for _, station := range stops {
 		if !station.IsWaypoint {
