@@ -64,10 +64,11 @@ func (l *Line) Stations() []Station {
 }
 
 type Timetable struct {
-	Key   string
-	Line  *string
-	Name  string
-	Tours []Tour
+	Key     string
+	Line    *string
+	Name    string
+	Tours   []Tour
+	manager *Manager
 }
 
 type Tour struct {
@@ -107,11 +108,13 @@ func LoadFile(path string) (*Manager, error) {
 	defer func() { _ = file.Close() }()
 	lines := make(map[string]Line)
 	stations := make(map[string]Station)
+	timetables := make(map[string]Timetable)
 	manager := Manager{
-		lines:    lines,
-		stations: stations,
-		mutex:    sync.RWMutex{},
-		filePath: path,
+		lines:      lines,
+		stations:   stations,
+		mutex:      sync.RWMutex{},
+		filePath:   path,
+		timetables: timetables,
 	}
 	for _, line := range scenario.Lines {
 		waypoints, err := convertWaypoints(line.Path)
@@ -295,9 +298,33 @@ func (m *Manager) Export() persistence.Scenario {
 }
 
 func (m *Manager) Timetables() []Timetable {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
 	result := make([]Timetable, 0, len(m.timetables))
 	for _, tt := range m.timetables {
 		result = append(result, tt)
 	}
 	return result
+}
+
+func (m *Manager) SaveTimetable(timetable Timetable) Timetable {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+	if timetable.Key == "" {
+		timetable.Key = gonanoid.MustID(10)
+	}
+	timetable.manager = m
+	m.timetables[timetable.Key] = timetable
+	return timetable
+}
+
+func (m *Manager) Timetable(key string) (Timetable, bool) {
+	timetable, ok := m.timetables[key]
+	return timetable, ok
+}
+
+func (m *Manager) DeleteTimetable(key string) {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+	delete(m.timetables, key)
 }

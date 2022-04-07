@@ -79,7 +79,7 @@ func (m *Mapper) ToVoWaypoints(waypoints []types.Waypoint) []scenario.Waypoint {
 	return result
 }
 
-func (m *Mapper) ToDtoTimeTable(timetable scenario.Timetable) types.Timetable {
+func (m *Mapper) ToDtoTimetable(timetable scenario.Timetable) types.Timetable {
 	tours := make([]types.Tour, 0, len(timetable.Tours))
 	for _, tour := range timetable.Tours {
 		events := make([]types.ArrivalDeparture, 0, len(tour.Events))
@@ -108,7 +108,7 @@ func (m *Mapper) ToDtoTimeTable(timetable scenario.Timetable) types.Timetable {
 	return result
 }
 
-func (m *Mapper) ToVoTimeTable(timetable types.Timetable) (scenario.Timetable, error) {
+func (m *Mapper) ToVoTimetable(timetable types.Timetable) (scenario.Timetable, error) {
 	tours := make([]scenario.Tour, 0, len(timetable.Tours))
 	for _, tour := range timetable.Tours {
 		events := make([]scenario.ArrivalDeparture, 0, len(tour.Events))
