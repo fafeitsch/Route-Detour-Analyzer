@@ -1,0 +1,40 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<div class="p-3 primary-light-background w-100">Experimental View</div>
+<!--<div class="d-flex">-->
+<!--  <route-diagram-->
+<!--    *ngIf="durationToNext$ | async as durList"-->
+<!--    class="flex-shrink-0 route-diagram"-->
+<!--    [stations]="line.stations"-->
+<!--    [color]="line.color"-->
+<!--    [lowerTemplate]="durationTemplate"-->
+<!--  >-->
+<!--    <ng-template #durationTemplate let-index="index" let-last="last">-->
+<!--      <div *ngIf="!last" class="disabled pr-3">-->
+<!--        ↓ {{ durList[index] }} minute{{ durList[index] > 1 ? 's' : '' }}-->
+<!--      </div>-->
+<!--    </ng-template>-->
+<!--  </route-diagram>-->
+<!--  <div *ngIf="tours$ | async as tours" class="d-flex flex-gap-3 mt-2 ml-3">-->
+<!--    <timetable-column-->
+<!--      *ngFor="let tour of tours; index as index; trackBy: trackByUuid"-->
+<!--      [tour]="tour"-->
+<!--      [selected]="selectedTourIndex === index"-->
+<!--      (selectTour)="selectTour(tour, index)"-->
+<!--      (changeEvent)="modifyTime(index, $event.eventIndex, $event.event)"-->
+<!--    ></timetable-column>-->
+<!--  </div>-->
+<!--</div>-->
+
+<ng-template cdkPortal>
+  test
+<!--  <edit-tour-panel-->
+<!--    class="w-100"-->
+<!--    [editMode]="selectedTourIndex !== undefined"-->
+<!--    [tour]="selectedTour"-->
+<!--    (tourChanged)="editTour($event)"-->
+<!--    (deleteTour)="deleteTour()"-->
+<!--  ></edit-tour-panel>-->
+</ng-template>

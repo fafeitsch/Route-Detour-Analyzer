@@ -2,8 +2,15 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'inline-editor',
@@ -20,6 +27,13 @@ export class InlineEditorComponent {
   @Output() leaveEditMode = new EventEmitter<void>();
   @Output() changeText = new EventEmitter<string>();
   @Output() additionalAction = new EventEmitter<void>();
+
+  @ViewChild('input', { static: false })
+  set input(element: ElementRef<HTMLInputElement>) {
+    if (element) {
+      element.nativeElement.focus();
+    }
+  }
 
   nameFormControl = new FormControl('');
   editMode = false;

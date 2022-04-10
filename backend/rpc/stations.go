@@ -48,25 +48,9 @@ func (s *stationHandler) queryStations(params json.RawMessage) (json.RawMessage,
 	stations := s.manager.Stations()
 	result := make([]types.Station, 0, len(stations))
 	for _, station := range stations {
-		var convertedLines []types.LineIdentifier
-		if expand, ok := request["includeLines"]; expand && ok {
-			lines := station.Lines()
-			convertedLines = make([]types.LineIdentifier, 0, len(lines))
-			for _, line := range lines {
-				convertedLines = append(convertedLines, types.LineIdentifier{
-					Key:  line.Key,
-					Name: line.Name,
-				})
-			}
-		}
-		result = append(result, types.Station{
-			Key:        station.Key,
-			Name:       station.Name,
-			Lat:        station.Lat,
-			Lng:        station.Lng,
-			IsWaypoint: station.IsWaypoint,
-			Lines:      convertedLines,
-		})
+		expand, ok := request["includeLines"]
+		converted := s.mapper.ToDtoStation(station, expand && ok)
+		result = append(result, converted)
 	}
 	sort.Slice(result, func(i, j int) bool {
 		if result[i].Name == result[j].Name {

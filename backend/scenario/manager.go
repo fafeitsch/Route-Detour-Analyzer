@@ -3,7 +3,6 @@ package scenario
 import (
 	"backend/persistence"
 	"encoding/json"
-	"errors"
 	"fmt"
 	gonanoid "github.com/matoous/go-nanoid"
 	polyline2 "github.com/twpayne/go-polyline"
@@ -64,11 +63,20 @@ func (l *Line) Stations() []Station {
 }
 
 type Timetable struct {
-	Key     string
-	Line    *string
-	Name    string
-	Tours   []Tour
-	manager *Manager
+	Key         string
+	Line        *string
+	Name        string
+	Tours       []Tour
+	manager     *Manager
+	StationKeys []string
+}
+
+func (t *Timetable) Stations() []Station {
+	result := make([]Station, 0, len(t.StationKeys))
+	for _, station := range t.StationKeys {
+		result = append(result, t.manager.stations[station])
+	}
+	return result
 }
 
 type Tour struct {
@@ -91,61 +99,6 @@ type Manager struct {
 }
 
 type TimeString string
-
-func LoadFile(path string) (*Manager, error) {
-	var scenario persistence.Scenario
-	file, err := os.Open(path)
-	if errors.Is(err, os.ErrNotExist) {
-		scenario = persistence.Scenario{}
-	} else if err != nil {
-		return nil, fmt.Errorf("could not open file \"%s\": %v", path, err)
-	} else {
-		err = json.NewDecoder(file).Decode(&scenario)
-		if err != nil {
-			return nil, fmt.Errorf("could not parse json file: %v", err)
-		}
-	}
-	defer func() { _ = file.Close() }()
-	lines := make(map[string]Line)
-	stations := make(map[string]Station)
-	timetables := make(map[string]Timetable)
-	manager := Manager{
-		lines:      lines,
-		stations:   stations,
-		mutex:      sync.RWMutex{},
-		filePath:   path,
-		timetables: timetables,
-	}
-	for _, line := range scenario.Lines {
-		waypoints, err := convertWaypoints(line.Path)
-		if err != nil {
-			return nil, fmt.Errorf("could not understand path of line \"%s\": %v", line.Name, err)
-		}
-		lines[line.Key] = Line{
-			Path:    waypoints,
-			Name:    line.Name,
-			Color:   line.Color,
-			Key:     line.Key,
-			Stops:   line.Stops,
-			manager: &manager,
-		}
-	}
-	for _, station := range scenario.Stations {
-		latLng, _, err := polyline2.DecodeCoord([]byte(station.LatLng))
-		if err != nil {
-			return nil, fmt.Errorf("could not parse latlng of station \"%s\": %v", station.Name, err)
-		}
-		stations[station.Key] = Station{
-			Key:        station.Key,
-			Name:       station.Name,
-			Lat:        latLng[0],
-			Lng:        latLng[1],
-			IsWaypoint: station.IsWaypoint,
-			manager:    &manager,
-		}
-	}
-	return &manager, nil
-}
 
 func convertWaypoints(path persistence.Path) ([]Waypoint, error) {
 	coords, _, err := polyline2.DecodeCoords([]byte(path.Geometry))
@@ -251,50 +204,6 @@ func (m *Manager) DeleteStation(key string) {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 	delete(m.stations, key)
-}
-
-func (m *Manager) Export() persistence.Scenario {
-	m.mutex.RLock()
-	defer m.mutex.RUnlock()
-	stations := make([]persistence.Station, 0, len(m.stations))
-	for _, station := range m.Stations() {
-		stations = append(stations, persistence.Station{
-			Key:  station.Key,
-			Name: station.Name,
-			LatLng: string(polyline2.EncodeCoord([]float64{
-				station.Lat,
-				station.Lng,
-			})),
-			IsWaypoint: station.IsWaypoint,
-		})
-	}
-	lines := make([]persistence.Line, 0, len(m.lines))
-	for _, line := range m.Lines() {
-		coords := make([][]float64, 0, len(line.Path))
-		meta := make([]persistence.MetaCoord, 0, len(line.Path))
-		for _, wp := range line.Path {
-			coords = append(coords, []float64{wp.Lat, wp.Lng})
-			meta = append(meta, persistence.MetaCoord{
-				Dist: wp.Dist,
-				Dur:  wp.Dur,
-				Stop: wp.Stop,
-			})
-		}
-		lines = append(lines, persistence.Line{
-			Stops: line.Stops,
-			Path: persistence.Path{
-				Geometry: string(polyline2.EncodeCoords(coords)),
-				Meta:     meta,
-			},
-			Name:  line.Name,
-			Color: line.Color,
-			Key:   line.Key,
-		})
-	}
-	return persistence.Scenario{
-		Stations: stations,
-		Lines:    lines,
-	}
 }
 
 func (m *Manager) Timetables() []Timetable {

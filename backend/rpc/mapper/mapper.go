@@ -45,6 +45,28 @@ func (m *Mapper) ToDtoLine(line scenario.Line) types.Line {
 	}
 }
 
+func (m *Mapper) ToDtoStation(station scenario.Station, expandLines bool) types.Station {
+	var convertedLines []types.LineIdentifier
+	if expandLines {
+		lines := station.Lines()
+		convertedLines = make([]types.LineIdentifier, 0, len(lines))
+		for _, line := range lines {
+			convertedLines = append(convertedLines, types.LineIdentifier{
+				Key:  line.Key,
+				Name: line.Name,
+			})
+		}
+	}
+	return types.Station{
+		Lat:        station.Lat,
+		Lng:        station.Lng,
+		Key:        station.Key,
+		Name:       station.Name,
+		IsWaypoint: station.IsWaypoint,
+		Lines:      convertedLines,
+	}
+}
+
 func (m *Mapper) ToVoLine(line types.Line) scenario.Line {
 	path := make([]scenario.Waypoint, 0, len(line.Path))
 	for _, waypoint := range line.Path {
@@ -81,6 +103,10 @@ func (m *Mapper) ToVoWaypoints(waypoints []types.Waypoint) []scenario.Waypoint {
 
 func (m *Mapper) ToDtoTimetable(timetable scenario.Timetable) types.Timetable {
 	tours := make([]types.Tour, 0, len(timetable.Tours))
+	stations := make([]types.Station, 0, len(timetable.StationKeys))
+	for _, station := range timetable.Stations() {
+		stations = append(stations, m.ToDtoStation(station, false))
+	}
 	for _, tour := range timetable.Tours {
 		events := make([]types.ArrivalDeparture, 0, len(tour.Events))
 		for _, event := range tour.Events {
@@ -96,9 +122,10 @@ func (m *Mapper) ToDtoTimetable(timetable scenario.Timetable) types.Timetable {
 		})
 	}
 	result := types.Timetable{
-		Key:   timetable.Key,
-		Name:  timetable.Name,
-		Tours: tours,
+		Key:      timetable.Key,
+		Name:     timetable.Name,
+		Tours:    tours,
+		Stations: stations,
 	}
 	if timetable.Line != nil {
 		line, _ := m.manager.Line(*timetable.Line)

@@ -6,20 +6,21 @@
   *ngIf="!editMode && text"
   class="text flex-grow-1 text-ellipses"
   (click)="toggleEdit()"
-  >{{ text }}</span
+>{{ text }}</span
 >
 <span *ngIf="!editMode && !text" class="flex-grow-1" (click)="toggleEdit()"
-  ><em>{{ emptyPlaceholder }}</em></span
+><em>{{ emptyPlaceholder }}</em></span
 >
 <mat-form-field
   *ngIf="editMode"
   class="mr-2 flex-grow-1"
   [style.width.px]="fieldWidth"
-  ><input
-    matInput
-    [value]="text"
-    [formControl]="nameFormControl"
-    (keyup)="inputKeyPressed($event)"
+><input
+  #input
+  matInput
+  [value]="text"
+  [formControl]="nameFormControl"
+  (keyup)="inputKeyPressed($event)"
 /></mat-form-field>
 <button
   *ngIf="additionalActionLabel && editMode"

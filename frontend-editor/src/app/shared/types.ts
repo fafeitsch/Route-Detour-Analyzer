@@ -38,6 +38,9 @@ export interface Waypoint {
 }
 
 export interface Timetable {
+  lineKey: string;
+  name: string;
+  key: string;
   tours: Tour[];
 }
 

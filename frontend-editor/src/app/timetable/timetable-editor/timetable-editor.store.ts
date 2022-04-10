@@ -14,9 +14,9 @@ import {
 } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { RouteService } from '../shared/route.service';
+import { RouteService } from '../../shared/route.service';
 import { combineLatest, Observable } from 'rxjs';
-import { isDefined, uuid } from '../shared/utils';
+import { isDefined, uuid } from '../../shared/utils';
 import {
   addMinutes,
   ArrivalDeparture,
@@ -25,8 +25,8 @@ import {
   NotificationService,
   TimeString,
   Tour,
-} from '../shared';
-import { TimetableService } from '../shared/timetable.service';
+} from '../../shared';
+import { TimetableService } from '../../shared/timetable.service';
 
 export interface TourScaffold {
   start: TimeString;
@@ -41,7 +41,7 @@ interface State {
 }
 
 @Injectable()
-export class TimetableStore extends ComponentStore<State> {
+export class TimetableEditorStore extends ComponentStore<State> {
   readonly line$ = super.select((state) => state.line);
   readonly tours$ = super.select((state) => state.tours);
   readonly dirty$ = super.select((state) => state.dirty);

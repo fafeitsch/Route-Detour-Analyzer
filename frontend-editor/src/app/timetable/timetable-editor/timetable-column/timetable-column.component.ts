@@ -11,10 +11,10 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { timeFormatValidator } from '../time-validator';
+import { timeFormatValidator } from '../../time-validator';
 import { merge, Observable, Subject } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
-import { ArrivalDeparture, TimeString, Tour } from '../../shared';
+import { ArrivalDeparture, TimeString, Tour } from '../../../shared';
 
 @Component({
   selector: 'timetable-column',
