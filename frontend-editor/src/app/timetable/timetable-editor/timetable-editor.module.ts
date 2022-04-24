@@ -9,6 +9,7 @@ import { RouteDiagramModule } from '@rda/components/route-diagram/route-diagram.
 import { TimetableColumnModule } from './timetable-column/timetable-column.module';
 import { EditTourPanelModule } from './edit-tour-panel/edit-tour-panel.module';
 import { PortalModule } from '@angular/cdk/portal';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [TimetableEditorComponent],
@@ -18,6 +19,7 @@ import { PortalModule } from '@angular/cdk/portal';
     TimetableColumnModule,
     EditTourPanelModule,
     PortalModule,
+    MatButtonModule,
   ],
   exports: [TimetableEditorComponent],
 })

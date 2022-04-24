@@ -161,10 +161,15 @@ func (m *Mapper) ToVoTimetable(timetable types.Timetable) (scenario.Timetable, e
 			Events:          events,
 		})
 	}
+	stations := make([]string, 0, len(timetable.Stations))
+	for _, station := range timetable.Stations {
+		stations = append(stations, station.Key)
+	}
 	return scenario.Timetable{
-		Key:   timetable.Key,
-		Line:  timetable.LineKey,
-		Name:  timetable.Name,
-		Tours: tours,
+		Key:         timetable.Key,
+		Line:        timetable.LineKey,
+		Name:        timetable.Name,
+		Tours:       tours,
+		StationKeys: stations,
 	}, nil
 }

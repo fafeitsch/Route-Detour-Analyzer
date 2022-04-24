@@ -2,89 +2,130 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import {
-  distinct,
-  distinctUntilChanged,
-  filter,
-  map,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { Line, LinesService, NotificationService, Timetable } from '../shared';
 import { Injectable } from '@angular/core';
-import { RouteService } from '../shared/route.service';
-import { combineLatest, Observable } from 'rxjs';
-import { isDefined, uuid } from '../shared/utils';
-import {
-  addMinutes,
-  ArrivalDeparture,
-  Line,
-  LinesService,
-  NotificationService,
-  TimeString,
-  Tour,
-} from '../shared';
+import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { TimetableService } from '../shared/timetable.service';
-
-export interface TourScaffold {
-  start: TimeString;
-  intervalMinutes?: number;
-  lastTour?: TimeString;
-}
+import { distinct, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { isDefined } from '../shared/utils';
+import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 interface State {
+  timetables: Timetable[];
   line: Line | undefined;
-  tours: (Tour & { uuid: string })[];
-  dirty: boolean;
 }
 
 @Injectable()
 export class TimetableStore extends ComponentStore<State> {
+  readonly timetables$ = super.select((state) => state.timetables);
+  readonly lineKey$ = super.select((state) => state.line?.key);
   readonly line$ = super.select((state) => state.line);
-  readonly tours$ = super.select((state) => state.tours);
-  readonly dirty$ = super.select((state) => state.dirty);
 
-  readonly durationToNext$ = super
-    .select((state) => state.line)
-    .pipe(
-      filter((line) => !!line),
-      map((line) => line!.path),
-      map((path) => this.routeService.buildRouteLegs(path)),
-      map((legs) =>
-        legs.map((leg) => Math.ceil(Math.max(1, leg.duration / 60)))
-      )
-    );
-
-  readonly deleteTour$ = super.updater((state, index: number) => ({
-    ...state,
-    tours: state.tours.filter((_, i) => i !== index),
-    dirty: true,
-  }));
-
-  readonly modifyTime$ = super.updater(
-    (
-      state,
-      {
-        index,
-        eventIndex,
-        changedEvent,
-      }: { index: number; eventIndex: number; changedEvent: ArrivalDeparture }
-    ) => ({
-      ...state,
-      dirty: true,
-      tours: state.tours.map((tour, i) =>
-        i !== index
-          ? tour
-          : {
-              ...tour,
-              events: tour.events.map((event, ii) =>
-                ii === eventIndex ? changedEvent : event
-              ),
+  readonly loadTimetables = super.effect(() =>
+    this.lineKey$.pipe(
+      tap(() => super.patchState({ timetables: [] })),
+      isDefined(),
+      switchMap((key) =>
+        this.service.getTimetablesForLine(key).pipe(
+          tapResponse(
+            (timetables) => super.patchState({ timetables }),
+            (err) => {
+              this.notificationService.raiseNotification(
+                'Could not load timetables: ' + err,
+                'error'
+              );
             }
-      ),
-    })
+          )
+        )
+      )
+    )
+  );
+
+  readonly createTimetable$ = super.effect((trigger$: Observable<void>) =>
+    trigger$.pipe(
+      withLatestFrom(this.line$.pipe(isDefined())),
+      switchMap(([, line]) =>
+        this.service
+          .saveTimetable({
+            lineKey: line.key,
+            stations: line.stations,
+          })
+          .pipe(
+            tapResponse(
+              (timetable) => {
+                this.notificationService.raiseNotification(
+                  'Timetable created',
+                  'success'
+                );
+                super.patchState((state) => ({
+                  ...state,
+                  timetables: [...state.timetables, timetable],
+                }));
+              },
+              (err) =>
+                this.notificationService.raiseNotification(
+                  'Could not create timetable: ' + err,
+                  'error'
+                )
+            )
+          )
+      )
+    )
+  );
+
+  readonly saveTimetable$ = super.effect((timetable$: Observable<Timetable>) =>
+    timetable$.pipe(
+      switchMap((timetable) =>
+        this.service.saveTimetable(timetable).pipe(
+          tapResponse(
+            (result) => {
+              this.notificationService.raiseNotification(
+                'Timetable saved',
+                'success'
+              );
+              super.patchState((state) => ({
+                ...state,
+                timetables: state.timetables.map((tt) =>
+                  tt.key === result.key ? result : tt
+                ),
+              }));
+            },
+            (err) =>
+              this.notificationService.raiseNotification(
+                'Could not save timetable: ' + err,
+                'error'
+              )
+          )
+        )
+      )
+    )
+  );
+
+  readonly deleteTimetable$ = super.effect((key$: Observable<string>) =>
+    key$.pipe(
+      switchMap((key) =>
+        this.service.deleteTimetable(key).pipe(
+          tapResponse(
+            () => {
+              super.patchState((state) => ({
+                ...state,
+                timetables: state.timetables.filter((tt) => tt.key !== key),
+              }));
+              this.notificationService.raiseNotification(
+                'Timetable deleted successfully.',
+                'success'
+              );
+            },
+            (err) =>
+              this.notificationService.raiseNotification(
+                'Could not delete timetable: ' + err,
+                'error'
+              )
+          )
+        )
+      )
+    )
   );
 
   readonly selectLineFromRoute$ = super.effect(() =>
@@ -106,141 +147,12 @@ export class TimetableStore extends ComponentStore<State> {
     )
   );
 
-  readonly selectTimetableFromRoute$ = super.effect(() =>
-    this.route.paramMap.pipe(
-      map((params) => params.get('timetable')),
-      isDefined(),
-      distinctUntilChanged(),
-      switchMap((key) =>
-        this.timetableService.getTimetable(key).pipe(
-          tapResponse(
-            () => void 0,
-            (err) =>
-              this.notificationService.raiseNotification(
-                'Could not fetch timetable: ' + err,
-                'error'
-              )
-          )
-        )
-      )
-    )
-  );
-
-  readonly addTour$ = super.effect((scaffold$: Observable<TourScaffold>) =>
-    scaffold$.pipe(
-      switchMap((scaffold) =>
-        this.buildTour(scaffold).pipe(
-          tap((newTour) =>
-            super.patchState((state) => ({
-              ...state,
-              tours: [...state.tours, newTour],
-            }))
-          ),
-          tap(() => super.patchState({ dirty: true }))
-        )
-      )
-    )
-  );
-
-  readonly modifyTour$ = super.effect(
-    (tour$: Observable<{ scaffold: TourScaffold; index: number }>) =>
-      tour$.pipe(
-        switchMap((tour) =>
-          this.tours$.pipe(
-            take(1),
-            map((tours) => tours[tour.index]),
-            map((t) => ({
-              ...t,
-              lastTour: tour.scaffold.lastTour,
-              intervalMinutes: tour.scaffold.intervalMinutes,
-            })),
-            tap((newTour) =>
-              super.patchState((state) => ({
-                ...state,
-                tours: state.tours.map((t, index) =>
-                  index === tour.index ? newTour : t
-                ),
-              }))
-            ),
-            tap(() => super.patchState({ dirty: true }))
-          )
-        )
-      )
-  );
-
-  readonly commit$ = super.effect((trigger$: Observable<void>) =>
-    trigger$.pipe(
-      switchMap(() =>
-        combineLatest([this.line$.pipe(isDefined()), this.tours$]).pipe(
-          take(1),
-          tap((x) => console.log(x)),
-          // @ts-ignore
-          map(([line, tours]) => ({
-            ...line,
-            timetable: { tours: tours.map((tour) => ({ ...tour })) },
-          })),
-          tap((line: Line) =>
-            // @ts-ignore
-            // eslint-disable-next-line @typescript-eslint/dot-notation,dot-notation
-            line.timetable.tours.forEach((tour) => delete tour['uuid'])
-          ),
-          switchMap((line) =>
-            this.lineService.saveLine(line).pipe(
-              tapResponse(
-                () => {
-                  super.patchState({ dirty: false });
-                  this.notificationService.raiseNotification(
-                    'Line saved successfully',
-                    'success'
-                  );
-                },
-                (err) =>
-                  this.notificationService.raiseNotification(
-                    'Line could not be saved: ' + err,
-                    'error'
-                  )
-              )
-            )
-          )
-        )
-      )
-    )
-  );
-
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly routeService: RouteService,
-    private readonly lineService: LinesService,
+    private readonly service: TimetableService,
     private readonly notificationService: NotificationService,
-    private readonly timetableService: TimetableService
+    private readonly lineService: LinesService
   ) {
-    super({ line: undefined, tours: [], dirty: false });
-  }
-
-  private buildTour(
-    scaffold: TourScaffold
-  ): Observable<Tour & { uuid: string }> {
-    return this.durationToNext$.pipe(
-      take(1),
-      map((durations: number[]) => {
-        const events: ArrivalDeparture[] = [{ departure: scaffold.start }];
-        durations.forEach((duration) => {
-          events.push({
-            departure: addMinutes(
-              events[events.length - 1].departure!,
-              duration
-            ),
-          });
-        });
-        events[events.length - 1].arrival = events[events.length - 1].departure;
-        events[events.length - 1].departure = undefined;
-        return {
-          uuid: uuid(),
-          events,
-          lastTour: scaffold.lastTour,
-          intervalMinutes: scaffold.intervalMinutes,
-        };
-      })
-    );
+    super({ timetables: [], line: undefined });
   }
 }

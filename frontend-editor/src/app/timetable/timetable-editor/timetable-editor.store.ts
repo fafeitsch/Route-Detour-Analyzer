@@ -3,15 +3,7 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import {
-  distinct,
-  distinctUntilChanged,
-  filter,
-  map,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { RouteService } from '../../shared/route.service';
@@ -21,9 +13,9 @@ import {
   addMinutes,
   ArrivalDeparture,
   Line,
-  LinesService,
   NotificationService,
   TimeString,
+  Timetable,
   Tour,
 } from '../../shared';
 import { TimetableService } from '../../shared/timetable.service';
@@ -35,27 +27,34 @@ export interface TourScaffold {
 }
 
 interface State {
-  line: Line | undefined;
+  timetable: Timetable;
   tours: (Tour & { uuid: string })[];
+  line: Line | undefined;
   dirty: boolean;
+  durationToNext: number[];
 }
 
 @Injectable()
 export class TimetableEditorStore extends ComponentStore<State> {
   readonly line$ = super.select((state) => state.line);
+  readonly clean$ = super.select((state) => !state.dirty);
+  readonly stations$ = super.select((state) =>
+    (state.timetable?.stations || []).map((station, index) => ({
+      ...station,
+      toNext:
+        state.durationToNext && state.durationToNext[index]
+          ? state.durationToNext[index]
+          : undefined,
+    }))
+  );
+  readonly timetable$ = super.select((state) => state.timetable);
+  readonly durationToNext$ = super.select((state) => state.durationToNext);
   readonly tours$ = super.select((state) => state.tours);
-  readonly dirty$ = super.select((state) => state.dirty);
 
-  readonly durationToNext$ = super
-    .select((state) => state.line)
-    .pipe(
-      filter((line) => !!line),
-      map((line) => line!.path),
-      map((path) => this.routeService.buildRouteLegs(path)),
-      map((legs) =>
-        legs.map((leg) => Math.ceil(Math.max(1, leg.duration / 60)))
-      )
-    );
+  readonly setLine$ = super.updater((state, line: Line | undefined) => ({
+    ...state,
+    line,
+  }));
 
   readonly deleteTour$ = super.updater((state, index: number) => ({
     ...state,
@@ -87,23 +86,29 @@ export class TimetableEditorStore extends ComponentStore<State> {
     })
   );
 
-  readonly selectLineFromRoute$ = super.effect(() =>
-    this.route.paramMap.pipe(
-      map((params) => params.get('line')),
-      isDefined(),
-      distinct(),
-      switchMap((lineKey) =>
-        this.lineService.getLine(lineKey).pipe(
-          tapResponse(
-            (line) => super.patchState({ line }),
-            (err) =>
-              this.notificationService.raiseNotification(
-                'Could not fetch line: ' + err
-              )
-          )
-        )
-      )
-    )
+  readonly addTour$ = super.updater((state, scaffold: TourScaffold) => ({
+    ...state,
+    dirty: true,
+    tours: [...state.tours, this.buildTour(scaffold, state.durationToNext)],
+  }));
+
+  readonly modifyTour$ = super.updater(
+    (
+      state,
+      { scaffold, index }: { scaffold: TourScaffold; index: number }
+    ) => ({
+      ...state,
+      dirty: true,
+      tours: state.tours.map((t, i) =>
+        index === i
+          ? {
+              ...t,
+              lastTour: scaffold.lastTour,
+              intervalMinutes: scaffold.intervalMinutes,
+            }
+          : t
+      ),
+    })
   );
 
   readonly selectTimetableFromRoute$ = super.effect(() =>
@@ -114,7 +119,14 @@ export class TimetableEditorStore extends ComponentStore<State> {
       switchMap((key) =>
         this.timetableService.getTimetable(key).pipe(
           tapResponse(
-            () => void 0,
+            (timetable) =>
+              super.patchState({
+                timetable,
+                tours: timetable.tours.map((tour) => ({
+                  ...tour,
+                  uuid: uuid(),
+                })),
+              }),
             (err) =>
               this.notificationService.raiseNotification(
                 'Could not fetch timetable: ' + err,
@@ -126,77 +138,52 @@ export class TimetableEditorStore extends ComponentStore<State> {
     )
   );
 
-  readonly addTour$ = super.effect((scaffold$: Observable<TourScaffold>) =>
-    scaffold$.pipe(
-      switchMap((scaffold) =>
-        this.buildTour(scaffold).pipe(
-          tap((newTour) =>
-            super.patchState((state) => ({
-              ...state,
-              tours: [...state.tours, newTour],
-            }))
-          ),
-          tap(() => super.patchState({ dirty: true }))
+  readonly loadDurationToNext$ = super.effect(() =>
+    this.timetable$.pipe(
+      isDefined(),
+      map((timetable) => timetable.stations),
+      switchMap((stations) =>
+        this.routeService.queryOsrmRoute(stations).pipe(
+          tapResponse(
+            (path) => {
+              const legs = this.routeService.buildRouteLegs(path);
+              const durationToNext = legs.map((leg) =>
+                Math.ceil(Math.max(1, leg.duration / 60))
+              );
+              super.patchState({ durationToNext });
+            },
+            () => {
+              this.notificationService.raiseNotification(
+                'Could not fetch travel times between stations of timeable',
+                'error'
+              );
+              super.patchState({ durationToNext: undefined });
+            }
+          )
         )
       )
     )
   );
 
-  readonly modifyTour$ = super.effect(
-    (tour$: Observable<{ scaffold: TourScaffold; index: number }>) =>
-      tour$.pipe(
-        switchMap((tour) =>
-          this.tours$.pipe(
-            take(1),
-            map((tours) => tours[tour.index]),
-            map((t) => ({
-              ...t,
-              lastTour: tour.scaffold.lastTour,
-              intervalMinutes: tour.scaffold.intervalMinutes,
-            })),
-            tap((newTour) =>
-              super.patchState((state) => ({
-                ...state,
-                tours: state.tours.map((t, index) =>
-                  index === tour.index ? newTour : t
-                ),
-              }))
-            ),
-            tap(() => super.patchState({ dirty: true }))
-          )
-        )
-      )
-  );
-
   readonly commit$ = super.effect((trigger$: Observable<void>) =>
     trigger$.pipe(
       switchMap(() =>
-        combineLatest([this.line$.pipe(isDefined()), this.tours$]).pipe(
+        combineLatest([this.timetable$, this.tours$]).pipe(
           take(1),
-          tap((x) => console.log(x)),
-          // @ts-ignore
-          map(([line, tours]) => ({
-            ...line,
-            timetable: { tours: tours.map((tour) => ({ ...tour })) },
-          })),
-          tap((line: Line) =>
-            // @ts-ignore
-            // eslint-disable-next-line @typescript-eslint/dot-notation,dot-notation
-            line.timetable.tours.forEach((tour) => delete tour['uuid'])
-          ),
-          switchMap((line) =>
-            this.lineService.saveLine(line).pipe(
+          map(([timetable, tours]) => ({ ...timetable, tours })),
+          switchMap((timetable) =>
+            this.timetableService.saveTimetable(timetable).pipe(
               tapResponse(
                 () => {
                   super.patchState({ dirty: false });
                   this.notificationService.raiseNotification(
-                    'Line saved successfully',
+                    'Timetable routes saved.',
                     'success'
                   );
                 },
-                (err) =>
+                () =>
                   this.notificationService.raiseNotification(
-                    'Line could not be saved: ' + err,
+                    'Could not save timetable',
                     'error'
                   )
               )
@@ -210,37 +197,41 @@ export class TimetableEditorStore extends ComponentStore<State> {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly routeService: RouteService,
-    private readonly lineService: LinesService,
     private readonly notificationService: NotificationService,
     private readonly timetableService: TimetableService
   ) {
-    super({ line: undefined, tours: [], dirty: false });
+    super({
+      dirty: false,
+      timetable: {
+        tours: [],
+        stations: [],
+        lineKey: undefined!,
+        key: undefined!,
+        name: '',
+      },
+      line: undefined,
+      durationToNext: [],
+      tours: [],
+    });
   }
 
   private buildTour(
-    scaffold: TourScaffold
-  ): Observable<Tour & { uuid: string }> {
-    return this.durationToNext$.pipe(
-      take(1),
-      map((durations: number[]) => {
-        const events: ArrivalDeparture[] = [{ departure: scaffold.start }];
-        durations.forEach((duration) => {
-          events.push({
-            departure: addMinutes(
-              events[events.length - 1].departure!,
-              duration
-            ),
-          });
-        });
-        events[events.length - 1].arrival = events[events.length - 1].departure;
-        events[events.length - 1].departure = undefined;
-        return {
-          uuid: uuid(),
-          events,
-          lastTour: scaffold.lastTour,
-          intervalMinutes: scaffold.intervalMinutes,
-        };
-      })
-    );
+    scaffold: TourScaffold,
+    durations: number[]
+  ): Tour & { uuid: string } {
+    const events: ArrivalDeparture[] = [{ departure: scaffold.start }];
+    durations.forEach((duration) => {
+      events.push({
+        departure: addMinutes(events[events.length - 1].departure!, duration),
+      });
+    });
+    events[events.length - 1].arrival = events[events.length - 1].departure;
+    events[events.length - 1].departure = undefined;
+    return {
+      uuid: uuid(),
+      events,
+      lastTour: scaffold.lastTour,
+      intervalMinutes: scaffold.intervalMinutes,
+    };
   }
 }

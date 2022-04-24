@@ -58,7 +58,9 @@ func (t *timetableHandler) getTimetablesForLine(params json.RawMessage) (json.Ra
 	result := make([]types.Timetable, 0, 0)
 	for _, tt := range t.manager.Timetables() {
 		tt.Tours = nil
-		result = append(result, t.mapper.ToDtoTimetable(tt))
+		if line.Key == *tt.Line {
+			result = append(result, t.mapper.ToDtoTimetable(tt))
+		}
 	}
 	return mustMarshal(result), nil
 }

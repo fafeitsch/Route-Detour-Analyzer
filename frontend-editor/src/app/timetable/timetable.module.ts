@@ -9,7 +9,6 @@ import { TimetableRoutingModule } from './timetable-routing.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouteDiagramModule } from '@rda/components/route-diagram/route-diagram.module';
 import { MatButtonModule } from '@angular/material/button';
-import { ToolbarModule } from '../shared/toolbar/toolbar.module';
 import { TransformTimetablePipe } from './transform-timetable.pipe';
 import { MatDialogModule } from '@angular/material/dialog';
 import { InlineEditorModule } from '@rda/components/inline-editor/inline-editor.module';
@@ -30,7 +29,6 @@ import { TimetableEditorModule } from './timetable-editor/timetable-editor.modul
     MatDialogModule,
     RouteDiagramModule,
     MatButtonModule,
-    ToolbarModule,
     InlineEditorModule,
     MatIconModule,
     TimetableEditorModule,

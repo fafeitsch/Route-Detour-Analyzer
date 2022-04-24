@@ -2,39 +2,40 @@
   ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
   ~ Find the full license text in the LICENSE file of the project root.
   -->
-<div class="p-3 primary-light-background w-100">Experimental View</div>
-<!--<div class="d-flex">-->
-<!--  <route-diagram-->
-<!--    *ngIf="durationToNext$ | async as durList"-->
-<!--    class="flex-shrink-0 route-diagram"-->
-<!--    [stations]="line.stations"-->
-<!--    [color]="line.color"-->
-<!--    [lowerTemplate]="durationTemplate"-->
-<!--  >-->
-<!--    <ng-template #durationTemplate let-index="index" let-last="last">-->
-<!--      <div *ngIf="!last" class="disabled pr-3">-->
-<!--        ↓ {{ durList[index] }} minute{{ durList[index] > 1 ? 's' : '' }}-->
-<!--      </div>-->
-<!--    </ng-template>-->
-<!--  </route-diagram>-->
-<!--  <div *ngIf="tours$ | async as tours" class="d-flex flex-gap-3 mt-2 ml-3">-->
-<!--    <timetable-column-->
-<!--      *ngFor="let tour of tours; index as index; trackBy: trackByUuid"-->
-<!--      [tour]="tour"-->
-<!--      [selected]="selectedTourIndex === index"-->
-<!--      (selectTour)="selectTour(tour, index)"-->
-<!--      (changeEvent)="modifyTime(index, $event.eventIndex, $event.event)"-->
-<!--    ></timetable-column>-->
-<!--  </div>-->
-<!--</div>-->
+<div class="p-3 primary-light-background">Experimental View</div>
+<div class="d-flex">
+  <route-diagram
+    class="flex-shrink-0 route-diagram"
+    [stations]="stations$ | async"
+    [color]="(line$ | async)?.color"
+    [lowerTemplate]="durationTemplate"
+  >
+    <ng-template #durationTemplate let-station="station" let-last="last">
+      <!-- to next is set in store -->
+      <div *ngIf="!last && station.toNext" class="disabled pr-3">
+        ↓ {{ station.toNext }} minute{{ station.toNext > 1 ? "s" : "" }}
+      </div>
+    </ng-template>
+  </route-diagram>
+  <div *ngIf="tours$ | async as tours" class="d-flex flex-gap-3 mt-2 ml-3">
+    <timetable-column
+      *ngFor="let tour of tours; index as index; trackBy: trackByUuid"
+      [tour]="tour"
+      [selected]="selectedTourIndex === index"
+      (selectTour)="selectTour(tour, index)"
+      (changeEvent)="modifyTime(index, $event.eventIndex, $event.event)"
+    ></timetable-column>
+  </div>
+</div>
 
 <ng-template cdkPortal>
-  test
-<!--  <edit-tour-panel-->
-<!--    class="w-100"-->
-<!--    [editMode]="selectedTourIndex !== undefined"-->
-<!--    [tour]="selectedTour"-->
-<!--    (tourChanged)="editTour($event)"-->
-<!--    (deleteTour)="deleteTour()"-->
-<!--  ></edit-tour-panel>-->
+  <edit-tour-panel
+    class="w-100"
+    [editMode]="selectedTourIndex !== undefined"
+    [tour]="selectedTour"
+    (tourChanged)="editTour($event)"
+    (deleteTour)="deleteTour()"
+  ></edit-tour-panel>
+  <div class="flex-grow-1"></div>
+  <button mat-raised-button color="primary" [disabled]="clean$ | async" (click)="commit()">Save</button>
 </ng-template>

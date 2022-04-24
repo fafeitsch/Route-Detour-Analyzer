@@ -42,6 +42,7 @@ export interface Timetable {
   name: string;
   key: string;
   tours: Tour[];
+  stations: Station[];
 }
 
 export interface Tour {
