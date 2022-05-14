@@ -72,30 +72,20 @@ func convertTimetablesFromPersistence(manager *Manager, timetables []persistence
 		for _, tour := range timetable.Tours {
 			events := make([]ArrivalDeparture, 0, len(tour.Events))
 			for _, event := range tour.Events {
-				var arrival *TimeString
-				if event.Arrival != nil {
-					a := TimeString(*event.Arrival)
-					arrival = &a
-				}
-				var departure *TimeString
-				if event.Departure != nil {
-					d := TimeString(*event.Departure)
-					departure = &d
-				}
 				events = append(events, ArrivalDeparture{
-					Arrival:   arrival,
-					Departure: departure,
+					Arrival:   event.Arrival,
+					Departure: event.Departure,
 				})
 			}
 			tours = append(tours, Tour{
 				IntervalMinutes: tour.IntervalMinutes,
-				LastTour:        TimeString(tour.LastTour),
+				LastTour:        tour.LastTour,
 				Events:          events,
 			})
 		}
 		result[timetable.Key] = Timetable{
 			Key:         timetable.Key,
-			Line:        timetable.Line,
+			LineKey:     timetable.Line,
 			Name:        timetable.Name,
 			Tours:       tours,
 			StationKeys: timetable.Stations,
@@ -157,30 +147,20 @@ func (m *Manager) convertTimetablesToPersistence() []persistence.Timetable {
 		for _, tour := range timetable.Tours {
 			events := make([]persistence.ArrivalDeparture, 0, len(tour.Events))
 			for _, event := range tour.Events {
-				var arrival *string
-				if event.Arrival != nil {
-					a := string(*event.Arrival)
-					arrival = &a
-				}
-				var departure *string
-				if event.Departure != nil {
-					d := string(*event.Departure)
-					departure = &d
-				}
 				events = append(events, persistence.ArrivalDeparture{
-					Arrival:   arrival,
-					Departure: departure,
+					Arrival:   event.Arrival,
+					Departure: event.Departure,
 				})
 			}
 			tours = append(tours, persistence.Tour{
 				IntervalMinutes: tour.IntervalMinutes,
-				LastTour:        string(tour.LastTour),
+				LastTour:        tour.LastTour,
 				Events:          events,
 			})
 		}
 		timetables = append(timetables, persistence.Timetable{
 			Key:      timetable.Key,
-			Line:     timetable.Line,
+			Line:     timetable.LineKey,
 			Name:     timetable.Name,
 			Stations: timetable.StationKeys,
 			Tours:    tours,

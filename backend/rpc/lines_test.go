@@ -135,19 +135,19 @@ func TestLineHandler_GetLinePaths(t *testing.T) {
 	var lines []types.Line
 	err = json.Unmarshal(response, &lines)
 	assert.Nil(t, err)
-	assert.Equal(t, 36, len(lines))
-	assert.Equal(t, "Linie 8w: Zollhaus → Waldfriedhof", lines[5].Name)
-	assert.Nil(t, lines[5].Stations)
-	assert.Nil(t, lines[5].Stops)
-	assert.Equal(t, "#179e20", lines[5].Color)
+	assert.Equal(t, 40, len(lines))
+	assert.Equal(t, "Linie 8w: Zollhaus → Waldfriedhof", lines[7].Name)
+	assert.Nil(t, lines[7].Stations)
+	assert.Nil(t, lines[7].Stops)
+	assert.Equal(t, "#179e20", lines[7].Color)
 	assert.Equal(t, types.Waypoint{
-		Lat:  49.77382999999999,
-		Lng:  9.926659999999998,
+		Lat:  49.773390000000006,
+		Lng:  9.92323,
 		Dist: nil,
 		Dur:  nil,
 		Stop: false,
 	}, lines[5].Path[7])
-	assert.Equal(t, 115, len(lines[5].Path))
+	assert.Equal(t, 115, len(lines[7].Path))
 }
 
 func TestLineHandler_DeleteLine(t *testing.T) {

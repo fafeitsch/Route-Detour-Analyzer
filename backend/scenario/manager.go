@@ -64,7 +64,7 @@ func (l *Line) Stations() []Station {
 
 type Timetable struct {
 	Key         string
-	Line        *string
+	LineKey     string
 	Name        string
 	Tours       []Tour
 	manager     *Manager
@@ -79,15 +79,19 @@ func (t *Timetable) Stations() []Station {
 	return result
 }
 
+func (t *Timetable) Line() Line {
+	return t.manager.lines[t.LineKey]
+}
+
 type Tour struct {
 	IntervalMinutes int
-	LastTour        TimeString
+	LastTour        string
 	Events          []ArrivalDeparture
 }
 
 type ArrivalDeparture struct {
-	Arrival   *TimeString
-	Departure *TimeString
+	Arrival   string
+	Departure string
 }
 
 type Manager struct {
@@ -98,7 +102,15 @@ type Manager struct {
 	mutex      sync.RWMutex
 }
 
-type TimeString string
+func Empty() *Manager {
+	return &Manager{
+		filePath:   "",
+		lines:      make(map[string]Line),
+		stations:   make(map[string]Station),
+		timetables: make(map[string]Timetable),
+		mutex:      sync.RWMutex{},
+	}
+}
 
 func convertWaypoints(path persistence.Path) ([]Waypoint, error) {
 	coords, _, err := polyline2.DecodeCoords([]byte(path.Geometry))
@@ -213,6 +225,7 @@ func (m *Manager) Timetables() []Timetable {
 	for _, tt := range m.timetables {
 		result = append(result, tt)
 	}
+	sort.Slice(result, sortTimetables(result))
 	return result
 }
 

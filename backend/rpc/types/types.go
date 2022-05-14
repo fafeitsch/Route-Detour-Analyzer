@@ -48,8 +48,8 @@ type StationUpdate struct {
 type Timetable struct {
 	Key      string    `json:"key"`
 	Name     string    `json:"name"`
-	LineKey  *string   `json:"lineKey,omitempty"`
-	LineName *string   `json:"lineName,omitempty"`
+	LineKey  string    `json:"lineKey,omitempty"`
+	LineName string    `json:"lineName,omitempty"`
 	Tours    []Tour    `json:"tours"`
 	Stations []Station `json:"stations"`
 }
@@ -61,8 +61,8 @@ type Tour struct {
 }
 
 type ArrivalDeparture struct {
-	Arrival   *string `json:"arrival"`
-	Departure *string `json:"departure"`
+	Arrival   string `json:"arrival,omitempty"`
+	Departure string `json:"departure,omitempty"`
 }
 
 type DetourRequest struct {

@@ -35,6 +35,17 @@ func sortStations(stations []Station) func(i, j int) bool {
 	}
 }
 
+func sortTimetables(timetables []Timetable) func(i, j int) bool {
+	return func(i, j int) bool {
+		a := timetables[i]
+		b := timetables[j]
+		if a.LineKey != b.LineKey {
+			return a.Line().Name < b.Line().Name
+		}
+		return a.Name < b.Name
+	}
+}
+
 func mustBeNumber(text string) int {
 	number, _ := strconv.Atoi(text)
 	return number

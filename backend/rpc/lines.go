@@ -12,14 +12,12 @@ import (
 type lineHandler struct {
 	manager *scenario.Manager
 	osrmUrl string
-	mapper  mapper.Mapper
 }
 
 func newLineHandler(manager *scenario.Manager, osrmUrl string) *lineHandler {
 	return &lineHandler{
 		manager: manager,
 		osrmUrl: osrmUrl,
-		mapper:  mapper.New(manager),
 	}
 }
 
@@ -63,7 +61,7 @@ func (h *lineHandler) queryLine(params json.RawMessage) (json.RawMessage, error)
 	if !ok {
 		return nil, fmt.Errorf("no line with name \"%s\" found", request.Key)
 	}
-	return mustMarshal(h.mapper.ToDtoLine(line)), nil
+	return mustMarshal(mapper.ToDtoLine(line)), nil
 }
 
 func (h *lineHandler) saveLine(params json.RawMessage) (json.RawMessage, error) {
@@ -74,8 +72,8 @@ func (h *lineHandler) saveLine(params json.RawMessage) (json.RawMessage, error) 
 			return nil, fmt.Errorf("a station with key \"%s\" does not exist", stop)
 		}
 	}
-	result := h.manager.SaveLine(h.mapper.ToVoLine(line))
-	return mustMarshal(h.mapper.ToDtoLine(result)), nil
+	result := h.manager.SaveLine(mapper.ToVoLine(line))
+	return mustMarshal(mapper.ToDtoLine(result)), nil
 }
 
 func (h *lineHandler) deleteLine(params json.RawMessage) (json.RawMessage, error) {

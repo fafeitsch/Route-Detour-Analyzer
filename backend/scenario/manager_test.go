@@ -1,12 +1,11 @@
 package scenario
 
 import (
-	"backend/persistence"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	polyline2 "github.com/twpayne/go-polyline"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 )
 
@@ -102,10 +101,8 @@ func TestManager_SaveLine(t *testing.T) {
 }
 
 func TestManager_SaveStation(t *testing.T) {
-	manager, err := LoadFile(filepath.Join("../testdata/wuerzburg.json"))
-	require.NoError(t, err)
+	manager := Empty()
 	t.Run("save new station", func(t *testing.T) {
-		t.Parallel()
 		_, ok := manager.Station("randomKey")
 		assert.False(t, ok)
 		station := manager.SaveStation(Station{
@@ -116,17 +113,18 @@ func TestManager_SaveStation(t *testing.T) {
 		})
 		assert.Equal(t, "randomKey", station.Key)
 		assert.Equal(t, "Court Street", station.Name)
+		assert.Equal(t, 1, len(manager.Stations()))
 		_, ok = manager.Station("randomKey")
 		assert.True(t, ok)
 	})
 	t.Run("save line with empty key", func(t *testing.T) {
-		t.Parallel()
 		station := manager.SaveStation(Station{
 			Name: "Court Street",
 			Lat:  10,
 			Lng:  20,
 		})
 		assert.NotEmpty(t, station.Key)
+		assert.Equal(t, 2, len(manager.Stations()))
 		assert.Equal(t, "Court Street", station.Name)
 		_, ok := manager.Station(station.Key)
 		assert.True(t, ok)
@@ -154,14 +152,14 @@ func TestLine_Stations(t *testing.T) {
 	require.NoError(t, err)
 
 	stations := manager.Stations()
-	assert.Equal(t, 310, len(stations))
+	assert.Equal(t, 312, len(stations))
 }
 
 func TestManager_Lines(t *testing.T) {
 	manager, err := LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
 	require.NoError(t, err)
 	lines := manager.Lines()
-	assert.Equal(t, 36, len(lines))
+	assert.Equal(t, 40, len(lines))
 }
 
 func TestManager_SaveTimetable(t *testing.T) {
@@ -195,35 +193,39 @@ func TestManager_SaveTimetable(t *testing.T) {
 	})
 }
 
-func TestManager_DeleteTimetable(t *testing.T) {
-	// manager, err := LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
-	// require.NoError(t, err)
+func TestEmpty(t *testing.T) {
+	manager := Empty()
+	assert.Equal(t, &Manager{
+		filePath:   "",
+		lines:      map[string]Line{},
+		stations:   map[string]Station{},
+		timetables: map[string]Timetable{},
+		mutex:      sync.RWMutex{},
+	}, manager)
 }
 
-func TestManager_Export(t *testing.T) {
-	manager, err := LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
-	require.NoError(t, err)
-	result := manager.Export()
-	assert.Equal(t, 310, len(result.Stations))
-	assert.Equal(t, persistence.Station{
-		Key:        "Z4Dg3WrM6c",
-		Name:       "Blosenbergpfad",
-		LatLng:     "cuunHatr{@",
-		IsWaypoint: false,
-	}, result.Stations[44])
-	assert.Equal(t, 36, len(result.Lines))
-	assert.Equal(t, "Linie 16: Stadtmitte → Heidingsfeld", result.Lines[14].Name)
-	assert.Equal(t, persistence.MetaCoord{
-		Dist: 6.319016,
-		Dur:  2.3,
-		Stop: false,
-	}, result.Lines[14].Path.Meta[6])
-	geo, _, err := polyline2.DecodeCoords([]byte(result.Lines[14].Path.Geometry))
-	assert.NotEmpty(t, geo)
-	assert.NoError(t, err)
-	assert.Equal(t, 327, len(geo))
-	assert.Equal(t, 17, len(result.Lines[15].Stops))
-	assert.Equal(t, "cZNY7z6o_t", result.Lines[15].Stops[5])
-	assert.Equal(t, "#dace33", result.Lines[14].Color)
-	assert.Equal(t, "S9BbG58UKu", result.Lines[14].Key)
+func TestTimetable_Stations(t *testing.T) {
+	manager := Empty()
+	a := manager.SaveStation(Station{Key: "a"})
+	b := manager.SaveStation(Station{Key: "b"})
+	timetable := manager.SaveTimetable(Timetable{StationKeys: []string{"a", "b", "c"}})
+	stations := timetable.Stations()
+	assert.Equal(t, []Station{a, b, {}}, stations)
+}
+
+func TestTimetable_Line(t *testing.T) {
+	manager := Empty()
+	line := manager.SaveLine(Line{Name: "Example Line"})
+	timetable := manager.SaveTimetable(Timetable{LineKey: line.Key})
+	got := timetable.Line()
+	assert.Equal(t, line, got)
+}
+
+func TestManager_DeleteTimetable(t *testing.T) {
+	manager := Empty()
+	timetable := manager.SaveTimetable(Timetable{})
+	assert.Equal(t, 1, len(manager.Timetables()))
+	assert.NotEmpty(t, timetable.Key)
+	manager.DeleteTimetable(timetable.Key)
+	assert.Equal(t, 0, len(manager.Timetables()))
 }

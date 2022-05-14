@@ -180,8 +180,7 @@ func TestOsrmHandler_computeDetour(t *testing.T) {
 
 	t.Run("happy path", func(t *testing.T) {
 		existingLine, _ := manager.Line("t2A39YXN2D")
-		myMapper := mapper.New(manager)
-		line := myMapper.ToDtoLine(existingLine)
+		line := mapper.ToDtoLine(existingLine)
 		request := types.DetourRequest{
 			Stations: line.Stations,
 			Path:     line.Path,
@@ -216,8 +215,7 @@ func TestOsrmHandler_computeDetour(t *testing.T) {
 
 	t.Run("unable to retrieve osrm data", func(t *testing.T) {
 		existingLine, _ := manager.Line("S9BbG58UKu")
-		myMapper := mapper.New(manager)
-		line := myMapper.ToDtoLine(existingLine)
+		line := mapper.ToDtoLine(existingLine)
 		request := types.DetourRequest{
 			Stations: line.Stations,
 			Path:     line.Path,

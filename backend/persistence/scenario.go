@@ -34,7 +34,7 @@ type MetaCoord struct {
 
 type Timetable struct {
 	Key      string   `json:"key"`
-	Line     *string  `json:"line,omitempty"`
+	Line     string   `json:"line,omitempty"`
 	Name     string   `json:"name"`
 	Tours    []Tour   `json:"tours,omitempty"`
 	Stations []string `json:"stations"`
@@ -47,6 +47,6 @@ type Tour struct {
 }
 
 type ArrivalDeparture struct {
-	Arrival   *string `json:"arrival"`
-	Departure *string `json:"departure"`
+	Arrival   string `json:"arrival,omitempty"`
+	Departure string `json:"departure,omitempty"`
 }

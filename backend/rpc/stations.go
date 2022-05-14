@@ -14,14 +14,12 @@ import (
 type stationHandler struct {
 	manager *scenario.Manager
 	osrmUrl string
-	mapper  mapper.Mapper
 }
 
 func newStationHandler(manager *scenario.Manager, osrmUrl string) *stationHandler {
 	return &stationHandler{
 		manager: manager,
 		osrmUrl: osrmUrl,
-		mapper:  mapper.New(manager),
 	}
 }
 
@@ -49,7 +47,7 @@ func (s *stationHandler) queryStations(params json.RawMessage) (json.RawMessage,
 	result := make([]types.Station, 0, len(stations))
 	for _, station := range stations {
 		expand, ok := request["includeLines"]
-		converted := s.mapper.ToDtoStation(station, expand && ok)
+		converted := mapper.ToDtoStation(station, expand && ok)
 		result = append(result, converted)
 	}
 	sort.Slice(result, func(i, j int) bool {
@@ -104,7 +102,7 @@ func (s *stationHandler) UpdateStations(params json.RawMessage) (json.RawMessage
 		if err != nil {
 			return nil, fmt.Errorf("could not update the route line \"%s\" → the line's route is deprecated now", line.Key)
 		}
-		line.Path = s.mapper.ToVoWaypoints(waypoints)
+		line.Path = mapper.ToVoWaypoints(waypoints)
 		s.manager.SaveLine(line)
 	}
 	return nil, nil
