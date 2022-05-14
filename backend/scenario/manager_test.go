@@ -195,6 +195,11 @@ func TestManager_SaveTimetable(t *testing.T) {
 	})
 }
 
+func TestManager_DeleteTimetable(t *testing.T) {
+	// manager, err := LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
+	// require.NoError(t, err)
+}
+
 func TestManager_Export(t *testing.T) {
 	manager, err := LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
 	require.NoError(t, err)

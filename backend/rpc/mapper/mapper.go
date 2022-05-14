@@ -68,16 +68,7 @@ func (m *Mapper) ToDtoStation(station scenario.Station, expandLines bool) types.
 }
 
 func (m *Mapper) ToVoLine(line types.Line) scenario.Line {
-	path := make([]scenario.Waypoint, 0, len(line.Path))
-	for _, waypoint := range line.Path {
-		path = append(path, scenario.Waypoint{
-			Lat:  waypoint.Lat,
-			Lng:  waypoint.Lng,
-			Dist: *waypoint.Dist,
-			Dur:  *waypoint.Dur,
-			Stop: waypoint.Stop,
-		})
-	}
+	path := m.ToVoWaypoints(line.Path)
 	return scenario.Line{
 		Stops: line.Stops,
 		Path:  path,
@@ -90,11 +81,19 @@ func (m *Mapper) ToVoLine(line types.Line) scenario.Line {
 func (m *Mapper) ToVoWaypoints(waypoints []types.Waypoint) []scenario.Waypoint {
 	result := make([]scenario.Waypoint, 0, len(waypoints))
 	for _, wp := range waypoints {
+		dist := 0.0
+		if wp.Dist != nil {
+			dist = *wp.Dist
+		}
+		dur := 0.0
+		if wp.Dur != nil {
+			dur = *wp.Dur
+		}
 		result = append(result, scenario.Waypoint{
 			Lat:  wp.Lat,
 			Lng:  wp.Lng,
-			Dist: *wp.Dist,
-			Dur:  *wp.Dur,
+			Dist: dist,
+			Dur:  dur,
 			Stop: wp.Stop,
 		})
 	}
