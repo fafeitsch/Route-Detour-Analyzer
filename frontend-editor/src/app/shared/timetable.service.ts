@@ -22,7 +22,15 @@ export class TimetableService {
     return this.rpc.request<Timetable>('timetables', 'getTimetable', { key });
   }
 
-  saveTimetable(timetable: Partial<Timetable>) {
+  saveTimetableMetadata(timetable: Partial<Timetable>) {
+    return this.rpc.request<Timetable>(
+      'timetables',
+      'saveTimetableMetadata',
+      timetable
+    );
+  }
+
+  saveTimetable(timetable: Timetable) {
     return this.rpc.request<Timetable>(
       'timetables',
       'saveTimetable',

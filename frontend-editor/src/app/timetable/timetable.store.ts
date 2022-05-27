@@ -47,7 +47,7 @@ export class TimetableStore extends ComponentStore<State> {
       withLatestFrom(this.line$.pipe(isDefined())),
       switchMap(([, line]) =>
         this.service
-          .saveTimetable({
+          .saveTimetableMetadata({
             lineKey: line.key,
             stations: line.stations,
           })
@@ -77,7 +77,7 @@ export class TimetableStore extends ComponentStore<State> {
   readonly saveTimetable$ = super.effect((timetable$: Observable<Timetable>) =>
     timetable$.pipe(
       switchMap((timetable) =>
-        this.service.saveTimetable(timetable).pipe(
+        this.service.saveTimetableMetadata(timetable).pipe(
           tapResponse(
             (result) => {
               this.notificationService.raiseNotification(
