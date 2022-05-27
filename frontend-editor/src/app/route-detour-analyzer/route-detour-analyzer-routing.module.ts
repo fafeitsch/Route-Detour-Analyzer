@@ -33,14 +33,14 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'timetable/:line',
+        path: 'timetable',
         loadChildren: () =>
           import('../timetable/timetable.module').then(
             (m) => m.TimetableModule
           ),
       },
       {
-        path: 'timetable/:line/:timetable',
+        path: 'vehicle/:vehicle',
         loadChildren: () =>
           import('../timetable/timetable.module').then(
             (m) => m.TimetableModule

@@ -4,14 +4,12 @@
  */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TimetableComponent } from './timetable.component';
-import { TimetableEditorComponent } from './timetable-editor/timetable-editor.component';
+import { VehicleComponent } from './vehicle.component';
 
 const routes: Routes = [
   {
-    path: ':line',
-    component: TimetableComponent,
-    children: [{ path: ':timetable', component: TimetableEditorComponent }],
+    path: '',
+    component: VehicleComponent,
   },
 ];
 
@@ -19,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TimetableRoutingModule {}
+export class VehicleRoutingModule {}

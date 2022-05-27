@@ -4,6 +4,7 @@ type Scenario struct {
 	Stations   []Station   `json:"stations"`
 	Lines      []Line      `json:"lines"`
 	Timetables []Timetable `json:"timetable,omitempty"`
+	Vehicles   []Vehicle   `json:"vehicles"`
 }
 
 type Station struct {
@@ -49,4 +50,22 @@ type Tour struct {
 type ArrivalDeparture struct {
 	Arrival   string `json:"arrival,omitempty"`
 	Departure string `json:"departure,omitempty"`
+}
+
+type Vehicle struct {
+	Name     string `json:"name"`
+	Key      string `json:"key"`
+	Position string `json:"position"`
+	Tasks    []Task `json:"tasks"`
+}
+
+type Task struct {
+	Start string `json:"start"`
+	Type  string `json:"type"`
+	// Free roaming properties
+	Path *Path `json:"path"`
+	// Line/Timetable properties
+	TimetableKey *string `json:"timetableKey"`
+	TourIndex    *int    `json:"tourIndex"`
+	PathIndex    *int    `json:"pathIndex"`
 }

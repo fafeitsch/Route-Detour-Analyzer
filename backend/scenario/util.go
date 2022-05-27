@@ -46,6 +46,17 @@ func sortTimetables(timetables []Timetable) func(i, j int) bool {
 	}
 }
 
+func sortVehicles(vehicles []Vehicle) func(i, j int) bool {
+	return func(i, j int) bool {
+		a := vehicles[i]
+		b := vehicles[j]
+		if a.Name != b.Name {
+			return a.Name < b.Name
+		}
+		return a.Key < b.Key
+	}
+}
+
 func mustBeNumber(text string) int {
 	number, _ := strconv.Atoi(text)
 	return number

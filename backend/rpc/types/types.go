@@ -85,3 +85,21 @@ type Detour struct {
 	Source   int     `json:"source"`
 	Target   int     `json:"target"`
 }
+
+type Vehicle struct {
+	Name     string `json:"name"`
+	Key      string `json:"key"`
+	Position LatLng `json:"position"`
+	Tasks    []Task `json:"tasks"`
+}
+
+type Task struct {
+	Start string `json:"start"`
+	Type  string `json:"type"`
+	// Free roaming properties
+	Path []Waypoint `json:"path,omitempty"`
+	// Line/Timetable properties*
+	TimetableKey *string `json:"timetableKey,omitempty"`
+	TourIndex    *int    `json:"tourIndex,omitempty"`
+	PathIndex    *int    `json:"pathIndex,omitempty"`
+}

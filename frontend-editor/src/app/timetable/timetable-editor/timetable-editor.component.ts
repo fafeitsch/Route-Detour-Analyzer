@@ -8,6 +8,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ComponentFactoryResolver,
+  Inject,
   Injector,
   Input,
   OnDestroy,
@@ -17,6 +18,7 @@ import { CdkPortal, DomPortalOutlet, PortalOutlet } from '@angular/cdk/portal';
 import { TimetableEditorStore, TourScaffold } from './timetable-editor.store';
 import { ArrivalDeparture, Tour } from '../../shared';
 import { TimetableStore } from '../timetable.store';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'timetable-editor',
@@ -45,6 +47,7 @@ export class TimetableEditorComponent implements OnDestroy, AfterViewInit {
 
   constructor(
     private readonly factoryResolver: ComponentFactoryResolver,
+    @Inject(DOCUMENT) private readonly document: Document,
     private readonly injector: Injector,
     private readonly appRef: ApplicationRef,
     private readonly store: TimetableEditorStore,
@@ -54,11 +57,11 @@ export class TimetableEditorComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this._sideNavOutlet || !this.portal) {
+    if (this.document.querySelector('#timetable-sidenav') === null) {
       return;
     }
     this.portalHost = new DomPortalOutlet(
-      this._sideNavOutlet,
+      this.document.querySelector('#timetable-sidenav')!,
       this.factoryResolver,
       this.appRef,
       this.injector

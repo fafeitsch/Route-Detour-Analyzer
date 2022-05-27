@@ -3,6 +3,7 @@ package mapper
 import (
 	"backend/rpc/types"
 	"backend/scenario"
+	"fmt"
 )
 
 func ToDtoLine(line scenario.Line) types.Line {
@@ -10,21 +11,11 @@ func ToDtoLine(line scenario.Line) types.Line {
 	for _, station := range line.Stations() {
 		stops = append(stops, ToDtoStation(station, false))
 	}
-	path := make([]types.Waypoint, 0, len(line.Path))
-	for _, waypoint := range line.Path {
-		wp := waypoint
-		path = append(path, types.Waypoint{
-			Lat:  waypoint.Lat,
-			Lng:  waypoint.Lng,
-			Dist: &wp.Dist,
-			Dur:  &wp.Dur,
-			Stop: waypoint.Stop,
-		})
-	}
+
 	return types.Line{
 		Stations: stops,
 		Stops:    line.Stops,
-		Path:     path,
+		Path:     ToDtoWaypoints(line.Path),
 		Name:     line.Name,
 		Color:    line.Color,
 		Key:      line.Key,
@@ -64,7 +55,28 @@ func ToVoLine(line types.Line) scenario.Line {
 	}
 }
 
+func ToDtoWaypoints(waypoints []scenario.Waypoint) []types.Waypoint {
+	if waypoints == nil {
+		return nil
+	}
+	path := make([]types.Waypoint, 0, len(waypoints))
+	for _, waypoint := range waypoints {
+		wp := waypoint
+		path = append(path, types.Waypoint{
+			Lat:  waypoint.Lat,
+			Lng:  waypoint.Lng,
+			Dist: &wp.Dist,
+			Dur:  &wp.Dur,
+			Stop: waypoint.Stop,
+		})
+	}
+	return path
+}
+
 func ToVoWaypoints(waypoints []types.Waypoint) []scenario.Waypoint {
+	if waypoints == nil {
+		return nil
+	}
 	result := make([]scenario.Waypoint, 0, len(waypoints))
 	for _, wp := range waypoints {
 		dist := 0.0
@@ -145,4 +157,57 @@ func ToVoTimetable(timetable types.Timetable) scenario.Timetable {
 		Tours:       tours,
 		StationKeys: stations,
 	}
+}
+
+func ToDtoVehicle(vehicle scenario.Vehicle) types.Vehicle {
+	tasks := make([]types.Task, 0, len(vehicle.Tasks))
+	for _, task := range vehicle.Tasks {
+		timetableKey := task.TimetableKey
+		tourIndex := task.TourIndex
+		pathIndex := task.PathIndex
+		tasks = append(tasks, types.Task{
+			Start:        task.Start,
+			Type:         task.Type.Key(),
+			Path:         ToDtoWaypoints(task.Path),
+			TimetableKey: timetableKey,
+			TourIndex:    tourIndex,
+			PathIndex:    pathIndex,
+		})
+	}
+	return types.Vehicle{
+		Name: vehicle.Name,
+		Key:  vehicle.Key,
+		Position: types.LatLng{
+			Lat: vehicle.Position[0],
+			Lng: vehicle.Position[1],
+		},
+		Tasks: tasks,
+	}
+}
+
+func ToVoVehicle(vehicle types.Vehicle) (*scenario.Vehicle, error) {
+	tasks := make([]scenario.Task, 0, len(vehicle.Tasks))
+	for index, task := range vehicle.Tasks {
+		timetableKey := task.TimetableKey
+		tourIndex := task.TourIndex
+		pathIndex := task.PathIndex
+		taskType, err := scenario.GetTaskType(task.Type)
+		if err != nil {
+			return nil, fmt.Errorf("vehicle \"%s\", task %d: %v", vehicle.Name, index, err)
+		}
+		tasks = append(tasks, scenario.Task{
+			Start:        task.Start,
+			Type:         taskType,
+			Path:         ToVoWaypoints(task.Path),
+			TimetableKey: timetableKey,
+			TourIndex:    tourIndex,
+			PathIndex:    pathIndex,
+		})
+	}
+	return &scenario.Vehicle{
+		Name:     vehicle.Name,
+		Key:      vehicle.Key,
+		Position: []float64{vehicle.Position.Lat, vehicle.Position.Lng},
+		Tasks:    tasks,
+	}, nil
 }

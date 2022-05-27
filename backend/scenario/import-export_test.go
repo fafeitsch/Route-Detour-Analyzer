@@ -79,3 +79,210 @@ func TestManager_Export(t *testing.T) {
 		assert.Equal(t, raw.Timetables[index], got)
 	}
 }
+
+func Test_convertVehiclesFromPersistence(t *testing.T) {
+	timetableKey := "tt1"
+	tourIndex := 5
+	pathIndex := 110
+	t.Run("success", func(t *testing.T) {
+		vehicles := []persistence.Vehicle{
+			{
+				Name:     "Vehicle 1",
+				Key:      "v1",
+				Position: "_c`|@_mcbA",
+				Tasks: []persistence.Task{
+					{
+						Start: "10:00",
+						Type:  "roaming",
+						Path: &persistence.Path{
+							Geometry: "_c`|@_mcbA~po]~hbE",
+							Meta: []persistence.MetaCoord{
+								{
+									Dist: 9,
+									Dur:  8,
+								}, {
+									Dist: 0,
+									Dur:  0,
+								},
+							},
+						},
+					}, {
+						Start:        "12:00",
+						Type:         "line",
+						TimetableKey: &timetableKey,
+						TourIndex:    &tourIndex,
+						PathIndex:    &pathIndex,
+					},
+				},
+			}, {
+				Name:     "Vehicle 2",
+				Key:      "v2",
+				Position: "_ajnA_kmtA",
+				Tasks:    []persistence.Task{},
+			},
+		}
+		m := Empty()
+		converted, err := convertVehiclesFromPersistence(m, vehicles)
+		vehicle1 := Vehicle{
+			Name:     "Vehicle 1",
+			Key:      "v1",
+			Position: []float64{10, 11},
+			manager:  m,
+			Tasks: []Task{
+				{
+					Start: "10:00",
+					Type:  RoamingTaskType,
+					Path: []Waypoint{
+						{Lat: 10, Lng: 11, Dist: 9, Dur: 8},
+						{Lat: 5, Lng: 10},
+					},
+					manager: m,
+				},
+				{
+					Start:        "12:00",
+					Type:         LineTaskType,
+					PathIndex:    &pathIndex,
+					TourIndex:    &tourIndex,
+					TimetableKey: &timetableKey,
+					manager:      m,
+				},
+			},
+		}
+		vehicle2 := Vehicle{
+			Name:     "Vehicle 2",
+			Key:      "v2",
+			Position: []float64{13, 14},
+			Tasks:    []Task{},
+			manager:  m,
+		}
+		wanted := map[string]Vehicle{
+			vehicle1.Key: vehicle1,
+			vehicle2.Key: vehicle2,
+		}
+		require.NoError(t, err)
+		assert.Equal(t, wanted, converted)
+	})
+	t.Run("invalid coordinates", func(t *testing.T) {
+		vehicles := []persistence.Vehicle{
+			{
+				Name:     "Vehicle 1",
+				Key:      "v1",
+				Position: "_c`|@_mcbA",
+				Tasks: []persistence.Task{
+					{
+						Start: "10:00",
+						Type:  "roaming",
+						Path: &persistence.Path{
+							Geometry: "invalid",
+						},
+					},
+				},
+			},
+		}
+		m := Empty()
+		_, err := convertVehiclesFromPersistence(m, vehicles)
+		require.EqualError(t, err, "could not read waypoints of task 0 of vehicle \"v1\": could not parse path geometry: unterminated sequence")
+	})
+	t.Run("invalid position", func(t *testing.T) {
+		vehicles := []persistence.Vehicle{
+			{
+				Name:     "Vehicle 1",
+				Key:      "v1",
+				Position: "invalid",
+				Tasks:    []persistence.Task{},
+			},
+		}
+		m := Empty()
+		_, err := convertVehiclesFromPersistence(m, vehicles)
+		require.EqualError(t, err, "could not read position of vehicle \"v1\": unterminated sequence")
+	})
+	t.Run("invalid type", func(t *testing.T) {
+		vehicles := []persistence.Vehicle{
+			{
+				Name:     "Vehicle 1",
+				Key:      "v1",
+				Position: "_c`|@_mcbA",
+				Tasks:    []persistence.Task{{Type: "invalid"}},
+			},
+		}
+		m := Empty()
+		_, err := convertVehiclesFromPersistence(m, vehicles)
+		require.EqualError(t, err, "could not undertand type of task 0: allowed are \"roaming\" and \"line\", got \"invalid\"")
+	})
+}
+
+func TestManager_convertVehiclesToPersistence(t *testing.T) {
+	timetableKey := "tt1"
+	tourIndex := 5
+	pathIndex := 110
+	vehicle1 := Vehicle{
+		Name:     "Vehicle 1",
+		Key:      "v1",
+		Position: []float64{10, 11},
+		Tasks: []Task{
+			{
+				Start: "10:00",
+				Type:  RoamingTaskType,
+				Path: []Waypoint{
+					{Lat: 10, Lng: 11, Dist: 9, Dur: 8},
+					{Lat: 5, Lng: 10},
+				},
+			},
+			{
+				Start:        "12:00",
+				Type:         LineTaskType,
+				PathIndex:    &pathIndex,
+				TourIndex:    &tourIndex,
+				TimetableKey: &timetableKey,
+			},
+		},
+	}
+	vehicle2 := Vehicle{
+		Name:     "Vehicle 2",
+		Key:      "v2",
+		Position: []float64{13, 14},
+		Tasks:    []Task{},
+	}
+	m := Empty()
+	m.vehicles = map[string]Vehicle{
+		vehicle1.Key: vehicle1,
+		vehicle2.Key: vehicle2,
+	}
+	got := m.convertVehiclesToPersistence()
+	assert.Equal(t, []persistence.Vehicle{
+		{
+			Name:     "Vehicle 1",
+			Key:      "v1",
+			Position: "_c`|@_mcbA",
+			Tasks: []persistence.Task{
+				{
+					Start: "10:00",
+					Type:  "roaming",
+					Path: &persistence.Path{
+						Geometry: "_c`|@_mcbA~po]~hbE",
+						Meta: []persistence.MetaCoord{
+							{
+								Dist: 9,
+								Dur:  8,
+							}, {
+								Dist: 0,
+								Dur:  0,
+							},
+						},
+					},
+				}, {
+					Start:        "12:00",
+					Type:         "line",
+					TimetableKey: &timetableKey,
+					TourIndex:    &tourIndex,
+					PathIndex:    &pathIndex,
+				},
+			},
+		}, {
+			Name:     "Vehicle 2",
+			Key:      "v2",
+			Position: "_ajnA_kmtA",
+			Tasks:    []persistence.Task{},
+		},
+	}, got)
+}

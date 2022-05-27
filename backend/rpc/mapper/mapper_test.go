@@ -4,6 +4,7 @@ import (
 	"backend/rpc/types"
 	"backend/scenario"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"testing"
 )
 
@@ -228,6 +229,9 @@ func TestMapper_ToVoWaypoints(t *testing.T) {
 			Stop: false,
 		},
 	}, got)
+	t.Run("nil check", func(t *testing.T) {
+		assert.Nil(t, ToVoWaypoints(nil))
+	})
 }
 
 func TestMapper_ToDtoTimetable(t *testing.T) {
@@ -377,4 +381,139 @@ func TestMapper_ToVoTimetable(t *testing.T) {
 		},
 		StationKeys: []string{"a", "b", "c"},
 	}, got)
+}
+
+func TestToDtoVehicle(t *testing.T) {
+	dist := 11.0
+	dur := 12.0
+	timetableKey := "tt1"
+	tourIndex := 12
+	pathIndex := 312
+	vehicle := scenario.Vehicle{
+		Name:     "Vehicle 1",
+		Key:      "abc",
+		Position: []float64{500.0, 600.0},
+		Tasks: []scenario.Task{
+			{
+				Type: scenario.RoamingTaskType,
+				Path: []scenario.Waypoint{
+					{
+						Lat:  10,
+						Lng:  20,
+						Dist: dist,
+						Dur:  dur,
+						Stop: true,
+					},
+				},
+				Start: "8:32",
+			}, {
+				Start:        "8:45",
+				Type:         scenario.LineTaskType,
+				TimetableKey: &timetableKey,
+				TourIndex:    &tourIndex,
+				PathIndex:    &pathIndex,
+			},
+		},
+	}
+	result := ToDtoVehicle(vehicle)
+	assert.Equal(t, types.Vehicle{
+		Name:     "Vehicle 1",
+		Key:      "abc",
+		Position: types.LatLng{Lat: 500.0, Lng: 600.0},
+		Tasks: []types.Task{
+			{
+				Type: "roaming",
+				Path: []types.Waypoint{
+					{
+						Lat:  10,
+						Lng:  20,
+						Dist: &dist,
+						Dur:  &dur,
+						Stop: true,
+					},
+				},
+				Start: "8:32",
+			}, {
+				Start:        "8:45",
+				Type:         "line",
+				TimetableKey: &timetableKey,
+				TourIndex:    &tourIndex,
+				PathIndex:    &pathIndex,
+			},
+		},
+	}, result)
+}
+
+func TestToVoVehicle(t *testing.T) {
+	t.Run("error case", func(t *testing.T) {
+		vehicle := types.Vehicle{
+			Name:     "Vehicle 1",
+			Key:      "abc",
+			Position: types.LatLng{},
+			Tasks:    []types.Task{{Type: "anything"}},
+		}
+		_, err := ToVoVehicle(vehicle)
+		assert.EqualError(t, err, "vehicle \"Vehicle 1\", task 0: there is no error type \"anything\", use \"\", or \"line\", or \"roaming\"")
+	})
+	t.Run("success", func(t *testing.T) {
+		dist := 11.0
+		dur := 12.0
+		timetableKey := "tt1"
+		tourIndex := 12
+		pathIndex := 312
+		vehicle := types.Vehicle{
+			Name:     "Vehicle 1",
+			Key:      "abc",
+			Position: types.LatLng{Lat: 500.0, Lng: 600.0},
+			Tasks: []types.Task{
+				{
+					Type: "roaming",
+					Path: []types.Waypoint{
+						{
+							Lat:  10,
+							Lng:  20,
+							Dist: &dist,
+							Dur:  &dur,
+							Stop: true,
+						},
+					},
+					Start: "8:32",
+				}, {
+					Start:        "8:45",
+					Type:         "line",
+					TimetableKey: &timetableKey,
+					TourIndex:    &tourIndex,
+					PathIndex:    &pathIndex,
+				},
+			},
+		}
+		result, err := ToVoVehicle(vehicle)
+		require.NoError(t, err)
+		assert.Equal(t, &scenario.Vehicle{
+			Name:     "Vehicle 1",
+			Key:      "abc",
+			Position: []float64{500.0, 600.0},
+			Tasks: []scenario.Task{
+				{
+					Type: scenario.RoamingTaskType,
+					Path: []scenario.Waypoint{
+						{
+							Lat:  10,
+							Lng:  20,
+							Dist: dist,
+							Dur:  dur,
+							Stop: true,
+						},
+					},
+					Start: "8:32",
+				}, {
+					Start:        "8:45",
+					Type:         scenario.LineTaskType,
+					TimetableKey: &timetableKey,
+					TourIndex:    &tourIndex,
+					PathIndex:    &pathIndex,
+				},
+			},
+		}, result)
+	})
 }

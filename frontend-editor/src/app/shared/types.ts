@@ -89,3 +89,21 @@ export interface DetailResult {
   source: number;
   target: number;
 }
+
+export interface Vehicle {
+  name: string;
+  key: string;
+  position: LatLng;
+  tasks: Task[];
+}
+
+export interface Task {
+  start: TimeString;
+  type: 'roaming' | 'line';
+  // Free roaming properties
+  path: Waypoint[];
+  // Line/Timetable properties
+  timetableKey: string;
+  tourIndex: number;
+  pathIndex: number;
+}

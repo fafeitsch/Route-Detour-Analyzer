@@ -1,11 +1,9 @@
 package scenario
 
 import (
-	"backend/persistence"
 	"encoding/json"
 	"fmt"
 	gonanoid "github.com/matoous/go-nanoid"
-	polyline2 "github.com/twpayne/go-polyline"
 	"os"
 	"sort"
 	"sync"
@@ -62,27 +60,6 @@ func (l *Line) Stations() []Station {
 	return result
 }
 
-type Timetable struct {
-	Key         string
-	LineKey     string
-	Name        string
-	Tours       []Tour
-	manager     *Manager
-	StationKeys []string
-}
-
-func (t *Timetable) Stations() []Station {
-	result := make([]Station, 0, len(t.StationKeys))
-	for _, station := range t.StationKeys {
-		result = append(result, t.manager.stations[station])
-	}
-	return result
-}
-
-func (t *Timetable) Line() Line {
-	return t.manager.lines[t.LineKey]
-}
-
 type Tour struct {
 	IntervalMinutes int
 	LastTour        string
@@ -99,6 +76,7 @@ type Manager struct {
 	lines      map[string]Line
 	stations   map[string]Station
 	timetables map[string]Timetable
+	vehicles   map[string]Vehicle
 	mutex      sync.RWMutex
 }
 
@@ -108,29 +86,9 @@ func Empty() *Manager {
 		lines:      make(map[string]Line),
 		stations:   make(map[string]Station),
 		timetables: make(map[string]Timetable),
+		vehicles:   make(map[string]Vehicle),
 		mutex:      sync.RWMutex{},
 	}
-}
-
-func convertWaypoints(path persistence.Path) ([]Waypoint, error) {
-	coords, _, err := polyline2.DecodeCoords([]byte(path.Geometry))
-	if err != nil {
-		return nil, fmt.Errorf("could not parse path geometry: %v", err)
-	}
-	if len(coords) != len(path.Meta) {
-		return nil, fmt.Errorf("the length of the path's meta %d is not equal to the geometry lenght %d", len(path.Meta), len(coords))
-	}
-	waypoints := make([]Waypoint, 0, len(coords))
-	for index, coord := range coords {
-		waypoints = append(waypoints, Waypoint{
-			Lat:  coord[0],
-			Lng:  coord[1],
-			Dist: path.Meta[index].Dist,
-			Dur:  path.Meta[index].Dur,
-			Stop: path.Meta[index].Stop,
-		})
-	}
-	return waypoints, nil
 }
 
 func (m *Manager) Persist() error {
@@ -216,37 +174,4 @@ func (m *Manager) DeleteStation(key string) {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 	delete(m.stations, key)
-}
-
-func (m *Manager) Timetables() []Timetable {
-	m.mutex.RLock()
-	defer m.mutex.RUnlock()
-	result := make([]Timetable, 0, len(m.timetables))
-	for _, tt := range m.timetables {
-		result = append(result, tt)
-	}
-	sort.Slice(result, sortTimetables(result))
-	return result
-}
-
-func (m *Manager) SaveTimetable(timetable Timetable) Timetable {
-	m.mutex.Lock()
-	defer m.mutex.Unlock()
-	if timetable.Key == "" {
-		timetable.Key = gonanoid.MustID(10)
-	}
-	timetable.manager = m
-	m.timetables[timetable.Key] = timetable
-	return timetable
-}
-
-func (m *Manager) Timetable(key string) (Timetable, bool) {
-	timetable, ok := m.timetables[key]
-	return timetable, ok
-}
-
-func (m *Manager) DeleteTimetable(key string) {
-	m.mutex.Lock()
-	defer m.mutex.Unlock()
-	delete(m.timetables, key)
 }
