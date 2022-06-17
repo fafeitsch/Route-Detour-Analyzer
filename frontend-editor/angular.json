@@ -110,8 +110,9 @@
       }
     }
   },
-  "defaultProject": "route-detour-analyzer",
   "cli": {
-    "defaultCollection": "@ngrx/schematics"
+    "schematicCollections": [
+      "@ngrx/schematics"
+    ]
   }
 }

@@ -61,7 +61,7 @@ export class InlineEditorComponent {
 
   commit() {
     this.editMode = false;
-    this.changeText.emit(this.nameFormControl.value);
+    this.changeText.emit(this.nameFormControl.value || '');
     this.leaveEditMode.emit();
   }
 

@@ -12,6 +12,7 @@ import {
 import { StatisticsViewerStore } from './statistics-viewer.store';
 import { FormControl } from '@angular/forms';
 import { Station } from '../../shared';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'statistics-viewer',
@@ -35,7 +36,9 @@ export class StatisticsViewerComponent {
   capControl = new FormControl(0);
 
   constructor(private readonly store: StatisticsViewerStore) {
-    this.store.setCap$(this.capControl.valueChanges);
+    this.store.setCap$(
+      this.capControl.valueChanges.pipe(map((value) => value || 0))
+    );
   }
 
   stopFocused(stop: Station | undefined) {
