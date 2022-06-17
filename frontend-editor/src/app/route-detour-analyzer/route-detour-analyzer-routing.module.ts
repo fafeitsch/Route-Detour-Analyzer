@@ -40,11 +40,9 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'vehicle/:vehicle',
+        path: 'vehicle',
         loadChildren: () =>
-          import('../timetable/timetable.module').then(
-            (m) => m.TimetableModule
-          ),
+          import('../vehicle/vehicle.module').then((m) => m.VehicleModule),
       },
     ],
   },

@@ -30,7 +30,7 @@ export class TimetableService {
     );
   }
 
-  saveTimetable(timetable: Timetable) {
+  saveTimetable(timetable: Partial<Timetable>) {
     return this.rpc.request<Timetable>(
       'timetables',
       'saveTimetable',

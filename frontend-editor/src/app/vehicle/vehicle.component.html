@@ -13,10 +13,10 @@
   >
     <entity-list
       addLabel="Add Vehicle"
-      [entities]="timetables$ | async"
-      (addEntity)="addTimetable()"
-      (deleteEntity)="deleteTimetable($event)"
-      (changeEntityName)="changeTimetableName($event)"
+      [entities]="vehicles$ | async"
+      (addEntity)="createVehicle()"
+      (deleteEntity)="deleteVehicle($event)"
+      (changeEntityName)="changeVehicleName($event)"
     ></entity-list>
   </mat-sidenav>
   <mat-sidenav-content
@@ -32,6 +32,6 @@
     [opened]="true"
     [disableClose]="true"
   >
-    <div id="timetable-sidenav" class="d-flex flex-column h-100 align-items-end"></div>
+    <div id="vehicle-sidenav" class="d-flex flex-column h-100 align-items-end"></div>
   </mat-sidenav>
 </mat-sidenav-container>

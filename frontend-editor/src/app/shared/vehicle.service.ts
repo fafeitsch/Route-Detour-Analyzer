@@ -4,7 +4,7 @@
  */
 import { Injectable } from '@angular/core';
 import { RpcClientService } from './rpc-client.service';
-import { Timetable, Vehicle } from './types';
+import { Vehicle } from './types';
 
 @Injectable({
   providedIn: 'root',
@@ -28,8 +28,8 @@ export class VehicleService {
     );
   }
 
-  saveVehicle(vehicle: Vehicle) {
-    return this.rpc.request<Timetable>('vehicles', 'saveVehicle', vehicle);
+  saveVehicle(vehicle: Partial<Vehicle>) {
+    return this.rpc.request<Vehicle>('vehicles', 'saveVehicle', vehicle);
   }
 
   deleteVehicle(key: string) {

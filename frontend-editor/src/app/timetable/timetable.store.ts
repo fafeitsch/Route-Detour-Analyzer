@@ -47,7 +47,7 @@ export class TimetableStore extends ComponentStore<State> {
       withLatestFrom(this.line$.pipe(isDefined())),
       switchMap(([, line]) =>
         this.service
-          .saveTimetableMetadata({
+          .saveTimetable({
             lineKey: line.key,
             stations: line.stations,
           })

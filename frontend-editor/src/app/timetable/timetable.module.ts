@@ -15,8 +15,8 @@ import { EntityListModule } from '@rda/components/entity-list/entity-list.module
   declarations: [TimetableComponent, TransformTimetablePipe],
   imports: [
     CommonModule,
-    TimetableRoutingModule,
     MatSidenavModule,
+    TimetableRoutingModule,
     TimetableEditorModule,
     EntityListModule,
   ],

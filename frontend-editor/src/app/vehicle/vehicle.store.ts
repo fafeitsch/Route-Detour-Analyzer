@@ -15,6 +15,8 @@ interface State {
 
 @Injectable()
 export class VehicleStore extends ComponentStore<State> {
+  readonly vehicles$ = super.select((state) => state.vehicles);
+
   readonly loadVehicles$ = super.effect(() =>
     this.service.getVehicles().pipe(
       tapResponse(
@@ -27,6 +29,7 @@ export class VehicleStore extends ComponentStore<State> {
       )
     )
   );
+
   readonly saveVehicle$ = super.effect((vehicle$: Observable<Vehicle>) =>
     vehicle$.pipe(
       switchMap((vehicle) =>
@@ -53,10 +56,11 @@ export class VehicleStore extends ComponentStore<State> {
       )
     )
   );
+
   readonly createVehicle$ = super.effect((trigger$: Observable<void>) =>
     trigger$.pipe(
       switchMap(() =>
-        this.service.saveVehicleMetadata({}).pipe(
+        this.service.saveVehicle({}).pipe(
           tapResponse(
             (vehicle) => {
               this.notificationService.raiseNotification(
@@ -77,6 +81,7 @@ export class VehicleStore extends ComponentStore<State> {
       )
     )
   );
+
   readonly deleteVehicle$ = super.effect((key$: Observable<string>) =>
     key$.pipe(
       switchMap((key) =>
@@ -101,6 +106,7 @@ export class VehicleStore extends ComponentStore<State> {
       )
     )
   );
+
   constructor(
     private readonly service: VehicleService,
     private readonly notificationService: NotificationService
