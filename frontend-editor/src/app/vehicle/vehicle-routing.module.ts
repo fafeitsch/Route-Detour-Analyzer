@@ -5,11 +5,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { VehicleComponent } from './vehicle.component';
+import { VehicleEditorComponent } from './vehicle-editor/vehicle-editor.component';
 
 const routes: Routes = [
   {
     path: '',
     component: VehicleComponent,
+    children: [{ path: ':vehicle', component: VehicleEditorComponent }],
   },
 ];
 

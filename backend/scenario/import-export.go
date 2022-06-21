@@ -32,6 +32,11 @@ func LoadFile(path string) (*Manager, error) {
 		stations: stations,
 		mutex:    sync.RWMutex{},
 		filePath: path,
+		Center: Center{
+			Lat:  scenario.Center.Lat,
+			Lng:  scenario.Center.Lng,
+			Zoom: scenario.Center.Zoom,
+		},
 	}
 	timetables := convertTimetablesFromPersistence(&manager, scenario.Timetables)
 	manager.timetables = timetables
@@ -170,6 +175,11 @@ func (m *Manager) Export() persistence.Scenario {
 		Lines:      lines,
 		Timetables: m.convertTimetablesToPersistence(),
 		Vehicles:   m.convertVehiclesToPersistence(),
+		Center: persistence.Center{
+			Lat:  m.Center.Lat,
+			Lng:  m.Center.Lng,
+			Zoom: m.Center.Zoom,
+		},
 	}
 }
 

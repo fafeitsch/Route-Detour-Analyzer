@@ -10,6 +10,7 @@ import { TimetableColumnModule } from './timetable-column/timetable-column.modul
 import { EditTourPanelModule } from './edit-tour-panel/edit-tour-panel.module';
 import { PortalModule } from '@angular/cdk/portal';
 import { MatButtonModule } from '@angular/material/button';
+import { ToolbarModule } from '../../shared/toolbar/toolbar.module';
 
 @NgModule({
   declarations: [TimetableEditorComponent],
@@ -20,6 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
     EditTourPanelModule,
     PortalModule,
     MatButtonModule,
+    ToolbarModule,
   ],
   exports: [TimetableEditorComponent],
 })

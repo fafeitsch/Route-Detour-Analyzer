@@ -47,6 +47,10 @@ func TestLoadFile(t *testing.T) {
 		assert.Equal(t, 312, len(manager.stations))
 		assert.Equal(t, 21, len(manager.timetables))
 
+		assert.Equal(t, 14, manager.Center.Zoom)
+		assert.Equal(t, 49.789, manager.Center.Lat)
+		assert.Equal(t, 9.9254, manager.Center.Lng)
+
 		assert.Equal(t, filepath.Join("..", "testdata", "wuerzburg.json"), manager.filePath)
 	})
 	t.Run("does not exist, should create new scenario", func(t *testing.T) {

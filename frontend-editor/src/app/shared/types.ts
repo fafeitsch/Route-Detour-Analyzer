@@ -101,9 +101,15 @@ export interface Task {
   start: TimeString;
   type: 'roaming' | 'line';
   // Free roaming properties
-  path: Waypoint[];
+  path?: Waypoint[];
   // Line/Timetable properties
-  timetableKey: string;
-  tourIndex: number;
-  pathIndex: number;
+  timetableKey?: string;
+  tourIndex?: number;
+  pathIndex?: number;
+}
+
+export interface Center {
+  lat: number;
+  lng: number;
+  zoom: number;
 }

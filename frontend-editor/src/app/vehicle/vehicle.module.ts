@@ -9,6 +9,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { EntityListModule } from '@rda/components/entity-list/entity-list.module';
 import { RouterModule } from '@angular/router';
 import { VehicleRoutingModule } from './vehicle-routing.module';
+import { VehicleEditorModule } from './vehicle-editor/vehicle-editor.module';
 
 @NgModule({
   declarations: [VehicleComponent],
@@ -18,6 +19,7 @@ import { VehicleRoutingModule } from './vehicle-routing.module';
     EntityListModule,
     RouterModule,
     VehicleRoutingModule,
+    VehicleEditorModule,
   ],
 })
 export class VehicleModule {}

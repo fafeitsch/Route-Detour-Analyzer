@@ -27,6 +27,12 @@ func (v *vehicleHandler) Methods() map[string]rpcMethod {
 			output:      reflect.TypeOf([]types.Vehicle{}),
 			method:      v.getVehicles,
 		},
+		"getVehicle": {
+			description: "Returns the requested vehicle.",
+			input:       reflect.TypeOf(types.Vehicle{}),
+			output:      reflect.TypeOf(types.Vehicle{}),
+			method:      v.getVehicle,
+		},
 		"saveVehicle": {
 			description:    "Saves the given vehicle or creates it if the key doesn't exist yet.",
 			input:          reflect.TypeOf(types.Vehicle{}),
@@ -77,7 +83,7 @@ func (v *vehicleHandler) saveVehicleMetadata(data json.RawMessage) (json.RawMess
 	if !ok {
 		return nil, fmt.Errorf("the vehicle with key \"%s\" was not found", vehicle.Key)
 	}
-	// error can be ignored because we will not touch the metadata:
+	// error can be ignored because we will only touch the metadata:
 	converted, _ := mapper.ToVoVehicle(vehicle)
 	found.Name = converted.Name
 	found.Position = converted.Position
@@ -90,4 +96,14 @@ func (v *vehicleHandler) deleteVehicle(data json.RawMessage) (json.RawMessage, e
 	_ = json.Unmarshal(data, &vehicle)
 	v.manager.DeleteVehicle(vehicle.Key)
 	return nil, nil
+}
+
+func (v *vehicleHandler) getVehicle(data json.RawMessage) (json.RawMessage, error) {
+	var vehicle types.Vehicle
+	_ = json.Unmarshal(data, &vehicle)
+	found, ok := v.manager.Vehicle(vehicle.Key)
+	if !ok {
+		return nil, fmt.Errorf("the vehicle with key \"%s\" was not found", vehicle.Key)
+	}
+	return mustMarshal(mapper.ToDtoVehicle(found)), nil
 }

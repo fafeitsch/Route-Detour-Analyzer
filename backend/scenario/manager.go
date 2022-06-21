@@ -9,6 +9,12 @@ import (
 	"sync"
 )
 
+type Center struct {
+	Lat  float64
+	Lng  float64
+	Zoom int
+}
+
 type Station struct {
 	Key        string
 	Name       string
@@ -78,11 +84,13 @@ type Manager struct {
 	timetables map[string]Timetable
 	vehicles   map[string]Vehicle
 	mutex      sync.RWMutex
+	Center     Center
 }
 
 func Empty() *Manager {
 	return &Manager{
 		filePath:   "",
+		Center:     Center{},
 		lines:      make(map[string]Line),
 		stations:   make(map[string]Station),
 		timetables: make(map[string]Timetable),

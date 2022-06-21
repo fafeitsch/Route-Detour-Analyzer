@@ -4,12 +4,9 @@
  */
 import {
   AfterViewInit,
-  ApplicationRef,
   ChangeDetectionStrategy,
   Component,
-  ComponentFactoryResolver,
   Inject,
-  Injector,
   Input,
   OnDestroy,
   ViewChild,
@@ -46,10 +43,7 @@ export class TimetableEditorComponent implements OnDestroy, AfterViewInit {
   private _sideNavOutlet: HTMLElement | undefined;
 
   constructor(
-    private readonly factoryResolver: ComponentFactoryResolver,
     @Inject(DOCUMENT) private readonly document: Document,
-    private readonly injector: Injector,
-    private readonly appRef: ApplicationRef,
     private readonly store: TimetableEditorStore,
     private readonly routeStore: TimetableStore
   ) {
@@ -61,10 +55,7 @@ export class TimetableEditorComponent implements OnDestroy, AfterViewInit {
       return;
     }
     this.portalHost = new DomPortalOutlet(
-      this.document.querySelector('#timetable-sidenav')!,
-      this.factoryResolver,
-      this.appRef,
-      this.injector
+      this.document.querySelector('#timetable-sidenav')!
     );
     this.portalHost.attach(this.portal);
   }

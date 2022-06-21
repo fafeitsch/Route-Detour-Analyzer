@@ -171,5 +171,6 @@ func TestEmpty(t *testing.T) {
 		timetables: map[string]Timetable{},
 		vehicles:   map[string]Vehicle{},
 		mutex:      sync.RWMutex{},
+		Center:     Center{Lat: 0, Lng: 0, Zoom: 0},
 	}, manager)
 }

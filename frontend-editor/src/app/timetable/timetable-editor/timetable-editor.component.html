@@ -37,5 +37,8 @@
     (deleteTour)="deleteTour()"
   ></edit-tour-panel>
   <div class="flex-grow-1"></div>
-  <button mat-raised-button color="primary" [disabled]="clean$ | async" (click)="commit()">Save</button>
 </ng-template>
+
+<toolbar>
+  <button mat-raised-button color="accent" [disabled]="clean$ | async" (click)="commit()">Save</button>
+</toolbar>

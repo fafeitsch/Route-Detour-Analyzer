@@ -234,4 +234,31 @@ func TestVehicleHandler_Methods(t *testing.T) {
 		assert.Equal(t, 0, len(handler.manager.Vehicles()))
 	},
 	)
+	t.Run("get vehicle – success", func(t *testing.T) {
+		handler := vehicleHandler{manager: scenario.Empty()}
+		vehicle := scenario.Vehicle{
+			Name:     "Vehicle 1",
+			Key:      "abc",
+			Position: []float64{3, 4},
+		}
+		handler.manager.SaveVehicle(vehicle)
+		raw, err := handler.Methods()["getVehicle"].method(mustMarshal(vehicle))
+		require.NoError(t, err)
+		var got types.Vehicle
+		_ = json.Unmarshal(raw, &got)
+		assert.Equal(t, types.Vehicle{
+			Key:      "abc",
+			Name:     "Vehicle 1",
+			Position: types.LatLng{Lat: 3, Lng: 4},
+			Tasks: []types.Task{},
+		}, got)
+	})
+	t.Run("get vehicle – not found", func(t *testing.T) {
+		handler := vehicleHandler{manager: scenario.Empty()}
+		vehicle := types.Vehicle{
+			Key:      "abc",
+		}
+		_, err := handler.Methods()["getVehicle"].method(mustMarshal(vehicle))
+		assert.EqualError(t, err, "the vehicle with key \"abc\" was not found")
+	})
 }

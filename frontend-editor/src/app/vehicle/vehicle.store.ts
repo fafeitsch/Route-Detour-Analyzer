@@ -7,7 +7,8 @@ import { Injectable } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { VehicleService } from '../shared/vehicle.service';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
+import { PropertiesService } from '../shared/properties.service';
 
 interface State {
   vehicles: Vehicle[];
@@ -59,8 +60,9 @@ export class VehicleStore extends ComponentStore<State> {
 
   readonly createVehicle$ = super.effect((trigger$: Observable<void>) =>
     trigger$.pipe(
-      switchMap(() =>
-        this.service.saveVehicle({}).pipe(
+      switchMap(() => this.propertiesService.getCenter().pipe(take(1))),
+      switchMap((position) =>
+        this.service.saveVehicle({ position }).pipe(
           tapResponse(
             (vehicle) => {
               this.notificationService.raiseNotification(
@@ -109,7 +111,8 @@ export class VehicleStore extends ComponentStore<State> {
 
   constructor(
     private readonly service: VehicleService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly propertiesService: PropertiesService
   ) {
     super({ vehicles: [] });
   }

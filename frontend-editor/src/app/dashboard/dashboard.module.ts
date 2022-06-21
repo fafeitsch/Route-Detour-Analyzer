@@ -6,7 +6,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { SettingsCardModule } from './settings-card/settings-card.module';
 import { OverviewMapModule } from './overview-map/overview-map.module';
 import { LinesCardModule } from './lines-card/lines-card.module';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -23,7 +22,6 @@ import { MatButtonModule } from '@angular/material/button';
     MatGridListModule,
     MatButtonModule,
     DashboardRoutingModule,
-    SettingsCardModule,
     OverviewMapModule,
     LinesCardModule,
     ToolbarModule,

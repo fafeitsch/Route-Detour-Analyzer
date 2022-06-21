@@ -211,3 +211,11 @@ func ToVoVehicle(vehicle types.Vehicle) (*scenario.Vehicle, error) {
 		Tasks:    tasks,
 	}, nil
 }
+
+func ToDtoCenter(center scenario.Center) types.Center {
+	return types.Center{
+		Lat:  center.Lat,
+		Lng:  center.Lng,
+		Zoom: center.Zoom,
+	}
+}

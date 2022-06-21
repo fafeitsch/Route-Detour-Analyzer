@@ -17,9 +17,7 @@ import { Vehicle } from '../shared';
 export class VehicleComponent {
   vehicles$ = this.store.vehicles$;
 
-  constructor(readonly store: VehicleStore) {
-    console.log('vehicle');
-  }
+  constructor(readonly store: VehicleStore) {}
 
   createVehicle() {
     this.store.createVehicle$();

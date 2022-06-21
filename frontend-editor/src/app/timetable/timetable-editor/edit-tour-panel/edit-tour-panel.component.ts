@@ -18,8 +18,13 @@ import {
 } from '@angular/forms';
 import { merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { timeFormatValidator } from '../../time-validator';
-import { computeTime, formatTime, TimeString, Tour } from '../../../shared';
+import {
+  computeTime,
+  formatTime,
+  timeFormatValidator,
+  TimeString,
+  Tour,
+} from '../../../shared';
 import { TourScaffold } from '../timetable-editor.store';
 
 @Component({

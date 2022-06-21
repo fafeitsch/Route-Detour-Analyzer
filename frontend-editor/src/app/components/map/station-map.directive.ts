@@ -11,10 +11,9 @@ import {
   Output,
 } from '@angular/core';
 import { MapDirective } from '@rda/components/map/map.directive';
-import { Store } from '@ngrx/store';
-import { OptionsState } from '../../+store/options';
 import { LatLng, NotificationService, Station } from '../../shared';
-import { divIcon, icon, marker, Marker } from 'leaflet';
+import { icon, marker, Marker } from 'leaflet';
+import { PropertiesService } from '../../shared/properties.service';
 
 @Directive({
   selector: '[stationMap]',
@@ -76,10 +75,10 @@ export class StationMapDirective extends MapDirective implements AfterViewInit {
 
   constructor(
     el: ElementRef,
-    optionsStore: Store<OptionsState>,
-    notificationService: NotificationService
+    notificationService: NotificationService,
+    propertiesService: PropertiesService
   ) {
-    super(el, optionsStore, notificationService);
+    super(el, notificationService, propertiesService);
   }
 
   ngAfterViewInit() {
@@ -90,16 +89,7 @@ export class StationMapDirective extends MapDirective implements AfterViewInit {
   private createStationIcon(enlarged: boolean, isWaypoint: boolean) {
     if (isWaypoint) {
       const waypointSize = enlarged ? 15 : 10;
-      return divIcon({
-        className: 'themed',
-        html: `<svg width="${waypointSize}" height="${waypointSize}">
-            <circle cx="${waypointSize / 2}" cy="${waypointSize / 2}" r="${
-          waypointSize / 2
-        }" fill="#000000"/>
-            </svg>`,
-        iconSize: [waypointSize, waypointSize],
-        iconAnchor: [waypointSize / 2, waypointSize / 2],
-      });
+      return super.createSimpleMarker(waypointSize);
     }
     const size = enlarged ? 30 : 20;
     return icon({

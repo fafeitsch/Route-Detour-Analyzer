@@ -517,3 +517,16 @@ func TestToVoVehicle(t *testing.T) {
 		}, result)
 	})
 }
+
+func TestToDtoCenter(t *testing.T) {
+	got := ToDtoCenter(scenario.Center{
+		Lat:  4,
+		Lng:  5,
+		Zoom: 6,
+	})
+	assert.Equal(t, types.Center{
+		Lat:  4,
+		Lng:  5,
+		Zoom: 6,
+	}, got)
+}

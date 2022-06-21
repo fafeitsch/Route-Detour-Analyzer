@@ -5,6 +5,13 @@ type Scenario struct {
 	Lines      []Line      `json:"lines"`
 	Timetables []Timetable `json:"timetable,omitempty"`
 	Vehicles   []Vehicle   `json:"vehicles"`
+	Center     Center      `json:"center"`
+}
+
+type Center struct {
+	Lat  float64 `json:"lat"`
+	Lng  float64 `json:"lng"`
+	Zoom int     `json:"zoom"`
 }
 
 type Station struct {

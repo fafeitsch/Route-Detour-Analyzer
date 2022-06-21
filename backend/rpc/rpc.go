@@ -51,6 +51,7 @@ func HandleFunc(manager *scenario.Manager, osrmUrl string) http.HandlerFunc {
 	handlers["docs"] = &docHandler{handlers: handlers}
 	handlers["timetables"] = newTimetableHandler(manager)
 	handlers["vehicles"] = newVehicleHandler(manager)
+	handlers["properties"] = NewPropertiesHandler(manager)
 	return func(resp http.ResponseWriter, req *http.Request) {
 		resp.Header().Set("Content-Type", "application/json")
 		resp.Header().Set("Access-Control-Allow-Origin", "*")

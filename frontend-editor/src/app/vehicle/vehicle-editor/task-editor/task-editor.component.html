@@ -1,0 +1,52 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<mat-form-field>
+  <input
+    matInput
+    type="text"
+    placeholder="Start"
+    [formControl]="startTimeControl"
+  />
+  <mat-error *ngIf="startTimeControl.invalid"
+    >A start time in the format HH:MM must be entered.</mat-error
+  >
+</mat-form-field>
+<mat-button-toggle-group name="tasktype" (change)="toggleType()" class="d-flex">
+  <mat-button-toggle
+    class="flex-grow-1"
+    value="roaming"
+    [checked]="type === 'roaming'"
+    >Roaming</mat-button-toggle
+  >
+  <mat-button-toggle
+    class="flex-grow-1"
+    value="line"
+    [checked]="type === 'line'"
+    >Line</mat-button-toggle
+  >
+</mat-button-toggle-group>
+
+<div *ngIf="type === 'roaming'" class="flex-grow-1 w-100">
+  <div
+    osmMap
+    class="w-100 h-100"
+    [marker]="lastPosition$ | async"
+    [lines]="[path$ | async]"
+    (canvasClicked)="endSelected($event)"
+  ></div>
+</div>
+
+<div *ngIf="type === 'line'" class="flex-grow-1 w-100"></div>
+
+<div class="d-flex justify-content-end w-100">
+  <button
+    mat-stroked-button
+    color="primary"
+    [disabled]="startTimeControl.invalid"
+    (click)="save()"
+  >
+    {{ editMode ? "Save" : "Add" }}
+  </button>
+</div>

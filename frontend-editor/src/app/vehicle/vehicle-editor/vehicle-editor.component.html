@@ -1,0 +1,48 @@
+<!--
+  ~ Licensed under the MIT License (https://opensource.org/licenses/MIT).
+  ~ Find the full license text in the LICENSE file of the project root.
+  -->
+<ng-container *ngIf="vehicle$ | async as vehicle">
+  <div class="mat-body-strong">Position</div>
+  <div
+    [style.width.px]="300"
+    [style.height.px]="300"
+    osmMap
+    [marker]="vehicle.position"
+    (canvasClicked)="changePosition($event)"
+  ></div>
+  <span
+    >Latitude: {{ vehicle.position.lat }}, Longitude:
+    {{ vehicle.position.lng }}</span
+  >
+  <h2 class="mat-h2">Tasks</h2>
+  <div class="d-flex flex-column w-100">
+    <div
+      *ngFor="let task of tasks$ | async; index as index"
+      class="w-100 d-flex"
+    >
+      <span>{{ task.start }}</span>
+      <span>{{ task.type | titlecase }}</span>
+      <span class="flex-grow-1"></span>
+      <button mat-icon-button color="primary" (click)="deleteTask(index)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-container>
+<ng-template cdkPortal>
+  <task-editor
+    [lastPosition]="lastPosition$ | async"
+    (saveTask)="addTask($event)"
+  ></task-editor>
+</ng-template>
+<toolbar>
+  <button
+    mat-raised-button
+    color="accent"
+    [disabled]="(dirty$ | async) === false"
+    (click)="commit()"
+  >
+    Save
+  </button>
+</toolbar>

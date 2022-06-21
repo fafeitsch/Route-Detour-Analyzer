@@ -1,5 +1,11 @@
 package types
 
+type Center struct {
+	Lat  float64 `json:"lat"`
+	Lng  float64 `json:"lng"`
+	Zoom int     `json:"zoom"`
+}
+
 type LatLng struct {
 	Lat float64 `json:"lat"`
 	Lng float64 `json:"lng"`
