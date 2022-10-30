@@ -121,7 +121,6 @@ func convertVehiclesFromPersistence(manager *Manager, vehicles []persistence.Veh
 				converted.Type = RoamingTaskType
 			} else if task.Type == LineTaskType.Key() {
 				converted.TimetableKey = task.TimetableKey
-				converted.TourIndex = task.TourIndex
 				converted.PathIndex = task.PathIndex
 				converted.Type = LineTaskType
 			} else {
@@ -228,7 +227,6 @@ func (m *Manager) convertVehiclesToPersistence() []persistence.Vehicle {
 			} else if task.Type.Key() == LineTaskType.Key() {
 				converted.TimetableKey = task.TimetableKey
 				converted.PathIndex = task.PathIndex
-				converted.TourIndex = task.TourIndex
 			} else {
 				panic(fmt.Sprintf("task type \"%s\" could be exported", task.Type.Key()))
 			}

@@ -17,7 +17,7 @@
       </div>
     </ng-template>
   </route-diagram>
-  <div *ngIf="tours$ | async as tours" class="d-flex flex-gap-3 mt-2 ml-3">
+  <div *ngIf="tours$ | async as tours" class="d-flex gap-3 mt-2 ml-3">
     <timetable-column
       *ngFor="let tour of tours; index as index; trackBy: trackByUuid"
       [tour]="tour"

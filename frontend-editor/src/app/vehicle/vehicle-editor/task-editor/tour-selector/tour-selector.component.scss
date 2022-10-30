@@ -1,0 +1,17 @@
+.tour-selector {
+  .line-line {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .mat-horizontal-stepper-wrapper {
+    height: 100%;
+  }
+  .mat-horizontal-content-container {
+    padding: 0 24px 0 24px;
+  }
+  .mat-horizontal-stepper-content {
+    height: 100%;
+    overflow: auto;
+  }
+}

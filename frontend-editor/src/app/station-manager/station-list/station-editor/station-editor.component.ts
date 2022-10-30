@@ -2,20 +2,14 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
-import { Station } from '../../../shared';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output,} from '@angular/core';
+import {Station} from '../../../shared';
 
 @Component({
   selector: 'station-editor',
   templateUrl: './station-editor.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'd-flex flex-gap-3 align-items-start p-2' },
+  host: { class: 'd-flex gap-3 align-items-start p-2' },
 })
 export class StationEditorComponent {
   @Input() set station(value: Station | undefined) {

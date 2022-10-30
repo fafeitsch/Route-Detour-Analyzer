@@ -2,10 +2,10 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
-import { Injectable } from '@angular/core';
-import { RpcClientService } from './rpc-client.service';
-import { Observable } from 'rxjs';
-import { Line } from './types';
+import {Injectable} from '@angular/core';
+import {RpcClientService} from './rpc-client.service';
+import {Observable} from 'rxjs';
+import {Line} from './types';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class LinesService {
   }
 
   getLines(): Observable<Line[]> {
-    return this.rpc.request<Line[]>('lines', 'queryLines');
+    return this.rpc.request<Line[]>('lines', 'getLines');
   }
 
   saveLine(line: Line) {

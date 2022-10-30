@@ -163,14 +163,12 @@ func ToDtoVehicle(vehicle scenario.Vehicle) types.Vehicle {
 	tasks := make([]types.Task, 0, len(vehicle.Tasks))
 	for _, task := range vehicle.Tasks {
 		timetableKey := task.TimetableKey
-		tourIndex := task.TourIndex
 		pathIndex := task.PathIndex
 		tasks = append(tasks, types.Task{
 			Start:        task.Start,
 			Type:         task.Type.Key(),
 			Path:         ToDtoWaypoints(task.Path),
 			TimetableKey: timetableKey,
-			TourIndex:    tourIndex,
 			PathIndex:    pathIndex,
 		})
 	}
@@ -189,7 +187,6 @@ func ToVoVehicle(vehicle types.Vehicle) (*scenario.Vehicle, error) {
 	tasks := make([]scenario.Task, 0, len(vehicle.Tasks))
 	for index, task := range vehicle.Tasks {
 		timetableKey := task.TimetableKey
-		tourIndex := task.TourIndex
 		pathIndex := task.PathIndex
 		taskType, err := scenario.GetTaskType(task.Type)
 		if err != nil {
@@ -200,7 +197,6 @@ func ToVoVehicle(vehicle types.Vehicle) (*scenario.Vehicle, error) {
 			Type:         taskType,
 			Path:         ToVoWaypoints(task.Path),
 			TimetableKey: timetableKey,
-			TourIndex:    tourIndex,
 			PathIndex:    pathIndex,
 		})
 	}

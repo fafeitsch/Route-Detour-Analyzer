@@ -23,7 +23,7 @@ $sides: (top, bottom, left, right);
 
 @for $i from 1 through length($spaceamounts) {
   $amount: nth($spaceamounts, $i);
-  .flex-gap-#{$i} {
+  .gap-#{$i} {
     gap: #{$amount}px !important;
   }
 }
@@ -34,7 +34,27 @@ $sides: (top, bottom, left, right);
     margin: #{$amount}px !important;
   }
 
+  .my-#{$i} {
+    margin-top: #{$amount}px !important;
+    margin-bottom: #{$amount}px !important;
+  }
+
+  .mx-#{$i} {
+    margin-left: #{$amount}px !important;
+    margin-right: #{$amount}px !important;
+  }
+
   .p-#{$i} {
     padding: #{$amount}px !important;
+  }
+
+  .px-#{$i} {
+    padding-left: #{$amount}px !important;
+    padding-right: #{$amount}px !important;
+  }
+
+  .py-#{$i} {
+    padding-top: #{$amount}px !important;
+    padding-bottom: #{$amount}px !important;
   }
 }

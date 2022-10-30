@@ -5,52 +5,39 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
   Output,
 } from '@angular/core';
-import { LatLng, timeFormatValidator, TimeString } from '../../../shared';
-import { TaskEditorStore } from './task-editor-store';
-import { merge, Observable } from 'rxjs';
-import { isDefined } from '../../../shared/utils';
-import { FormControl } from '@angular/forms';
+import { LatLng, Task } from '../../../shared';
 
 @Component({
   selector: 'task-editor',
   templateUrl: './task-editor.component.html',
   styleUrls: ['./task-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [TaskEditorStore],
-  host: { class: 'd-flex h-100 flex-column flex-gap-2' },
+  host: { class: 'd-flex h-100 flex-column gap-2' },
 })
 export class TaskEditorComponent {
   @Input() editMode = false;
 
-  @Input() set lastPosition(position: LatLng | undefined) {
-    this.store.setStart(position);
-  }
+  @Input() lastPosition: LatLng | undefined = undefined;
 
-  @Output() saveTask = merge(this.store.task$).pipe(isDefined());
+  @Output() saveTask = new EventEmitter<Task>();
 
   type: 'roaming' | 'line' = 'roaming';
-  path$ = this.store.fakeLine$;
-  lastPosition$ = this.store.start$;
-  startTimeControl = new FormControl('0:00', [timeFormatValidator()]);
-
-  constructor(private readonly store: TaskEditorStore) {
-    store.setStartTime(
-      this.startTimeControl.valueChanges as Observable<TimeString>
-    );
-  }
+  task: Task | undefined = undefined;
 
   toggleType() {
+    this.task = undefined;
     this.type = this.type === 'roaming' ? 'line' : 'roaming';
   }
 
-  endSelected(target: LatLng) {
-    this.store.setEnd(target);
+  taskSelected(task: Task) {
+    this.task = task;
   }
 
   save() {
-    this.store.commit$();
+    this.saveTask.emit(this.task);
   }
 }

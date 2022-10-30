@@ -1,0 +1,18 @@
+<mat-form-field class="w-100">
+  <input
+    matInput
+    type="text"
+    placeholder="Start"
+    [formControl]="startTimeControl"
+  />
+  <mat-error *ngIf="startTimeControl.invalid"
+  >A start time in the format HH:MM must be entered.</mat-error
+  >
+</mat-form-field>
+<div
+  osmMap
+  class="w-100 flex-grow-1 flex-shrink-0"
+  [marker]="lastPosition$ | async"
+  [lines]="[path$ | async]"
+  (canvasClicked)="endSelected($event)"
+></div>

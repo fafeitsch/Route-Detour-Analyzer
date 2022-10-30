@@ -83,27 +83,27 @@ func TestTask_Timetable(t *testing.T) {
 	})
 }
 
-func TestTask_Tour(t *testing.T) {
-	manager := Empty()
-	timetable := manager.SaveTimetable(Timetable{
-		Name:  "Test Timetable",
-		Tours: []Tour{{LastTour: "16:38"}, {LastTour: "17:00"}},
-	})
-	index := 1
-	vehicle := manager.SaveVehicle(Vehicle{
-		Tasks: []Task{
-			{
-				Type:         LineTaskType,
-				TimetableKey: &timetable.Key,
-				TourIndex:    &index,
-			},
-		},
-	})
-	task := vehicle.Tasks[0]
-	assert.Equal(t, Tour{
-		LastTour: "17:00",
-	}, task.Tour())
-}
+// func TestTask_Tour(t *testing.T) {
+// 	manager := Empty()
+// 	timetable := manager.SaveTimetable(Timetable{
+// 		Name:  "Test Timetable",
+// 		Tours: []Tour{{LastTour: "16:38"}, {LastTour: "17:00"}},
+// 	})
+// 	index := 1
+// 	vehicle := manager.SaveVehicle(Vehicle{
+// 		Tasks: []Task{
+// 			{
+// 				Type:         LineTaskType,
+// 				TimetableKey: &timetable.Key,
+// 				TourIndex:    &index,
+// 			},
+// 		},
+// 	})
+// 	task := vehicle.Tasks[0]
+// 	assert.Equal(t, Tour{
+// 		LastTour: "17:00",
+// 	}, task.Tour())
+// }
 
 func TestTask_RemainingPath(t *testing.T) {
 	t.Run("roaming", func(t *testing.T) {

@@ -86,7 +86,6 @@ func TestManager_Export(t *testing.T) {
 
 func Test_convertVehiclesFromPersistence(t *testing.T) {
 	timetableKey := "tt1"
-	tourIndex := 5
 	pathIndex := 110
 	t.Run("success", func(t *testing.T) {
 		vehicles := []persistence.Vehicle{
@@ -114,7 +113,6 @@ func Test_convertVehiclesFromPersistence(t *testing.T) {
 						Start:        "12:00",
 						Type:         "line",
 						TimetableKey: &timetableKey,
-						TourIndex:    &tourIndex,
 						PathIndex:    &pathIndex,
 					},
 				},
@@ -146,7 +144,6 @@ func Test_convertVehiclesFromPersistence(t *testing.T) {
 					Start:        "12:00",
 					Type:         LineTaskType,
 					PathIndex:    &pathIndex,
-					TourIndex:    &tourIndex,
 					TimetableKey: &timetableKey,
 					manager:      m,
 				},
@@ -217,7 +214,6 @@ func Test_convertVehiclesFromPersistence(t *testing.T) {
 
 func TestManager_convertVehiclesToPersistence(t *testing.T) {
 	timetableKey := "tt1"
-	tourIndex := 5
 	pathIndex := 110
 	vehicle1 := Vehicle{
 		Name:     "Vehicle 1",
@@ -236,7 +232,6 @@ func TestManager_convertVehiclesToPersistence(t *testing.T) {
 				Start:        "12:00",
 				Type:         LineTaskType,
 				PathIndex:    &pathIndex,
-				TourIndex:    &tourIndex,
 				TimetableKey: &timetableKey,
 			},
 		},
@@ -278,7 +273,6 @@ func TestManager_convertVehiclesToPersistence(t *testing.T) {
 					Start:        "12:00",
 					Type:         "line",
 					TimetableKey: &timetableKey,
-					TourIndex:    &tourIndex,
 					PathIndex:    &pathIndex,
 				},
 			},

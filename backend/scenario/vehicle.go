@@ -49,7 +49,6 @@ type Task struct {
 	Path []Waypoint
 	// Line/Timetable properties
 	TimetableKey *string
-	TourIndex    *int
 	PathIndex    *int
 	manager      *Manager
 }
@@ -61,9 +60,9 @@ func (t *Task) Timetable() Timetable {
 	return t.manager.timetables[*t.TimetableKey]
 }
 
-func (t *Task) Tour() Tour {
-	return t.Timetable().Tours[*t.TourIndex]
-}
+// func (t *Task) Tour() Tour {
+// 	return t.Timetable().Tours[*t.TourIndex]
+// }
 
 func (t *Task) RemainingPath() []Waypoint {
 	if t.Type.key == LineTaskType.key {

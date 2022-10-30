@@ -106,6 +106,5 @@ type Task struct {
 	Path []Waypoint `json:"path,omitempty"`
 	// Line/Timetable properties*
 	TimetableKey *string `json:"timetableKey,omitempty"`
-	TourIndex    *int    `json:"tourIndex,omitempty"`
 	PathIndex    *int    `json:"pathIndex,omitempty"`
 }

@@ -1,0 +1,47 @@
+<mat-stepper class="h-100" [linear]="true" [selectedIndex]="step$ | async">
+  <mat-step label="Line" [completed]="lineSelected$ | async">
+    <div
+      class="d-flex flex-column gap-2 overflow-auto"
+    >
+      <div
+        *ngFor="let line of lines$ | async"
+        class="d-flex gap-2 line-line align-items-center pointer-cursor py-2"
+        (click)="selectLine(line)"
+        [class.primary-light-background]="(selectedLine$ | async)?.key === line.key"
+      >
+        <div
+          [style.background-color]="line.color"
+          [style.width.px]="20"
+          [style.height.px]="20"
+        ></div>
+        <span class="line-line">{{ line.name }}</span>
+      </div>
+    </div>
+  </mat-step>
+  <mat-step label="Table" [completed]="timetableSelected$ | async">
+    <div
+      class="d-flex flex-grow-1 flex-shrink-1 flex-column gap-2 overflow-auto"
+    >
+      <div
+        *ngFor="let timetable of timetables$ | async"
+        class="d-flex gap-2 line-line align-items-center pointer-cursor"
+        (click)="selectTimetable(timetable)"
+      >
+        <span class="line-line">{{ timetable.name }}</span>
+      </div>
+    </div>
+  </mat-step>
+  <mat-step label="Tour">
+    <div
+      class="d-flex flex-grow-1 flex-shrink-1 flex-column gap-2 overflow-auto"
+    >
+      <div
+        *ngFor="let tour of tours$ | async"
+        class="d-flex gap-2 line-line align-items-center pointer-cursor"
+        (click)="selectTour(tour)"
+      >
+        <span class="line-line">{{ tour }}</span>
+      </div>
+    </div>
+  </mat-step>
+</mat-stepper>

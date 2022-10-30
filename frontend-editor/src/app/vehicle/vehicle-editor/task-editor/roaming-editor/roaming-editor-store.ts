@@ -2,6 +2,10 @@
  * Licensed under the MIT License (https://opensource.org/licenses/MIT).
  * Find the full license text in the LICENSE file of the project root.
  */
+import { Injectable } from '@angular/core';
+import { ComponentStore, tapResponse } from '@ngrx/component-store';
+import { combineLatest, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import {
   LatLng,
   Line,
@@ -9,24 +13,19 @@ import {
   Task,
   TimeString,
   Waypoint,
-} from '../../../shared';
-import { Injectable } from '@angular/core';
-import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { combineLatest, Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { RouteService } from '../../../shared/route.service';
-import { isDefined } from '../../../shared/utils';
+} from '../../../../shared';
+import { isDefined } from '../../../../shared/utils';
+import { RouteService } from '../../../../shared/route.service';
 
 interface State {
   path: Waypoint[];
   startTime: TimeString;
   start: LatLng | undefined;
   end: LatLng | undefined;
-  task: Task | undefined;
 }
 
 @Injectable()
-export class TaskEditorStore extends ComponentStore<State> {
+export class RoamingEditorStore extends ComponentStore<State> {
   readonly path$ = super.select((state) => state.path);
   readonly fakeLine$: Observable<Line> = super.select((state) => ({
     path: state.path,
@@ -39,7 +38,13 @@ export class TaskEditorStore extends ComponentStore<State> {
   }));
   readonly start$ = super.select((state) => state.start);
   readonly end$ = super.select((state) => state.end);
-  readonly task$ = super.select((state) => state.task);
+  readonly task$: Observable<Task | undefined> = super.select((state) => {
+    console.log(!state.path || !state.startTime);
+    if (!state.path || !state.startTime) {
+      return undefined;
+    }
+    return { type: 'roaming', start: state.startTime, path: state.path };
+  });
 
   readonly setStartTime = super.updater((state, startTime: TimeString) => ({
     ...state,
@@ -67,24 +72,11 @@ export class TaskEditorStore extends ComponentStore<State> {
             (result) => super.patchState({ path: result }),
             () =>
               this.notificationService.raiseNotification(
-                'Could not' + 'query path between the waypoints.'
+                'Could not query path between the waypoints.'
               )
           )
         )
       )
-    )
-  );
-
-  readonly commit$ = super.effect((trigger$: Observable<void>) =>
-    trigger$.pipe(
-      map(() =>
-        super.get<Task>((state) => ({
-          type: 'roaming',
-          path: state.path,
-          start: state.startTime,
-        }))
-      ),
-      tap((task) => super.patchState({ task }))
     )
   );
 
@@ -96,7 +88,6 @@ export class TaskEditorStore extends ComponentStore<State> {
       path: [],
       start: undefined,
       end: undefined,
-      task: undefined,
       startTime: '0:00',
     });
   }

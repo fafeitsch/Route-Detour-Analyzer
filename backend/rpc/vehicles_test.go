@@ -154,7 +154,6 @@ func TestVehicleHandler_Methods(t *testing.T) {
 		dist := 11.0
 		dur := 12.0
 		timetableKey := "tt1"
-		tourIndex := 12
 		pathIndex := 312
 		vehicle := scenario.Vehicle{
 			Name: "Vehicle 1",
@@ -179,7 +178,6 @@ func TestVehicleHandler_Methods(t *testing.T) {
 					Start:        "8:45",
 					Type:         scenario.LineTaskType,
 					TimetableKey: &timetableKey,
-					TourIndex:    &tourIndex,
 					PathIndex:    &pathIndex,
 				},
 			},
@@ -213,7 +211,6 @@ func TestVehicleHandler_Methods(t *testing.T) {
 						Start:        "8:45",
 						Type:         "line",
 						TimetableKey: &timetableKey,
-						TourIndex:    &tourIndex,
 						PathIndex:    &pathIndex,
 					},
 				},
@@ -250,13 +247,13 @@ func TestVehicleHandler_Methods(t *testing.T) {
 			Key:      "abc",
 			Name:     "Vehicle 1",
 			Position: types.LatLng{Lat: 3, Lng: 4},
-			Tasks: []types.Task{},
+			Tasks:    []types.Task{},
 		}, got)
 	})
 	t.Run("get vehicle – not found", func(t *testing.T) {
 		handler := vehicleHandler{manager: scenario.Empty()}
 		vehicle := types.Vehicle{
-			Key:      "abc",
+			Key: "abc",
 		}
 		_, err := handler.Methods()["getVehicle"].method(mustMarshal(vehicle))
 		assert.EqualError(t, err, "the vehicle with key \"abc\" was not found")

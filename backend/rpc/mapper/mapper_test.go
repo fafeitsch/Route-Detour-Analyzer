@@ -387,7 +387,6 @@ func TestToDtoVehicle(t *testing.T) {
 	dist := 11.0
 	dur := 12.0
 	timetableKey := "tt1"
-	tourIndex := 12
 	pathIndex := 312
 	vehicle := scenario.Vehicle{
 		Name:     "Vehicle 1",
@@ -410,7 +409,6 @@ func TestToDtoVehicle(t *testing.T) {
 				Start:        "8:45",
 				Type:         scenario.LineTaskType,
 				TimetableKey: &timetableKey,
-				TourIndex:    &tourIndex,
 				PathIndex:    &pathIndex,
 			},
 		},
@@ -437,7 +435,6 @@ func TestToDtoVehicle(t *testing.T) {
 				Start:        "8:45",
 				Type:         "line",
 				TimetableKey: &timetableKey,
-				TourIndex:    &tourIndex,
 				PathIndex:    &pathIndex,
 			},
 		},
@@ -459,7 +456,6 @@ func TestToVoVehicle(t *testing.T) {
 		dist := 11.0
 		dur := 12.0
 		timetableKey := "tt1"
-		tourIndex := 12
 		pathIndex := 312
 		vehicle := types.Vehicle{
 			Name:     "Vehicle 1",
@@ -482,7 +478,6 @@ func TestToVoVehicle(t *testing.T) {
 					Start:        "8:45",
 					Type:         "line",
 					TimetableKey: &timetableKey,
-					TourIndex:    &tourIndex,
 					PathIndex:    &pathIndex,
 				},
 			},
@@ -510,7 +505,6 @@ func TestToVoVehicle(t *testing.T) {
 					Start:        "8:45",
 					Type:         scenario.LineTaskType,
 					TimetableKey: &timetableKey,
-					TourIndex:    &tourIndex,
 					PathIndex:    &pathIndex,
 				},
 			},

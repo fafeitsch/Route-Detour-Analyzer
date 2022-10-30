@@ -29,6 +29,11 @@ func (h *lineHandler) Methods() map[string]rpcMethod {
 			output:      reflect.TypeOf(types.Line{}),
 			method:      h.queryLine,
 		},
+		"getLines": {
+			description: "Returns all lines, without their paths",
+			output:      reflect.TypeOf([]types.Line{}),
+			method:      h.getLines,
+		},
 		"saveLine": {
 			description: "Saves a line. " +
 				"If the key already exists, the line will be overwritten. " +
@@ -102,4 +107,15 @@ func (h *lineHandler) getLinePaths(params json.RawMessage) (json.RawMessage, err
 		})
 	}
 	return mustMarshal(paths), nil
+}
+
+func (h *lineHandler) getLines(params json.RawMessage) (json.RawMessage, error) {
+	lines := h.manager.Lines()
+	result := make([]types.Line, 0, len(lines))
+	for _, line := range lines {
+		mapped := mapper.ToDtoLine(line)
+		mapped.Path = nil
+		result = append(result, mapped)
+	}
+	return mustMarshal(result), nil
 }

@@ -8,8 +8,8 @@ import { TaskEditorComponent } from './task-editor.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MapModule } from '@rda/components/map/map.module';
 import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule } from '@angular/forms';
+import { TourSelectorModule } from './tour-selector/tour-selector.module';
+import { RoamingEditorModule } from './roaming-editor/roaming-editor.module';
 
 @NgModule({
   declarations: [TaskEditorComponent],
@@ -18,8 +18,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatButtonToggleModule,
     MapModule,
     MatButtonModule,
-    MatInputModule,
-    ReactiveFormsModule,
+    TourSelectorModule,
+    RoamingEditorModule,
   ],
   exports: [TaskEditorComponent],
 })

@@ -70,9 +70,8 @@ type Task struct {
 	Start string `json:"start"`
 	Type  string `json:"type"`
 	// Free roaming properties
-	Path *Path `json:"path"`
+	Path *Path `json:"path,omitempty"`
 	// Line/Timetable properties
-	TimetableKey *string `json:"timetableKey"`
-	TourIndex    *int    `json:"tourIndex"`
-	PathIndex    *int    `json:"pathIndex"`
+	TimetableKey *string `json:"timetableKey,omitempty"`
+	PathIndex    *int    `json:"pathIndex,omitempty"`
 }

@@ -3,22 +3,16 @@
  * Find the full license text in the LICENSE file of the project root.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
-import { StationManagerStore } from '../station-manager.store';
-import { Station } from '../../shared';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output,} from '@angular/core';
+import {StationManagerStore} from '../station-manager.store';
+import {Station} from '../../shared';
 
 @Component({
   selector: 'station-list',
   templateUrl: './station-list.component.html',
   styleUrls: ['./station-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'd-flex flex-column flex-gap-2' },
+  host: { class: 'd-flex flex-column gap-2' },
 })
 export class StationListComponent {
   @Input() stations: Station[] = [];

@@ -104,7 +104,6 @@ export interface Task {
   path?: Waypoint[];
   // Line/Timetable properties
   timetableKey?: string;
-  tourIndex?: number;
   pathIndex?: number;
 }
 
