@@ -13,7 +13,7 @@ import (
 )
 
 func TestStationHandler_QueryStations(t *testing.T) {
-	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, _ := scenario.LoadScenario(filepath.Join("..", "testdata"))
 	handler := newStationHandler(manager, "")
 
 	manager.SaveStation(scenario.Station{Key: "an unused station"})
@@ -25,7 +25,7 @@ func TestStationHandler_QueryStations(t *testing.T) {
 
 		var result []types.Station
 		_ = json.Unmarshal(rawResult, &result)
-		assert.Equal(t, 313, len(result))
+		assert.Equal(t, 314, len(result))
 		station := result[73]
 		assert.Equal(t, "f5-jLI7Dv7", station.Key)
 		assert.Equal(t, "Erthalstraße", station.Name)
@@ -42,7 +42,7 @@ func TestStationHandler_QueryStations(t *testing.T) {
 
 		var result []types.Station
 		_ = json.Unmarshal(rawResult, &result)
-		assert.Equal(t, 313, len(result))
+		assert.Equal(t, 314, len(result))
 		station := result[72]
 		assert.Equal(t, "O_9XBOqYIp", station.Key)
 		assert.Equal(t, "Erthalstraße", station.Name)
@@ -54,7 +54,7 @@ func TestStationHandler_QueryStations(t *testing.T) {
 }
 
 func TestStationHandler_UpdateStations(t *testing.T) {
-	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, _ := scenario.LoadScenario(filepath.Join("..", "testdata"))
 	handler := newStationHandler(manager, "")
 
 	t.Run("test unknown deleted station", func(t *testing.T) {
@@ -75,15 +75,34 @@ func TestStationHandler_UpdateStations(t *testing.T) {
 		request := json.RawMessage("{}")
 		_, err := handler.UpdateStations(request)
 		assert.NoError(t, err)
-		assert.Equal(t, 312, len(manager.Stations()))
+		assert.Equal(t, 313, len(manager.Stations()))
 	})
 
 	osrmCalled := 0
 	osrmServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		route := osrmutils.RouteResponse{Routes: []osrmutils.Route{{Geometry: "k|}nHq_q{@]f@IJ??",
-			Legs: []osrmutils.Leg{
-				{Annotation: osrmutils.Annotation{Distance: []float64{22.283466, 6.688107}, Duration: []float64{2.1, 0.6}}},
-				{Annotation: osrmutils.Annotation{Distance: []float64{0}, Duration: []float64{0}}}}}}}
+		route := osrmutils.RouteResponse{
+			Routes: []osrmutils.Route{
+				{
+					Geometry: "k|}nHq_q{@]f@IJ??",
+					Legs: []osrmutils.Leg{
+						{
+							Annotation: osrmutils.Annotation{
+								Distance: []float64{
+									22.283466,
+									6.688107,
+								}, Duration: []float64{2.1, 0.6},
+							},
+						},
+						{
+							Annotation: osrmutils.Annotation{
+								Distance: []float64{0},
+								Duration: []float64{0},
+							},
+						},
+					},
+				},
+			},
+		}
 
 		_ = json.NewEncoder(w).Encode(route)
 		osrmCalled = osrmCalled + 1
@@ -97,7 +116,7 @@ func TestStationHandler_UpdateStations(t *testing.T) {
 
 	t.Run("should update and delete stations", func(t *testing.T) {
 		manager.SaveStation(scenario.Station{Key: "ready to delete"})
-		assert.Equal(t, 313, len(manager.Stations()))
+		assert.Equal(t, 314, len(manager.Stations()))
 		request := mustMarshal(types.StationUpdate{
 			Deleted: []string{"ready to delete"},
 			ChangedOrAdded: []types.Station{
@@ -133,6 +152,6 @@ func TestStationHandler_UpdateStations(t *testing.T) {
 		assert.Equal(t, 40.0, neustadt.Lat)
 		assert.Equal(t, 50.0, neustadt.Lng)
 		assert.True(t, neustadt.IsWaypoint)
-		assert.Equal(t, 313, len(manager.Stations()))
+		assert.Equal(t, 314, len(manager.Stations()))
 	})
 }

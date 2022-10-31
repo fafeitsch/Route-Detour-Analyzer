@@ -1,0 +1,2377 @@
+{
+ "key": "IgEy8-5UCy",
+ "line": "IPtaoLc6sV",
+ "name": "Working Day",
+ "tours": [
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "4:57"
+    },
+    {
+     "departure": "4:59"
+    },
+    {
+     "departure": "5:00"
+    },
+    {
+     "departure": "5:03"
+    },
+    {
+     "departure": "5:04"
+    },
+    {
+     "departure": "5:06"
+    },
+    {
+     "departure": "5:07"
+    },
+    {
+     "departure": "5:08"
+    },
+    {
+     "departure": "5:10"
+    },
+    {
+     "departure": "5:11"
+    },
+    {
+     "departure": "5:12"
+    },
+    {
+     "departure": "5:14"
+    },
+    {
+     "departure": "5:16"
+    },
+    {
+     "departure": "5:18"
+    },
+    {
+     "departure": "5:19"
+    },
+    {
+     "departure": "5:20"
+    },
+    {
+     "departure": "5:21"
+    },
+    {
+     "departure": "5:22"
+    },
+    {
+     "departure": "5:23"
+    },
+    {
+     "departure": "5:24"
+    },
+    {
+     "departure": "5:25"
+    },
+    {
+     "departure": "5:26"
+    },
+    {
+     "departure": "5:29"
+    },
+    {
+     "departure": "5:30"
+    },
+    {
+     "departure": "5:31"
+    },
+    {
+     "departure": "5:32"
+    },
+    {
+     "departure": "5:33"
+    },
+    {
+     "arrival": "5:35"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "6:02"
+    },
+    {
+     "departure": "6:04"
+    },
+    {
+     "departure": "6:05"
+    },
+    {
+     "departure": "6:08"
+    },
+    {
+     "departure": "6:09"
+    },
+    {
+     "departure": "6:11"
+    },
+    {
+     "departure": "6:12"
+    },
+    {
+     "departure": "6:13"
+    },
+    {
+     "departure": "6:15"
+    },
+    {
+     "departure": "6:16"
+    },
+    {
+     "departure": "6:17"
+    },
+    {
+     "departure": "6:19"
+    },
+    {
+     "departure": "6:21"
+    },
+    {
+     "departure": "6:23"
+    },
+    {
+     "departure": "6:24"
+    },
+    {
+     "departure": "6:25"
+    },
+    {
+     "departure": "6:26"
+    },
+    {
+     "departure": "6:27"
+    },
+    {
+     "departure": "6:28"
+    },
+    {
+     "departure": "6:29"
+    },
+    {
+     "departure": "6:30"
+    },
+    {
+     "departure": "6:31"
+    },
+    {
+     "departure": "6:34"
+    },
+    {
+     "departure": "6:35"
+    },
+    {
+     "departure": "6:36"
+    },
+    {
+     "departure": "6:37"
+    },
+    {
+     "departure": "6:38"
+    },
+    {
+     "arrival": "6:40"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "6:50"
+    },
+    {
+     "departure": "6:52"
+    },
+    {
+     "departure": "6:53"
+    },
+    {
+     "departure": "6:56"
+    },
+    {
+     "departure": "6:57"
+    },
+    {
+     "departure": "6:59"
+    },
+    {
+     "departure": "7:00"
+    },
+    {
+     "departure": "7:01"
+    },
+    {
+     "departure": "7:03"
+    },
+    {
+     "departure": "7:04"
+    },
+    {
+     "departure": "7:05"
+    },
+    {
+     "departure": "7:07"
+    },
+    {
+     "departure": "7:09"
+    },
+    {
+     "departure": "7:11"
+    },
+    {
+     "departure": "7:12"
+    },
+    {
+     "departure": "7:13"
+    },
+    {
+     "departure": "7:14"
+    },
+    {
+     "departure": "7:15"
+    },
+    {
+     "departure": "7:16"
+    },
+    {
+     "departure": "7:17"
+    },
+    {
+     "departure": "7:18"
+    },
+    {
+     "departure": "7:19"
+    },
+    {
+     "departure": "7:22"
+    },
+    {
+     "departure": "7:23"
+    },
+    {
+     "departure": "7:24"
+    },
+    {
+     "departure": "7:25"
+    },
+    {
+     "departure": "7:26"
+    },
+    {
+     "arrival": "7:28"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "7:20"
+    },
+    {
+     "departure": "7:22"
+    },
+    {
+     "departure": "7:23"
+    },
+    {
+     "departure": "7:26"
+    },
+    {
+     "departure": "7:27"
+    },
+    {
+     "departure": "7:29"
+    },
+    {
+     "departure": "7:30"
+    },
+    {
+     "departure": "7:31"
+    },
+    {
+     "departure": "7:33"
+    },
+    {
+     "departure": "7:34"
+    },
+    {
+     "departure": "7:35"
+    },
+    {
+     "departure": "7:37"
+    },
+    {
+     "departure": "7:39"
+    },
+    {
+     "departure": "7:41"
+    },
+    {
+     "departure": "7:42"
+    },
+    {
+     "departure": "7:43"
+    },
+    {
+     "departure": "7:44"
+    },
+    {
+     "departure": "7:45"
+    },
+    {
+     "departure": "7:46"
+    },
+    {
+     "departure": "7:47"
+    },
+    {
+     "departure": "7:48"
+    },
+    {
+     "departure": "7:49"
+    },
+    {
+     "departure": "7:52"
+    },
+    {
+     "departure": "7:53"
+    },
+    {
+     "departure": "7:54"
+    },
+    {
+     "departure": "7:55"
+    },
+    {
+     "departure": "7:56"
+    },
+    {
+     "arrival": "7:58"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "7:32"
+    },
+    {
+     "departure": "7:34"
+    },
+    {
+     "departure": "7:35"
+    },
+    {
+     "departure": "7:38"
+    },
+    {
+     "departure": "7:39"
+    },
+    {
+     "departure": "7:41"
+    },
+    {
+     "departure": "7:42"
+    },
+    {
+     "departure": "7:43"
+    },
+    {
+     "departure": "7:45"
+    },
+    {
+     "departure": "7:46"
+    },
+    {
+     "departure": "7:47"
+    },
+    {
+     "departure": "7:49"
+    },
+    {
+     "departure": "7:51"
+    },
+    {
+     "departure": "7:53"
+    },
+    {
+     "departure": "7:54"
+    },
+    {
+     "departure": "7:55"
+    },
+    {
+     "departure": "7:56"
+    },
+    {
+     "departure": "7:57"
+    },
+    {
+     "departure": "7:58"
+    },
+    {
+     "departure": "7:59"
+    },
+    {
+     "departure": "8:00"
+    },
+    {
+     "departure": "8:01"
+    },
+    {
+     "departure": "8:04"
+    },
+    {
+     "departure": "8:05"
+    },
+    {
+     "departure": "8:06"
+    },
+    {
+     "departure": "8:07"
+    },
+    {
+     "departure": "8:08"
+    },
+    {
+     "arrival": "8:10"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "8:30"
+    },
+    {
+     "departure": "8:32"
+    },
+    {
+     "departure": "8:33"
+    },
+    {
+     "departure": "8:36"
+    },
+    {
+     "departure": "8:37"
+    },
+    {
+     "departure": "8:39"
+    },
+    {
+     "departure": "8:40"
+    },
+    {
+     "departure": "8:41"
+    },
+    {
+     "departure": "8:43"
+    },
+    {
+     "departure": "8:44"
+    },
+    {
+     "departure": "8:45"
+    },
+    {
+     "departure": "8:47"
+    },
+    {
+     "departure": "8:49"
+    },
+    {
+     "departure": "8:51"
+    },
+    {
+     "departure": "8:52"
+    },
+    {
+     "departure": "8:53"
+    },
+    {
+     "departure": "8:54"
+    },
+    {
+     "departure": "8:55"
+    },
+    {
+     "departure": "8:56"
+    },
+    {
+     "departure": "8:57"
+    },
+    {
+     "departure": "8:58"
+    },
+    {
+     "departure": "8:59"
+    },
+    {
+     "departure": "9:02"
+    },
+    {
+     "departure": "9:03"
+    },
+    {
+     "departure": "9:04"
+    },
+    {
+     "departure": "9:05"
+    },
+    {
+     "departure": "9:06"
+    },
+    {
+     "arrival": "9:08"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "9:30"
+    },
+    {
+     "departure": "9:32"
+    },
+    {
+     "departure": "9:33"
+    },
+    {
+     "departure": "9:36"
+    },
+    {
+     "departure": "9:37"
+    },
+    {
+     "departure": "9:39"
+    },
+    {
+     "departure": "9:40"
+    },
+    {
+     "departure": "9:41"
+    },
+    {
+     "departure": "9:43"
+    },
+    {
+     "departure": "9:44"
+    },
+    {
+     "departure": "9:45"
+    },
+    {
+     "departure": "9:47"
+    },
+    {
+     "departure": "9:49"
+    },
+    {
+     "departure": "9:51"
+    },
+    {
+     "departure": "9:52"
+    },
+    {
+     "departure": "9:53"
+    },
+    {
+     "departure": "9:54"
+    },
+    {
+     "departure": "9:55"
+    },
+    {
+     "departure": "9:56"
+    },
+    {
+     "departure": "9:57"
+    },
+    {
+     "departure": "9:58"
+    },
+    {
+     "departure": "9:59"
+    },
+    {
+     "departure": "10:02"
+    },
+    {
+     "departure": "10:03"
+    },
+    {
+     "departure": "10:04"
+    },
+    {
+     "departure": "10:05"
+    },
+    {
+     "departure": "10:06"
+    },
+    {
+     "arrival": "10:08"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "10:30"
+    },
+    {
+     "departure": "10:32"
+    },
+    {
+     "departure": "10:33"
+    },
+    {
+     "departure": "10:36"
+    },
+    {
+     "departure": "10:37"
+    },
+    {
+     "departure": "10:39"
+    },
+    {
+     "departure": "10:40"
+    },
+    {
+     "departure": "10:41"
+    },
+    {
+     "departure": "10:43"
+    },
+    {
+     "departure": "10:44"
+    },
+    {
+     "departure": "10:45"
+    },
+    {
+     "departure": "10:47"
+    },
+    {
+     "departure": "10:49"
+    },
+    {
+     "departure": "10:51"
+    },
+    {
+     "departure": "10:52"
+    },
+    {
+     "departure": "10:53"
+    },
+    {
+     "departure": "10:54"
+    },
+    {
+     "departure": "10:55"
+    },
+    {
+     "departure": "10:56"
+    },
+    {
+     "departure": "10:57"
+    },
+    {
+     "departure": "10:58"
+    },
+    {
+     "departure": "10:59"
+    },
+    {
+     "departure": "11:02"
+    },
+    {
+     "departure": "11:03"
+    },
+    {
+     "departure": "11:04"
+    },
+    {
+     "departure": "11:05"
+    },
+    {
+     "departure": "11:06"
+    },
+    {
+     "arrival": "11:08"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "11:30"
+    },
+    {
+     "departure": "11:32"
+    },
+    {
+     "departure": "11:33"
+    },
+    {
+     "departure": "11:36"
+    },
+    {
+     "departure": "11:37"
+    },
+    {
+     "departure": "11:39"
+    },
+    {
+     "departure": "11:40"
+    },
+    {
+     "departure": "11:41"
+    },
+    {
+     "departure": "11:43"
+    },
+    {
+     "departure": "11:44"
+    },
+    {
+     "departure": "11:45"
+    },
+    {
+     "departure": "11:47"
+    },
+    {
+     "departure": "11:49"
+    },
+    {
+     "departure": "11:51"
+    },
+    {
+     "departure": "11:52"
+    },
+    {
+     "departure": "11:53"
+    },
+    {
+     "departure": "11:54"
+    },
+    {
+     "departure": "11:55"
+    },
+    {
+     "departure": "11:56"
+    },
+    {
+     "departure": "11:57"
+    },
+    {
+     "departure": "11:58"
+    },
+    {
+     "departure": "11:59"
+    },
+    {
+     "departure": "12:02"
+    },
+    {
+     "departure": "12:03"
+    },
+    {
+     "departure": "12:04"
+    },
+    {
+     "departure": "12:05"
+    },
+    {
+     "departure": "12:06"
+    },
+    {
+     "arrival": "12:08"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "12:30"
+    },
+    {
+     "departure": "12:32"
+    },
+    {
+     "departure": "12:33"
+    },
+    {
+     "departure": "12:36"
+    },
+    {
+     "departure": "12:37"
+    },
+    {
+     "departure": "12:39"
+    },
+    {
+     "departure": "12:40"
+    },
+    {
+     "departure": "12:41"
+    },
+    {
+     "departure": "12:43"
+    },
+    {
+     "departure": "12:44"
+    },
+    {
+     "departure": "12:45"
+    },
+    {
+     "departure": "12:47"
+    },
+    {
+     "departure": "12:49"
+    },
+    {
+     "departure": "12:51"
+    },
+    {
+     "departure": "12:52"
+    },
+    {
+     "departure": "12:53"
+    },
+    {
+     "departure": "12:54"
+    },
+    {
+     "departure": "12:55"
+    },
+    {
+     "departure": "12:56"
+    },
+    {
+     "departure": "12:57"
+    },
+    {
+     "departure": "12:58"
+    },
+    {
+     "departure": "12:59"
+    },
+    {
+     "departure": "13:02"
+    },
+    {
+     "departure": "13:03"
+    },
+    {
+     "departure": "13:04"
+    },
+    {
+     "departure": "13:05"
+    },
+    {
+     "departure": "13:06"
+    },
+    {
+     "arrival": "13:08"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "13:38"
+    },
+    {
+     "departure": "13:40"
+    },
+    {
+     "departure": "13:41"
+    },
+    {
+     "departure": "13:44"
+    },
+    {
+     "departure": "13:45"
+    },
+    {
+     "departure": "13:47"
+    },
+    {
+     "departure": "13:48"
+    },
+    {
+     "departure": "13:49"
+    },
+    {
+     "departure": "13:51"
+    },
+    {
+     "departure": "13:52"
+    },
+    {
+     "departure": "13:53"
+    },
+    {
+     "departure": "13:55"
+    },
+    {
+     "departure": "13:57"
+    },
+    {
+     "departure": "13:59"
+    },
+    {
+     "departure": "14:00"
+    },
+    {
+     "departure": "14:01"
+    },
+    {
+     "departure": "14:02"
+    },
+    {
+     "departure": "14:03"
+    },
+    {
+     "departure": "14:04"
+    },
+    {
+     "departure": "14:05"
+    },
+    {
+     "departure": "14:06"
+    },
+    {
+     "departure": "14:07"
+    },
+    {
+     "departure": "14:10"
+    },
+    {
+     "departure": "14:11"
+    },
+    {
+     "departure": "14:12"
+    },
+    {
+     "departure": "14:13"
+    },
+    {
+     "departure": "14:14"
+    },
+    {
+     "arrival": "14:16"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "13:55"
+    },
+    {
+     "departure": "13:57"
+    },
+    {
+     "departure": "13:58"
+    },
+    {
+     "departure": "14:01"
+    },
+    {
+     "departure": "14:02"
+    },
+    {
+     "departure": "14:04"
+    },
+    {
+     "departure": "14:05"
+    },
+    {
+     "departure": "14:06"
+    },
+    {
+     "departure": "14:08"
+    },
+    {
+     "departure": "14:09"
+    },
+    {
+     "departure": "14:10"
+    },
+    {
+     "departure": "14:12"
+    },
+    {
+     "departure": "14:14"
+    },
+    {
+     "departure": "14:16"
+    },
+    {
+     "departure": "14:17"
+    },
+    {
+     "departure": "14:18"
+    },
+    {
+     "departure": "14:19"
+    },
+    {
+     "departure": "14:20"
+    },
+    {
+     "departure": "14:21"
+    },
+    {
+     "departure": "14:22"
+    },
+    {
+     "departure": "14:23"
+    },
+    {
+     "departure": "14:24"
+    },
+    {
+     "departure": "14:27"
+    },
+    {
+     "departure": "14:28"
+    },
+    {
+     "departure": "14:29"
+    },
+    {
+     "departure": "14:30"
+    },
+    {
+     "departure": "14:31"
+    },
+    {
+     "arrival": "14:33"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "14:15"
+    },
+    {
+     "departure": "14:17"
+    },
+    {
+     "departure": "14:18"
+    },
+    {
+     "departure": "14:21"
+    },
+    {
+     "departure": "14:22"
+    },
+    {
+     "departure": "14:24"
+    },
+    {
+     "departure": "14:25"
+    },
+    {
+     "departure": "14:26"
+    },
+    {
+     "departure": "14:28"
+    },
+    {
+     "departure": "14:29"
+    },
+    {
+     "departure": "14:30"
+    },
+    {
+     "departure": "14:32"
+    },
+    {
+     "departure": "14:34"
+    },
+    {
+     "departure": "14:36"
+    },
+    {
+     "departure": "14:37"
+    },
+    {
+     "departure": "14:38"
+    },
+    {
+     "departure": "14:39"
+    },
+    {
+     "departure": "14:40"
+    },
+    {
+     "departure": "14:41"
+    },
+    {
+     "departure": "14:42"
+    },
+    {
+     "departure": "14:43"
+    },
+    {
+     "departure": "14:44"
+    },
+    {
+     "departure": "14:47"
+    },
+    {
+     "departure": "14:48"
+    },
+    {
+     "departure": "14:49"
+    },
+    {
+     "departure": "14:50"
+    },
+    {
+     "departure": "14:51"
+    },
+    {
+     "arrival": "14:53"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "14:35"
+    },
+    {
+     "departure": "14:37"
+    },
+    {
+     "departure": "14:38"
+    },
+    {
+     "departure": "14:41"
+    },
+    {
+     "departure": "14:42"
+    },
+    {
+     "departure": "14:44"
+    },
+    {
+     "departure": "14:45"
+    },
+    {
+     "departure": "14:46"
+    },
+    {
+     "departure": "14:48"
+    },
+    {
+     "departure": "14:49"
+    },
+    {
+     "departure": "14:50"
+    },
+    {
+     "departure": "14:52"
+    },
+    {
+     "departure": "14:54"
+    },
+    {
+     "departure": "14:56"
+    },
+    {
+     "departure": "14:57"
+    },
+    {
+     "departure": "14:58"
+    },
+    {
+     "departure": "14:59"
+    },
+    {
+     "departure": "15:00"
+    },
+    {
+     "departure": "15:01"
+    },
+    {
+     "departure": "15:02"
+    },
+    {
+     "departure": "15:03"
+    },
+    {
+     "departure": "15:04"
+    },
+    {
+     "departure": "15:07"
+    },
+    {
+     "departure": "15:08"
+    },
+    {
+     "departure": "15:09"
+    },
+    {
+     "departure": "15:10"
+    },
+    {
+     "departure": "15:11"
+    },
+    {
+     "arrival": "15:13"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "15:00"
+    },
+    {
+     "departure": "15:02"
+    },
+    {
+     "departure": "15:03"
+    },
+    {
+     "departure": "15:06"
+    },
+    {
+     "departure": "15:07"
+    },
+    {
+     "departure": "15:09"
+    },
+    {
+     "departure": "15:10"
+    },
+    {
+     "departure": "15:11"
+    },
+    {
+     "departure": "15:13"
+    },
+    {
+     "departure": "15:14"
+    },
+    {
+     "departure": "15:15"
+    },
+    {
+     "departure": "15:17"
+    },
+    {
+     "departure": "15:19"
+    },
+    {
+     "departure": "15:21"
+    },
+    {
+     "departure": "15:22"
+    },
+    {
+     "departure": "15:23"
+    },
+    {
+     "departure": "15:24"
+    },
+    {
+     "departure": "15:25"
+    },
+    {
+     "departure": "15:26"
+    },
+    {
+     "departure": "15:27"
+    },
+    {
+     "departure": "15:28"
+    },
+    {
+     "departure": "15:29"
+    },
+    {
+     "departure": "15:32"
+    },
+    {
+     "departure": "15:33"
+    },
+    {
+     "departure": "15:34"
+    },
+    {
+     "departure": "15:35"
+    },
+    {
+     "departure": "15:36"
+    },
+    {
+     "arrival": "15:38"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "15:45"
+    },
+    {
+     "departure": "15:47"
+    },
+    {
+     "departure": "15:48"
+    },
+    {
+     "departure": "15:51"
+    },
+    {
+     "departure": "15:52"
+    },
+    {
+     "departure": "15:54"
+    },
+    {
+     "departure": "15:55"
+    },
+    {
+     "departure": "15:56"
+    },
+    {
+     "departure": "15:58"
+    },
+    {
+     "departure": "15:59"
+    },
+    {
+     "departure": "16:00"
+    },
+    {
+     "departure": "16:02"
+    },
+    {
+     "departure": "16:04"
+    },
+    {
+     "departure": "16:06"
+    },
+    {
+     "departure": "16:07"
+    },
+    {
+     "departure": "16:08"
+    },
+    {
+     "departure": "16:09"
+    },
+    {
+     "departure": "16:10"
+    },
+    {
+     "departure": "16:11"
+    },
+    {
+     "departure": "16:12"
+    },
+    {
+     "departure": "16:13"
+    },
+    {
+     "departure": "16:14"
+    },
+    {
+     "departure": "16:17"
+    },
+    {
+     "departure": "16:18"
+    },
+    {
+     "departure": "16:19"
+    },
+    {
+     "departure": "16:20"
+    },
+    {
+     "departure": "16:21"
+    },
+    {
+     "arrival": "16:23"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "16:25"
+    },
+    {
+     "departure": "16:27"
+    },
+    {
+     "departure": "16:28"
+    },
+    {
+     "departure": "16:31"
+    },
+    {
+     "departure": "16:32"
+    },
+    {
+     "departure": "16:34"
+    },
+    {
+     "departure": "16:35"
+    },
+    {
+     "departure": "16:36"
+    },
+    {
+     "departure": "16:38"
+    },
+    {
+     "departure": "16:39"
+    },
+    {
+     "departure": "16:40"
+    },
+    {
+     "departure": "16:42"
+    },
+    {
+     "departure": "16:44"
+    },
+    {
+     "departure": "16:46"
+    },
+    {
+     "departure": "16:47"
+    },
+    {
+     "departure": "16:48"
+    },
+    {
+     "departure": "16:49"
+    },
+    {
+     "departure": "16:50"
+    },
+    {
+     "departure": "16:51"
+    },
+    {
+     "departure": "16:52"
+    },
+    {
+     "departure": "16:53"
+    },
+    {
+     "departure": "16:54"
+    },
+    {
+     "departure": "16:57"
+    },
+    {
+     "departure": "16:58"
+    },
+    {
+     "departure": "16:59"
+    },
+    {
+     "departure": "17:00"
+    },
+    {
+     "departure": "17:01"
+    },
+    {
+     "arrival": "17:03"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "16:50"
+    },
+    {
+     "departure": "16:52"
+    },
+    {
+     "departure": "16:53"
+    },
+    {
+     "departure": "16:56"
+    },
+    {
+     "departure": "16:57"
+    },
+    {
+     "departure": "16:59"
+    },
+    {
+     "departure": "17:00"
+    },
+    {
+     "departure": "17:01"
+    },
+    {
+     "departure": "17:03"
+    },
+    {
+     "departure": "17:04"
+    },
+    {
+     "departure": "17:05"
+    },
+    {
+     "departure": "17:07"
+    },
+    {
+     "departure": "17:09"
+    },
+    {
+     "departure": "17:11"
+    },
+    {
+     "departure": "17:12"
+    },
+    {
+     "departure": "17:13"
+    },
+    {
+     "departure": "17:14"
+    },
+    {
+     "departure": "17:15"
+    },
+    {
+     "departure": "17:16"
+    },
+    {
+     "departure": "17:17"
+    },
+    {
+     "departure": "17:18"
+    },
+    {
+     "departure": "17:19"
+    },
+    {
+     "departure": "17:22"
+    },
+    {
+     "departure": "17:23"
+    },
+    {
+     "departure": "17:24"
+    },
+    {
+     "departure": "17:25"
+    },
+    {
+     "departure": "17:26"
+    },
+    {
+     "arrival": "17:28"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "17:15"
+    },
+    {
+     "departure": "17:17"
+    },
+    {
+     "departure": "17:18"
+    },
+    {
+     "departure": "17:21"
+    },
+    {
+     "departure": "17:22"
+    },
+    {
+     "departure": "17:24"
+    },
+    {
+     "departure": "17:25"
+    },
+    {
+     "departure": "17:26"
+    },
+    {
+     "departure": "17:28"
+    },
+    {
+     "departure": "17:29"
+    },
+    {
+     "departure": "17:30"
+    },
+    {
+     "departure": "17:32"
+    },
+    {
+     "departure": "17:34"
+    },
+    {
+     "departure": "17:36"
+    },
+    {
+     "departure": "17:37"
+    },
+    {
+     "departure": "17:38"
+    },
+    {
+     "departure": "17:39"
+    },
+    {
+     "departure": "17:40"
+    },
+    {
+     "departure": "17:41"
+    },
+    {
+     "departure": "17:42"
+    },
+    {
+     "departure": "17:43"
+    },
+    {
+     "departure": "17:44"
+    },
+    {
+     "departure": "17:47"
+    },
+    {
+     "departure": "17:48"
+    },
+    {
+     "departure": "17:49"
+    },
+    {
+     "departure": "17:50"
+    },
+    {
+     "departure": "17:51"
+    },
+    {
+     "arrival": "17:53"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "17:55"
+    },
+    {
+     "departure": "17:57"
+    },
+    {
+     "departure": "17:58"
+    },
+    {
+     "departure": "18:01"
+    },
+    {
+     "departure": "18:02"
+    },
+    {
+     "departure": "18:04"
+    },
+    {
+     "departure": "18:05"
+    },
+    {
+     "departure": "18:06"
+    },
+    {
+     "departure": "18:08"
+    },
+    {
+     "departure": "18:09"
+    },
+    {
+     "departure": "18:10"
+    },
+    {
+     "departure": "18:12"
+    },
+    {
+     "departure": "18:14"
+    },
+    {
+     "departure": "18:16"
+    },
+    {
+     "departure": "18:17"
+    },
+    {
+     "departure": "18:18"
+    },
+    {
+     "departure": "18:19"
+    },
+    {
+     "departure": "18:20"
+    },
+    {
+     "departure": "18:21"
+    },
+    {
+     "departure": "18:22"
+    },
+    {
+     "departure": "18:23"
+    },
+    {
+     "departure": "18:24"
+    },
+    {
+     "departure": "18:27"
+    },
+    {
+     "departure": "18:28"
+    },
+    {
+     "departure": "18:29"
+    },
+    {
+     "departure": "18:30"
+    },
+    {
+     "departure": "18:31"
+    },
+    {
+     "arrival": "18:33"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "18:15"
+    },
+    {
+     "departure": "18:17"
+    },
+    {
+     "departure": "18:18"
+    },
+    {
+     "departure": "18:21"
+    },
+    {
+     "departure": "18:22"
+    },
+    {
+     "departure": "18:24"
+    },
+    {
+     "departure": "18:25"
+    },
+    {
+     "departure": "18:26"
+    },
+    {
+     "departure": "18:28"
+    },
+    {
+     "departure": "18:29"
+    },
+    {
+     "departure": "18:30"
+    },
+    {
+     "departure": "18:32"
+    },
+    {
+     "departure": "18:34"
+    },
+    {
+     "departure": "18:36"
+    },
+    {
+     "departure": "18:37"
+    },
+    {
+     "departure": "18:38"
+    },
+    {
+     "departure": "18:39"
+    },
+    {
+     "departure": "18:40"
+    },
+    {
+     "departure": "18:41"
+    },
+    {
+     "departure": "18:42"
+    },
+    {
+     "departure": "18:43"
+    },
+    {
+     "departure": "18:44"
+    },
+    {
+     "departure": "18:47"
+    },
+    {
+     "departure": "18:48"
+    },
+    {
+     "departure": "18:49"
+    },
+    {
+     "departure": "18:50"
+    },
+    {
+     "departure": "18:51"
+    },
+    {
+     "arrival": "18:53"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "18:45"
+    },
+    {
+     "departure": "18:47"
+    },
+    {
+     "departure": "18:48"
+    },
+    {
+     "departure": "18:51"
+    },
+    {
+     "departure": "18:52"
+    },
+    {
+     "departure": "18:54"
+    },
+    {
+     "departure": "18:55"
+    },
+    {
+     "departure": "18:56"
+    },
+    {
+     "departure": "18:58"
+    },
+    {
+     "departure": "18:59"
+    },
+    {
+     "departure": "19:00"
+    },
+    {
+     "departure": "19:02"
+    },
+    {
+     "departure": "19:04"
+    },
+    {
+     "departure": "19:06"
+    },
+    {
+     "departure": "19:07"
+    },
+    {
+     "departure": "19:08"
+    },
+    {
+     "departure": "19:09"
+    },
+    {
+     "departure": "19:10"
+    },
+    {
+     "departure": "19:11"
+    },
+    {
+     "departure": "19:12"
+    },
+    {
+     "departure": "19:13"
+    },
+    {
+     "departure": "19:14"
+    },
+    {
+     "departure": "19:17"
+    },
+    {
+     "departure": "19:18"
+    },
+    {
+     "departure": "19:19"
+    },
+    {
+     "departure": "19:20"
+    },
+    {
+     "departure": "19:21"
+    },
+    {
+     "arrival": "19:23"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "19:20"
+    },
+    {
+     "departure": "19:22"
+    },
+    {
+     "departure": "19:23"
+    },
+    {
+     "departure": "19:26"
+    },
+    {
+     "departure": "19:27"
+    },
+    {
+     "departure": "19:29"
+    },
+    {
+     "departure": "19:30"
+    },
+    {
+     "departure": "19:31"
+    },
+    {
+     "departure": "19:33"
+    },
+    {
+     "departure": "19:34"
+    },
+    {
+     "departure": "19:35"
+    },
+    {
+     "departure": "19:37"
+    },
+    {
+     "departure": "19:39"
+    },
+    {
+     "departure": "19:41"
+    },
+    {
+     "departure": "19:42"
+    },
+    {
+     "departure": "19:43"
+    },
+    {
+     "departure": "19:44"
+    },
+    {
+     "departure": "19:45"
+    },
+    {
+     "departure": "19:46"
+    },
+    {
+     "departure": "19:47"
+    },
+    {
+     "departure": "19:48"
+    },
+    {
+     "departure": "19:49"
+    },
+    {
+     "departure": "19:52"
+    },
+    {
+     "departure": "19:53"
+    },
+    {
+     "departure": "19:54"
+    },
+    {
+     "departure": "19:55"
+    },
+    {
+     "departure": "19:56"
+    },
+    {
+     "arrival": "19:58"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "20:50"
+    },
+    {
+     "departure": "20:52"
+    },
+    {
+     "departure": "20:53"
+    },
+    {
+     "departure": "20:56"
+    },
+    {
+     "departure": "20:57"
+    },
+    {
+     "departure": "20:59"
+    },
+    {
+     "departure": "21:00"
+    },
+    {
+     "departure": "21:01"
+    },
+    {
+     "departure": "21:03"
+    },
+    {
+     "departure": "21:04"
+    },
+    {
+     "departure": "21:05"
+    },
+    {
+     "departure": "21:07"
+    },
+    {
+     "departure": "21:09"
+    },
+    {
+     "departure": "21:11"
+    },
+    {
+     "departure": "21:12"
+    },
+    {
+     "departure": "21:13"
+    },
+    {
+     "departure": "21:14"
+    },
+    {
+     "departure": "21:15"
+    },
+    {
+     "departure": "21:16"
+    },
+    {
+     "departure": "21:17"
+    },
+    {
+     "departure": "21:18"
+    },
+    {
+     "departure": "21:19"
+    },
+    {
+     "departure": "21:22"
+    },
+    {
+     "departure": "21:23"
+    },
+    {
+     "departure": "21:24"
+    },
+    {
+     "departure": "21:25"
+    },
+    {
+     "departure": "21:26"
+    },
+    {
+     "arrival": "21:28"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "22:07"
+    },
+    {
+     "departure": "22:09"
+    },
+    {
+     "departure": "22:10"
+    },
+    {
+     "departure": "22:13"
+    },
+    {
+     "departure": "22:14"
+    },
+    {
+     "departure": "22:16"
+    },
+    {
+     "departure": "22:17"
+    },
+    {
+     "departure": "22:18"
+    },
+    {
+     "departure": "22:20"
+    },
+    {
+     "departure": "22:21"
+    },
+    {
+     "departure": "22:22"
+    },
+    {
+     "departure": "22:24"
+    },
+    {
+     "departure": "22:26"
+    },
+    {
+     "departure": "22:28"
+    },
+    {
+     "departure": "22:29"
+    },
+    {
+     "departure": "22:30"
+    },
+    {
+     "departure": "22:31"
+    },
+    {
+     "departure": "22:32"
+    },
+    {
+     "departure": "22:33"
+    },
+    {
+     "departure": "22:34"
+    },
+    {
+     "departure": "22:35"
+    },
+    {
+     "departure": "22:36"
+    },
+    {
+     "departure": "22:39"
+    },
+    {
+     "departure": "22:40"
+    },
+    {
+     "departure": "22:41"
+    },
+    {
+     "departure": "22:42"
+    },
+    {
+     "departure": "22:43"
+    },
+    {
+     "arrival": "22:45"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "23:50"
+    },
+    {
+     "departure": "23:52"
+    },
+    {
+     "departure": "23:53"
+    },
+    {
+     "departure": "23:56"
+    },
+    {
+     "departure": "23:57"
+    },
+    {
+     "departure": "23:59"
+    },
+    {
+     "departure": "24:00"
+    },
+    {
+     "departure": "24:01"
+    },
+    {
+     "departure": "24:03"
+    },
+    {
+     "departure": "24:04"
+    },
+    {
+     "departure": "24:05"
+    },
+    {
+     "departure": "24:07"
+    },
+    {
+     "departure": "24:09"
+    },
+    {
+     "departure": "24:11"
+    },
+    {
+     "departure": "24:12"
+    },
+    {
+     "departure": "24:13"
+    },
+    {
+     "departure": "24:14"
+    },
+    {
+     "departure": "24:15"
+    },
+    {
+     "departure": "24:16"
+    },
+    {
+     "departure": "24:17"
+    },
+    {
+     "departure": "24:18"
+    },
+    {
+     "departure": "24:19"
+    },
+    {
+     "departure": "24:22"
+    },
+    {
+     "departure": "24:23"
+    },
+    {
+     "departure": "24:24"
+    },
+    {
+     "departure": "24:25"
+    },
+    {
+     "departure": "24:26"
+    },
+    {
+     "arrival": "24:28"
+    }
+   ]
+  }
+ ],
+ "stations": [
+  "jyW2S27JGj",
+  "qjpgqzDGRD",
+  "icdkKhKPqs",
+  "2J-X-b1aAR",
+  "RrJU5ciyYy",
+  "jSFwy-7AaZ",
+  "npBeVmqDqy",
+  "c_Y8KGC_ar",
+  "SMIZszvm2R",
+  "le6PRCXcBu",
+  "NicMZW_GU8",
+  "905n6Dv03f",
+  "He-FcKNJSG",
+  "wenJprsxj3",
+  "TwdTahMglm",
+  "U7iT5csyOC",
+  "PeyaLQJ9Lk",
+  "AQC4xmjdt6",
+  "CTKKziWzW_",
+  "nEq2nZTOIc",
+  "eIvdWTpESC",
+  "2MoCl9CUqG",
+  "2fusNBKmme",
+  "1QvjSlGSqK",
+  "vr08ougPwY",
+  "571wzuuUq1",
+  "V1b3qlqkCP",
+  "vygPfj4chf"
+ ]
+}

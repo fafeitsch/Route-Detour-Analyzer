@@ -1,7 +1,6 @@
 package rpc
 
 import (
-	"backend/persistence"
 	"backend/rpc/types"
 	"backend/scenario"
 	"bytes"
@@ -17,7 +16,7 @@ import (
 )
 
 func TestHandleFunc(t *testing.T) {
-	manager, err := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, err := scenario.LoadScenario(filepath.Join("..", "testdata"))
 	require.NoError(t, err)
 
 	handler := HandleFunc(manager, "")
@@ -50,7 +49,7 @@ func TestHandleFunc(t *testing.T) {
 	t.Run("normal execution with persistence", func(t *testing.T) {
 		dir, _ := ioutil.TempDir(os.TempDir(), "*")
 		defer func() { _ = os.RemoveAll(dir) }()
-		manager, err := scenario.LoadFile(filepath.Join(dir, "empty.json"))
+		manager, err := scenario.LoadScenario(filepath.Join(dir, "empty"))
 		persistHandler := HandleFunc(manager, "")
 		require.NoError(t, err)
 		id := "id"
@@ -65,11 +64,7 @@ func TestHandleFunc(t *testing.T) {
 		recorder := httptest.NewRecorder()
 		persistHandler.ServeHTTP(recorder, request)
 		assert.Equal(t, http.StatusOK, recorder.Code)
-		file, err := os.Open(filepath.Join(dir, "empty.json"))
-		require.NoError(t, err)
-		var sc persistence.Scenario
-		_ = json.NewDecoder(file).Decode(&sc)
-		assert.Equal(t, 1, len(sc.Lines))
+		assert.DirExistsf(t, filepath.Join(dir, "empty", "lines"), "")
 	})
 
 	t.Run("handler not found", func(t *testing.T) {

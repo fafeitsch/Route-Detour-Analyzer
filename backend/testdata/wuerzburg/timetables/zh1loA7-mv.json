@@ -1,0 +1,207 @@
+{
+ "key": "zh1loA7-mv",
+ "line": "S9BbG58UKu",
+ "name": "Working Day",
+ "tours": [
+  {
+   "intervalMinutes": 0,
+   "lastTour": "",
+   "events": [
+    {
+     "departure": "8:54"
+    },
+    {
+     "departure": "8:57"
+    },
+    {
+     "departure": "8:58"
+    },
+    {
+     "departure": "8:59"
+    },
+    {
+     "departure": "9:00"
+    },
+    {
+     "departure": "9:01"
+    },
+    {
+     "departure": "9:02"
+    },
+    {
+     "departure": "9:03"
+    },
+    {
+     "departure": "9:04"
+    },
+    {
+     "departure": "9:05"
+    },
+    {
+     "departure": "9:08"
+    },
+    {
+     "departure": "9:09"
+    },
+    {
+     "departure": "9:11"
+    },
+    {
+     "departure": "9:12"
+    },
+    {
+     "departure": "9:13"
+    },
+    {
+     "departure": "9:14"
+    },
+    {
+     "departure": "9:15"
+    },
+    {
+     "arrival": "9:16"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 30,
+   "lastTour": "12:05",
+   "events": [
+    {
+     "departure": "9:05"
+    },
+    {
+     "departure": "9:08"
+    },
+    {
+     "departure": "9:09"
+    },
+    {
+     "departure": "9:10"
+    },
+    {
+     "departure": "9:11"
+    },
+    {
+     "departure": "9:12"
+    },
+    {
+     "departure": "9:13"
+    },
+    {
+     "departure": "9:14"
+    },
+    {
+     "departure": "9:15"
+    },
+    {
+     "departure": "9:16"
+    },
+    {
+     "departure": "9:19"
+    },
+    {
+     "departure": "9:20"
+    },
+    {
+     "departure": "9:22"
+    },
+    {
+     "departure": "9:23"
+    },
+    {
+     "departure": "9:24"
+    },
+    {
+     "departure": "9:25"
+    },
+    {
+     "departure": "9:26"
+    },
+    {
+     "arrival": "9:27"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 15,
+   "lastTour": "19:05",
+   "events": [
+    {
+     "departure": "12:20"
+    },
+    {
+     "departure": "12:23"
+    },
+    {
+     "departure": "12:24"
+    },
+    {
+     "departure": "12:25"
+    },
+    {
+     "departure": "12:26"
+    },
+    {
+     "departure": "12:27"
+    },
+    {
+     "departure": "12:28"
+    },
+    {
+     "departure": "12:29"
+    },
+    {
+     "departure": "12:30"
+    },
+    {
+     "departure": "12:31"
+    },
+    {
+     "departure": "12:34"
+    },
+    {
+     "departure": "12:35"
+    },
+    {
+     "departure": "12:37"
+    },
+    {
+     "departure": "12:38"
+    },
+    {
+     "departure": "12:39"
+    },
+    {
+     "departure": "12:40"
+    },
+    {
+     "departure": "12:41"
+    },
+    {
+     "arrival": "12:42"
+    }
+   ]
+  }
+ ],
+ "stations": [
+  "SlDNPMuPMf",
+  "sFuxxGc5BJ",
+  "O6tVLpjfs4",
+  "0tF1WImWBd",
+  "8hbTwbBMHO",
+  "ncw832RGy8",
+  "f5-jLI7Dv7",
+  "iLjplwdQWB",
+  "vtqr4J84YH",
+  "p0oC81RlW3",
+  "r46Zg0YjEP",
+  "qk5UUI6chA",
+  "CObTR_FmkU",
+  "dvP85-ZcPK",
+  "aijxMVB0ZJ",
+  "fWHq0YlvYO",
+  "tkUeHqKL57",
+  "G0bv1gEKw0"
+ ]
+}

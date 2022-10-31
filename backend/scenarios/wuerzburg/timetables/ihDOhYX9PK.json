@@ -1,0 +1,307 @@
+{
+ "key": "ihDOhYX9PK",
+ "line": "t2A39YXN2D",
+ "name": "Working Day",
+ "tours": [
+  {
+   "intervalMinutes": 12,
+   "lastTour": "8:19",
+   "events": [
+    {
+     "departure": "5:55"
+    },
+    {
+     "departure": "5:56"
+    },
+    {
+     "departure": "5:57"
+    },
+    {
+     "departure": "5:58"
+    },
+    {
+     "departure": "5:59"
+    },
+    {
+     "departure": "6:01"
+    },
+    {
+     "departure": "6:02"
+    },
+    {
+     "departure": "6:03"
+    },
+    {
+     "departure": "6:04"
+    },
+    {
+     "departure": "6:06"
+    },
+    {
+     "departure": "6:07"
+    },
+    {
+     "departure": "6:09"
+    },
+    {
+     "departure": "6:11"
+    },
+    {
+     "departure": "6:12"
+    },
+    {
+     "departure": "6:13"
+    },
+    {
+     "departure": "6:15"
+    },
+    {
+     "departure": "6:18"
+    },
+    {
+     "departure": "6:19"
+    },
+    {
+     "departure": "6:20"
+    },
+    {
+     "departure": "6:21"
+    },
+    {
+     "departure": "6:22"
+    },
+    {
+     "departure": "6:23"
+    },
+    {
+     "departure": "6:24"
+    },
+    {
+     "departure": "6:25"
+    },
+    {
+     "departure": "6:26"
+    },
+    {
+     "departure": "6:27"
+    },
+    {
+     "departure": "6:28"
+    },
+    {
+     "arrival": "6:29"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 15,
+   "lastTour": "16:45",
+   "events": [
+    {
+     "departure": "8:30"
+    },
+    {
+     "departure": "8:31"
+    },
+    {
+     "departure": "8:32"
+    },
+    {
+     "departure": "8:33"
+    },
+    {
+     "departure": "8:34"
+    },
+    {
+     "departure": "8:36"
+    },
+    {
+     "departure": "8:37"
+    },
+    {
+     "departure": "8:38"
+    },
+    {
+     "departure": "8:39"
+    },
+    {
+     "departure": "8:41"
+    },
+    {
+     "departure": "8:42"
+    },
+    {
+     "departure": "8:44"
+    },
+    {
+     "departure": "8:46"
+    },
+    {
+     "departure": "8:47"
+    },
+    {
+     "departure": "8:48"
+    },
+    {
+     "departure": "8:50"
+    },
+    {
+     "departure": "8:53"
+    },
+    {
+     "departure": "8:54"
+    },
+    {
+     "departure": "8:55"
+    },
+    {
+     "departure": "8:56"
+    },
+    {
+     "departure": "8:57"
+    },
+    {
+     "departure": "8:58"
+    },
+    {
+     "departure": "8:59"
+    },
+    {
+     "departure": "9:00"
+    },
+    {
+     "departure": "9:01"
+    },
+    {
+     "departure": "9:02"
+    },
+    {
+     "departure": "9:03"
+    },
+    {
+     "arrival": "9:04"
+    }
+   ]
+  },
+  {
+   "intervalMinutes": 30,
+   "lastTour": "18:45",
+   "events": [
+    {
+     "departure": "17:15"
+    },
+    {
+     "departure": "17:16"
+    },
+    {
+     "departure": "17:17"
+    },
+    {
+     "departure": "17:18"
+    },
+    {
+     "departure": "17:19"
+    },
+    {
+     "departure": "17:21"
+    },
+    {
+     "departure": "17:22"
+    },
+    {
+     "departure": "17:23"
+    },
+    {
+     "departure": "17:24"
+    },
+    {
+     "departure": "17:26"
+    },
+    {
+     "departure": "17:27"
+    },
+    {
+     "departure": "17:29"
+    },
+    {
+     "departure": "17:31"
+    },
+    {
+     "departure": "17:32"
+    },
+    {
+     "departure": "17:33"
+    },
+    {
+     "departure": "17:35"
+    },
+    {
+     "departure": "17:38"
+    },
+    {
+     "departure": "17:39"
+    },
+    {
+     "departure": "17:40"
+    },
+    {
+     "departure": "17:41"
+    },
+    {
+     "departure": "17:42"
+    },
+    {
+     "departure": "17:43"
+    },
+    {
+     "departure": "17:44"
+    },
+    {
+     "departure": "17:45"
+    },
+    {
+     "departure": "17:46"
+    },
+    {
+     "departure": "17:47"
+    },
+    {
+     "departure": "17:48"
+    },
+    {
+     "arrival": "17:49"
+    }
+   ]
+  }
+ ],
+ "stations": [
+  "pSuZHYa3Fl",
+  "S4fnfVyKpp",
+  "ZEdDRGaUJG",
+  "zWTK0K4oua",
+  "0Nsdray1Ot",
+  "HNz8dHnrVV",
+  "rj1cqkXW2d",
+  "cAoah4--5V",
+  "6U8C4sBX0J",
+  "uxkhrbiCX6",
+  "9L6DqKpzAo",
+  "aH1BtU6iFR",
+  "Z4Dg3WrM6c",
+  "HcUZxwxpkV",
+  "CObTR_FmkU",
+  "f3J6EFkUHw",
+  "t1ZX77uF_J",
+  "Cg62tGAax_",
+  "AH0HPSHvNQ",
+  "7kOE25kjY6",
+  "ncw832RGy8",
+  "8hbTwbBMHO",
+  "0tF1WImWBd",
+  "O6tVLpjfs4",
+  "5TNf5YASFv",
+  "4G-yag1CEE",
+  "cJVGausMt5",
+  "SlDNPMuPMf"
+ ]
+}

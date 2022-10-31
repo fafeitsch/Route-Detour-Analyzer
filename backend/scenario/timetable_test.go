@@ -8,7 +8,7 @@ import (
 )
 
 func TestManager_SaveTimetable(t *testing.T) {
-	manager, err := LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, err := LoadScenario(filepath.Join("..", "testdata", "wuerzburg.json"))
 	require.NoError(t, err)
 	t.Run("without key should create new", func(t *testing.T) {
 		count := len(manager.timetables)
@@ -51,7 +51,13 @@ func TestTimetable_Stations(t *testing.T) {
 	manager := Empty()
 	a := manager.SaveStation(Station{Key: "a"})
 	b := manager.SaveStation(Station{Key: "b"})
-	timetable := manager.SaveTimetable(Timetable{StationKeys: []string{"a", "b", "c"}})
+	timetable := manager.SaveTimetable(Timetable{
+		StationKeys: []string{
+			"a",
+			"b",
+			"c",
+		},
+	})
 	stations := timetable.Stations()
 	assert.Equal(t, []Station{a, b, {}}, stations)
 }

@@ -1,0 +1,87 @@
+{
+ "key": "Q5sVVzeriF",
+ "line": "p6ht_-PISE",
+ "name": "Working Day",
+ "tours": [
+  {
+   "intervalMinutes": 60,
+   "lastTour": "17:02",
+   "events": [
+    {
+     "departure": "9:02"
+    },
+    {
+     "departure": "9:03"
+    },
+    {
+     "departure": "9:04"
+    },
+    {
+     "departure": "9:05"
+    },
+    {
+     "departure": "9:06"
+    },
+    {
+     "departure": "9:07"
+    },
+    {
+     "departure": "9:08"
+    },
+    {
+     "departure": "9:09"
+    },
+    {
+     "departure": "9:10"
+    },
+    {
+     "departure": "9:11"
+    },
+    {
+     "departure": "9:12"
+    },
+    {
+     "departure": "9:13"
+    },
+    {
+     "departure": "9:15"
+    },
+    {
+     "departure": "9:16"
+    },
+    {
+     "departure": "9:18"
+    },
+    {
+     "departure": "9:19"
+    },
+    {
+     "departure": "9:21"
+    },
+    {
+     "arrival": "9:22"
+    }
+   ]
+  }
+ ],
+ "stations": [
+  "YSOTfUl6FX",
+  "9jfnRlhO7j",
+  "sf4HGSKhXP",
+  "Jy58pudAbI",
+  "ipJfrndIQF",
+  "iHEQCfMxqi",
+  "XFBQsp26UN",
+  "KoBTUmTMH6",
+  "ncw832RGy8",
+  "8hbTwbBMHO",
+  "eXLUxsP0rP",
+  "R2vaM8hiNe",
+  "z_VFnYbxZ8",
+  "VvkjTQWFhk",
+  "3mU26U5ejG",
+  "XjQkVc60C2",
+  "Q3slc-im0h",
+  "osec-zVGjJ"
+ ]
+}

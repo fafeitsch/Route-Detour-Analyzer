@@ -1,0 +1,1880 @@
+[
+ {
+  "key": "iiIilTQwld",
+  "name": "AW-Altenheim",
+  "latLng": "}u_oHy}y{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "RrJU5ciyYy",
+  "name": "Abzweig Dürrbachau",
+  "latLng": "}e~nHavk{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "V2SwFdRtgM",
+  "name": "Adalberokirche",
+  "latLng": "soznHsxs{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "duOD-LTymo",
+  "name": "Adalberokirche",
+  "latLng": "eoznHizs{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "mt3ondRZNz",
+  "name": "Albert-Einstein-Straße",
+  "latLng": "yd_oHuzi{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "AxZn8axVqo",
+  "name": "Albert-Günther-Weg",
+  "latLng": "}aznHklo{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "hqvcWxtkQU",
+  "name": "Albert-Günther-Weg",
+  "latLng": "}`znHedo{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "jhHRJ4fU8V",
+  "name": "Albert-Günther-Weg",
+  "latLng": "m`znHezp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ebQIM6Gvj8",
+  "name": "Albert-Hoffa-Straße",
+  "latLng": "kd{nHm{x{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "l2WURZuo89",
+  "name": "Albert-Schweitzer-Straße",
+  "latLng": "e_`oHqa|{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "cUTkt6LaSK",
+  "name": "Alfred-Nobel-Straße",
+  "latLng": "es`oHobi{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "fGk4e5fZQ3",
+  "name": "Alfred-Nobel-Straße",
+  "latLng": "{c_oHwmj{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "fWHq0YlvYO",
+  "name": "Allendorfweg",
+  "latLng": "advnH_it{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "HOp7nMB3Pd",
+  "name": "Alte Fernstraße",
+  "latLng": "}r{nHelz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "wIwr-PG3_c",
+  "name": "Alte Landstraße",
+  "latLng": "gj{nHet~{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "L7G3Yi7cfE",
+  "name": "Alte Mainbrücke",
+  "latLng": "wb|nHmkq{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "VvkjTQWFhk",
+  "name": "Alte Mainbrücke",
+  "latLng": "e`|nHglq{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "eXLUxsP0rP",
+  "name": "Alte Universität",
+  "latLng": "md{nHgos{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "jSFwy-7AaZ",
+  "name": "Am Dürrbach",
+  "latLng": "ib_oH{cm{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "W0bAmtyULr",
+  "name": "Am Handelshof",
+  "latLng": "er`oHwl|{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "E3SiMJT_pe",
+  "name": "Am Happach",
+  "latLng": "adynHu|}{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "NOD-MCx0Hu",
+  "name": "Am Hubland",
+  "latLng": "ipznHogz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "HcUZxwxpkV",
+  "name": "Am Hungrigen Bühl",
+  "latLng": "k`vnHics{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "dvP85-ZcPK",
+  "name": "Am Hungrigen Bühl",
+  "latLng": "y}unH_gs{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "lUSUG1SQ3n",
+  "name": "Am Kirschberg",
+  "latLng": "o~znHuk}{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "PICuj5xjM5",
+  "name": "Am Kugelfang",
+  "latLng": "g|{nH_|w{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "HNz8dHnrVV",
+  "name": "Am Ostbahnhof",
+  "latLng": "yavnHi{v{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "AQC4xmjdt6",
+  "name": "Am Schaftrieb",
+  "latLng": "afboH{}p{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "S1ARqhCRL9",
+  "name": "Am Schloßgarten",
+  "latLng": "u__oHgd}{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "sKevpCa4zc",
+  "name": "Am Stuck",
+  "latLng": "ar}nHs}}{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "FcLb57Kznw",
+  "name": "Am Terassenpark",
+  "latLng": "at{nHg|y{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "HfTeqhD2Q4",
+  "name": "Am Wald",
+  "latLng": "}dwnHmeq{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ysgcFIYR5m",
+  "name": "Annaschlucht",
+  "latLng": "i}wnHc`n{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "jubhF5kI2k",
+  "name": "Annastraße",
+  "latLng": "o`|nH}ru{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "EKQ4lDWFAF",
+  "name": "Auf der Schanz",
+  "latLng": "{a_oHq~z{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "XM4xEhRoAQ",
+  "name": "Aumühle",
+  "latLng": "qd}nHalw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "cZNY7z6o_t",
+  "name": "Aumühle",
+  "latLng": "mk}nHiaw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "XZPZM1FRU8",
+  "name": "Barbarastraße",
+  "latLng": "iy|nHyhw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ORxFvp_ICt",
+  "name": "Barbarossaplatz",
+  "latLng": "aa}nH}ls{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ssfug20yZ7",
+  "name": "Bayernstraße",
+  "latLng": "}c_oH_sx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "zmdfh1U3G6",
+  "name": "Belvedere",
+  "latLng": "io{nH}g|{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "fNFYaBCtXw",
+  "name": "Bergpfad",
+  "latLng": "uzwnHu}o{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "TG0chqzZjl",
+  "name": "Berliner Ring",
+  "latLng": "ob}nHsut{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Swd0uY7apJ",
+  "name": "Bibliothekszentrum",
+  "latLng": "y_{nH_e{{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "9Cb54AQ0Gd",
+  "name": "Bismarckstraße",
+  "latLng": "sq}nHutq{@",
+  "isWaypoint": true
+ },
+ {
+  "key": "Z4Dg3WrM6c",
+  "name": "Blosenbergpfad",
+  "latLng": "cuunHatr{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "2fusNBKmme",
+  "name": "Bockspfad",
+  "latLng": "kc_oHgxu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "sg8Q09zzPe",
+  "name": "Bonhoefferstraße",
+  "latLng": "mz`oHu_y{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "yn8AJ-MC31",
+  "name": "Bonhoefferstraße",
+  "latLng": "cy`oH__y{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "g8bo7cA_Rm",
+  "name": "Bremenweg",
+  "latLng": "squnHsiw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ZcA9vNW4Da",
+  "name": "Brunnenstraße",
+  "latLng": "{bboHqdz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "OFV25_Llbd",
+  "name": "Busbahnhof",
+  "latLng": "ev}nHqis{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "P17a1zZXdO",
+  "name": "Busbahnhof",
+  "latLng": "uv}nHafs{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "e6EGCoHMTO",
+  "name": "Busbahnhof",
+  "latLng": "gv}nH{hs{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "qzVi8sNXsL",
+  "name": "Busbahnhof",
+  "latLng": "yu}nH{js{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ttLPokbPJ6",
+  "name": "Busbahnhof",
+  "latLng": "wv}nHehs{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "AJg4LHg8JP",
+  "name": "Casteller Platz",
+  "latLng": "}nznHyn}{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "r46Zg0YjEP",
+  "name": "Dallenbergbad",
+  "latLng": "kmwnHw}s{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "cJVGausMt5",
+  "name": "Dominikanergasse",
+  "latLng": "yw|nHyvr{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "lK2gpUpqi5",
+  "name": "Dorfgraben",
+  "latLng": "io_oHm{}{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "CTKKziWzW_",
+  "name": "Dr.-Onymous-Straße",
+  "latLng": "wzaoHqrq{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "EKWc23Qd-i",
+  "name": "Drei Pappeln",
+  "latLng": "m{vnHwwp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "2J-X-b1aAR",
+  "name": "Dürrbachau/B27",
+  "latLng": "eb~nHu}k{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "p0oC81RlW3",
+  "name": "Ebertsklinge",
+  "latLng": "ykynHyfu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "t1ZX77uF_J",
+  "name": "Ebertsklinge",
+  "latLng": "ueynHgeu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "5bCMAsiAPs",
+  "name": "Eiseneckstraße",
+  "latLng": "}}}nHiso{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "3ej_MC2BRN",
+  "name": "Elferweg",
+  "latLng": "au{nHmp{{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "o8Theuyafr",
+  "name": "Elsa-Brandström-Straße",
+  "latLng": "wvznHa||{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "5bZk6hqzVF",
+  "name": "Emil-Fischer-Straße",
+  "latLng": "qrznHg{z{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "-h5QK9ahAe",
+  "name": "Erthalstraße",
+  "latLng": "onznHevu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "7kOE25kjY6",
+  "name": "Erthalstraße",
+  "latLng": "erznHitu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "O_9XBOqYIp",
+  "name": "Erthalstraße",
+  "latLng": "}mznHisu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "f5-jLI7Dv7",
+  "name": "Erthalstraße",
+  "latLng": "glznHgvu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "CB4kTaCEiw",
+  "name": "Essiggarten",
+  "latLng": "m}}nHc`_|@",
+  "isWaypoint": false
+ },
+ {
+  "key": "SldFruz6ZD",
+  "name": "Essiggarten",
+  "latLng": "o~}nH_`_|@",
+  "isWaypoint": false
+ },
+ {
+  "key": "-GiiNvJjbj",
+  "name": "Europastern",
+  "latLng": "ep}nHkiw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "FLp0CEyJhi",
+  "name": "Europastern",
+  "latLng": "_p}nHwhw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "c0FafX2hGD",
+  "name": "Faulenbergkaserne",
+  "latLng": "qx|nH_sy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "yVgd3Y9xP3",
+  "name": "Faulenbergkaserne",
+  "latLng": "cy|nH{ly{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "BpxUrkDPjP",
+  "name": "Fichtestraße",
+  "latLng": "ejznHcyt{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "wLe7QhAebZ",
+  "name": "Fichtestraße",
+  "latLng": "ejznHa{t{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Jt7t8u_PSd",
+  "name": "Flürleinstraße",
+  "latLng": "uh_oHg~}{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "mIrMg6tx0u",
+  "name": "Frankenstraße",
+  "latLng": "{v_oHsoz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "2O-GeKMy0n",
+  "name": "Frankenstraße Ost",
+  "latLng": "ah_oHodz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "7jkoVdkvgL",
+  "name": "Frankenwarte",
+  "latLng": "k~ynHe~m{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "h8vOIOzLab",
+  "name": "Franz-Liszt-Straße",
+  "latLng": "k|znHizw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ipJfrndIQF",
+  "name": "Franz-Liszt-Straße",
+  "latLng": "g|znHe~w{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "a33CPmHTgl",
+  "name": "Frauenlandplatz",
+  "latLng": "u}znHszu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "jtunVAAqBz",
+  "name": "Friedrich-Bergius-Ring",
+  "latLng": "cf}nHan_|@",
+  "isWaypoint": false
+ },
+ {
+  "key": "4V1iE9eP-m",
+  "name": "Friedrich-Kohlrausch-Straße",
+  "latLng": "mf`oHwoj{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "sRo0eg6GYP",
+  "name": "Gattingerstraße Ost",
+  "latLng": "ue|nHgv~{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "TnR5J2UGki",
+  "name": "Gegenbaurstraße",
+  "latLng": "umznH{ov{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Wiw7YMMlPD",
+  "name": "Getrud-von-le-Fort-Straße",
+  "latLng": "c_|nHqly{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "iQHCLszUCJ",
+  "name": "Greinberg",
+  "latLng": "g~_oH_uz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "HOjJ0bZgzS",
+  "name": "Greisingstraße",
+  "latLng": "k}{nH}dv{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "L4Lba6IlnL",
+  "name": "Greisingstraße",
+  "latLng": "y|{nH_jv{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "N76FIVXTCu",
+  "name": "Gustav-Walle-Schule",
+  "latLng": "eq_oHu_y{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "VHZeAyh2my",
+  "name": "Gustav-Walle-Schule",
+  "latLng": "}t_oHmdy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "w8cWVLYRUe",
+  "name": "Hafeneinfahrt",
+  "latLng": "_}}nHkxk{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "sJIIzyetFw",
+  "name": "Hafenschänke",
+  "latLng": "uw}nHwgk{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "1QvjSlGSqK",
+  "name": "Hans-Brandmann-Weg",
+  "latLng": "sb_oHazv{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "sNld1UINI-",
+  "name": "Hans-Löffler-Straße",
+  "latLng": "{{wnHkyw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ZhTXvHUCa-",
+  "name": "Haupfriedhof",
+  "latLng": "}z|nH_ku{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "AzOSlagMKE",
+  "name": "Hauptbahnhof",
+  "latLng": "mv}nHogs{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "jyW2S27JGj",
+  "name": "Hauptbahnhof",
+  "latLng": "qv}nH_ks{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "tU7RZyigao",
+  "name": "Hauptfriedhof",
+  "latLng": "m}|nHgiu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "v-2mWFPv8P",
+  "name": "Heigelsbach",
+  "latLng": "mavnHcqu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Ru7rqPXdU4",
+  "name": "Heimgarten",
+  "latLng": "es|nHekx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Ghpu38PPh_",
+  "name": "Heisenbergstraße",
+  "latLng": "qk~nHqtz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "3zK5qJD-v0",
+  "name": "Hertzstraße",
+  "latLng": "mq}nHo{z{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "-eKf12CP-K",
+  "name": "Hessenstraße",
+  "latLng": "ui`oHs{z{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ZafyoHP8bG",
+  "name": "Hessenstraße",
+  "latLng": "}i`oH_}z{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "obOuoOQUW_",
+  "name": "Hinteres Steinbachtal",
+  "latLng": "ekwnHa}k{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "He-FcKNJSG",
+  "name": "Hirschlein",
+  "latLng": "mtaoHmip{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "s502oe8lWN",
+  "name": "Hofmannstraße",
+  "latLng": "ujvnHihu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "c70_BTydH3",
+  "name": "Holzmühle",
+  "latLng": "sg~nH_y{{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "vTtgY9xrPV",
+  "name": "Holzmühle",
+  "latLng": "gi~nH{y{{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "9L6DqKpzAo",
+  "name": "Holzweg",
+  "latLng": "y_vnHmqt{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "gW_XfwQazS",
+  "name": "Hubertusweg",
+  "latLng": "ejxnHq`q{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "X9OcZHY6ji",
+  "name": "Hubland/Mensa",
+  "latLng": "ibznHqsy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "wEXvepEJhp",
+  "name": "Hubland/Mensa",
+  "latLng": "cbznHyty{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ZQ8RNFUKlN",
+  "name": "Höchberger Tor",
+  "latLng": "yt{nHkro{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "iylQWbdiw6",
+  "name": "IKEA",
+  "latLng": "_}aoHim|{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "pQSuAx9M6Q",
+  "name": "Israealitischer Friedhof",
+  "latLng": "yy|nHiy{{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "cub_EjWjUo",
+  "name": "Jahnstraße",
+  "latLng": "ia_oHec|{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "sYWPw74NRQ",
+  "name": "Jahnstraße",
+  "latLng": "ob_oH{_|{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "D29VLw40H7",
+  "name": "Josefshof",
+  "latLng": "yw|nHguz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "SlDNPMuPMf",
+  "name": "Juliuspromenade",
+  "latLng": "u`}nH_yr{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "aijxMVB0ZJ",
+  "name": "Karl-Straub-Straße",
+  "latLng": "wcvnH_ys{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "e5OyX3rCcJ",
+  "name": "Klara-Löwe-Straße",
+  "latLng": "}uwnHi`q{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "K5VdTy1-5d",
+  "name": "Kleßbergsteige",
+  "latLng": "_{znHeyo{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "cAoah4--5V",
+  "name": "Klosterstraße",
+  "latLng": "wqvnHwhv{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "S4fnfVyKpp",
+  "name": "Kneipp-Werk",
+  "latLng": "smunH{dz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ptexuiovTr",
+  "name": "Kniebreche",
+  "latLng": "muznHgrn{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "NicMZW_GU8",
+  "name": "Kuhberg",
+  "latLng": "qg`oHodp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "icdkKhKPqs",
+  "name": "Kulturspeicher",
+  "latLng": "s}}nH}}p{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "tkOg0yQ3Xe",
+  "name": "Kulturspeicher",
+  "latLng": "k|}nHq_q{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "uW31FBUidv",
+  "name": "Käppele",
+  "latLng": "gaznHwyp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "AH0HPSHvNQ",
+  "name": "König-Ludwig-Haus",
+  "latLng": "ucznHm{u{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "iLjplwdQWB",
+  "name": "König-Ludwig-Haus",
+  "latLng": "kdznH}xu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "vCT8r2s3b4",
+  "name": "König-Ludwig-Haus",
+  "latLng": "weznHg|u{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "E5qG56UR17",
+  "name": "Königsbergerstraße",
+  "latLng": "gpxnHudt{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "eyA2QTx45M",
+  "name": "Kühlenbergstraße",
+  "latLng": "i|aoHidy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "vtqr4J84YH",
+  "name": "Lange Bögen",
+  "latLng": "ayynHmju{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "z_VFnYbxZ8",
+  "name": "Leistenstraße",
+  "latLng": "ch{nHanq{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "87Q5rEXebd",
+  "name": "Letzter Hieb",
+  "latLng": "yz{nH_bw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "HxKoLspDq0",
+  "name": "Letzter Hieb",
+  "latLng": "a{{nHo{v{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "nEq2nZTOIc",
+  "name": "Liebigstraße",
+  "latLng": "qqaoHglr{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "V1b3qlqkCP",
+  "name": "Lindleinstraße",
+  "latLng": "gl~nH_gw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "1InUvNWMYz",
+  "name": "Louis-Pasteur-Straße",
+  "latLng": "ch|nHep`|@",
+  "isWaypoint": false
+ },
+ {
+  "key": "sH2z0gXN9H",
+  "name": "Louis-Pasteur-Straße",
+  "latLng": "_j|nHar`|@",
+  "isWaypoint": false
+ },
+ {
+  "key": "sDh47FgJx9",
+  "name": "Magdalene-Schoch-Straße",
+  "latLng": "{~znH{}y{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "LEaacrnsVS",
+  "name": "Mainauwiesen",
+  "latLng": "u|}nHwpn{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "1m82bPCQlr",
+  "name": "Mainfranken-Theater",
+  "latLng": "st|nHwvs{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "5TNf5YASFv",
+  "name": "Mainfranken-Theater",
+  "latLng": "kk|nHkys{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "sFuxxGc5BJ",
+  "name": "Mainfranken-Theater",
+  "latLng": "ep|nHsss{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Jh30MfpEvF",
+  "name": "Mainleitenweg",
+  "latLng": "m~znHarp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "XGI8DQSyQ_",
+  "name": "Mainleitenweg",
+  "latLng": "{~znHuup{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ZEdDRGaUJG",
+  "name": "Matthias-Noell-Weg",
+  "latLng": "gqunHg|y{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Q_vBo2hh5O",
+  "name": "Max-Born-Straße",
+  "latLng": "eo~nH}ck{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "sf4HGSKhXP",
+  "name": "Miravilla",
+  "latLng": "w_znHohx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ym97FUOIXl",
+  "name": "Miravilla",
+  "latLng": "g~ynHslx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "FWgI7WGp1Y",
+  "name": "Missionsärtzliches Institut",
+  "latLng": "ik|nHe{v{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "PVGxXrmipc",
+  "name": "Missionsärztliches Institut",
+  "latLng": "mh|nHy{v{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ArTwk7_s6P",
+  "name": "Mittlere Heerbergstraße",
+  "latLng": "cf`oHugz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "rBptyG-GII",
+  "name": "Mittlere Heerbergstraße",
+  "latLng": "of`oHgjz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "_0cj0rYM5z",
+  "name": "Mobilstation Hubland",
+  "latLng": "av{nHawz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "eIvdWTpESC",
+  "name": "Neubrunner Weg",
+  "latLng": "}z`oHs|r{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "mhrDxiSqf0",
+  "name": "Neuer Hafen Mitte",
+  "latLng": "ys}nHm`j{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "qLQW8NIcj9",
+  "name": "Neumühle",
+  "latLng": "qm~nHwqx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "AYfHaZuB8c",
+  "name": "Neutorstraße",
+  "latLng": "kn}nHqot{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "CObTR_FmkU",
+  "name": "Nikolaus-Fey-Straße",
+  "latLng": "gjvnHi~r{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "rGlEJ61j_w",
+  "name": "Nikolausstraße",
+  "latLng": "k_{nH_jq{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ByitBmOfu7",
+  "name": "Nopitstraße",
+  "latLng": "yn{nHsnx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "wenJprsxj3",
+  "name": "Oberdürrbach/Schule",
+  "latLng": "sxboHcxp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "tQivq0X5rr",
+  "name": "Obere Landwehr",
+  "latLng": "{pznHikm{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "bxGzCfnwKU",
+  "name": "Oberer Burgweg",
+  "latLng": "ms{nHkmn{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "yFDUQOB-kY",
+  "name": "Oberer Geisbergweg",
+  "latLng": "kwtnHayy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "aFc9AYm6jq",
+  "name": "Oberer Schwarzenberg",
+  "latLng": "c|_oHqkx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "tFPqjv3FTG",
+  "name": "Oberer Schwarzenberg",
+  "latLng": "e~_oHqkx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "PeyaLQJ9Lk",
+  "name": "Oberhofstraße",
+  "latLng": "snboHmbq{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "6KoANkGwnJ",
+  "name": "Odenwaldstraße",
+  "latLng": "qs_oHay|{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "IwIyIkzx1O",
+  "name": "Odenwaldstraße",
+  "latLng": "ux_oHw`}{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "eciLUKIO6f",
+  "name": "Ohmstraße",
+  "latLng": "s||nHgoz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "h1lR7BYDW1",
+  "name": "Ohmstraße",
+  "latLng": "wz|nHsoz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "yBikFdkgM8",
+  "name": "Oswald-Külpe-Weg",
+  "latLng": "yzznHcr{{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "0tF1WImWBd",
+  "name": "Ottostraße",
+  "latLng": "gk{nHkvs{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "e9IFs1n2-o",
+  "name": "Paradiesstraße",
+  "latLng": "kq~nH{yh{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "mV2U5iblZh",
+  "name": "Parkplatz Talavera",
+  "latLng": "or}nHgip{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "e0-gKySJY0",
+  "name": "Paul-Ehrlich-Straße",
+  "latLng": "a|ynHqq}{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "vygPfj4chf",
+  "name": "Pestallozistraße",
+  "latLng": "_`~nHewv{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "TlKxSzNAjd",
+  "name": "Philosophisches Institut",
+  "latLng": "gwznHkqy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "K8SqN0H-c9",
+  "name": "Pilziggrund/Mitte",
+  "latLng": "k|}nHsi}{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "5WlgJyGl4H",
+  "name": "Rathaus Gerbrunn",
+  "latLng": "mhynHs}|{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "VgREwK3GhG",
+  "name": "Rennweg",
+  "latLng": "ie|nH}zt{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "WsMjjqgvLn",
+  "name": "Rennweg",
+  "latLng": "ef|nHkvt{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "f3J6EFkUHw",
+  "name": "Resenweg",
+  "latLng": "sbwnHuct{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "qk5UUI6chA",
+  "name": "Resenweg",
+  "latLng": "kawnH_bt{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "O6tVLpjfs4",
+  "name": "Residenzplatz",
+  "latLng": "gd|nH}us{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "6U8C4sBX0J",
+  "name": "Reuterstraße",
+  "latLng": "yzvnHqvu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "G0bv1gEKw0",
+  "name": "Reuterstraße",
+  "latLng": "}|vnHuvu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "mZnE2v9j3n",
+  "name": "Richard-Wagner-Straße",
+  "latLng": "am|nHgzw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Gn11f4eKu6",
+  "name": "Robert-Kirchhoff-Straße",
+  "latLng": "{h~nHei{{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "HgRFO0ORmo",
+  "name": "Rosenmühle",
+  "latLng": "c~}nH}~{{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "UA4be3FQGz",
+  "name": "Rosenmühle",
+  "latLng": "a}}nHk`|{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "f8LXO8GDAb",
+  "name": "Rosenmühlweg",
+  "latLng": "}q}nHot{{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "tcJ00XjvKG",
+  "name": "Rosenmühlweg",
+  "latLng": "{o}nHsw{{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "uthDwXOXmO",
+  "name": "Rothweg",
+  "latLng": "}pwnHiyp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "2MoCl9CUqG",
+  "name": "Rotkreuzhof",
+  "latLng": "ur`oHabs{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "qjpgqzDGRD",
+  "name": "Rotkreuzstraße",
+  "latLng": "ct}nHiyq{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "8T13v9ZnLe",
+  "name": "Rottendorfer Tor",
+  "latLng": "cy{nHuxx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "sCLtoP_LAL",
+  "name": "Sandbühl",
+  "latLng": "kuynHad|{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "km-Ey5YhnH",
+  "name": "Sanderheinrichsleitenweg",
+  "latLng": "_gynHczx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ABbA6wQQdf",
+  "name": "Sanderring",
+  "latLng": "yyznHwyr{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "R2vaM8hiNe",
+  "name": "Sanderring",
+  "latLng": "{}znHy{r{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "wvRROyz99M",
+  "name": "Sanderrothstraße",
+  "latLng": "khynHwbw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "utTdtF_INm",
+  "name": "Sandäcker",
+  "latLng": "iv}nH}n_|@",
+  "isWaypoint": false
+ },
+ {
+  "key": "TwdTahMglm",
+  "name": "Schafhof",
+  "latLng": "ugcoH}wp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "rBzYr2aAte",
+  "name": "Schafhofstraße",
+  "latLng": "m_coH_{p{@",
+  "isWaypoint": true
+ },
+ {
+  "key": "vr08ougPwY",
+  "name": "Scharoldstraße",
+  "latLng": "y~~nHwmw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Cg62tGAax_",
+  "name": "Schellingstraße",
+  "latLng": "ouynH{pu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ncw832RGy8",
+  "name": "Schlörstraße",
+  "latLng": "kxznH}qu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "npBeVmqDqy",
+  "name": "Schwarzer Weg",
+  "latLng": "sj_oHsjn{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Cy8ZQyzHvJ",
+  "name": "Schweinfurter Straße",
+  "latLng": "ei}nHmiu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "u-BNgrMUnW",
+  "name": "Schweinfurter Straße",
+  "latLng": "ij}nHoxu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "4xWkW9Hbp6",
+  "name": "Schönborntor",
+  "latLng": "cu{nHqep{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Q3slc-im0h",
+  "name": "Sedanstraße",
+  "latLng": "}b}nHamn{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "f6DD08gYre",
+  "name": "Seinsheimstraße",
+  "latLng": "yh{nHq_v{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "qUVXZx3n4Y",
+  "name": "Silcherstraße",
+  "latLng": "qlznHgbw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "RR9eQBDrem",
+  "name": "Skyline-Hill-Center",
+  "latLng": "u_{nHce|{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "mcA2C9R0hE",
+  "name": "Sonnfeld",
+  "latLng": "mr_oH}x{{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "4G-yag1CEE",
+  "name": "Spiegelstraße",
+  "latLng": "_r|nHuhs{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "YSOTfUl6FX",
+  "name": "Sportzentrum",
+  "latLng": "ijynHcsy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "nIpx_6IPf-",
+  "name": "Sprachenzentrum",
+  "latLng": "}`{nHsrz{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "G-g0wXydod",
+  "name": "St. Alfons Kirche",
+  "latLng": "kwxnH{cw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "BXBi1WFlXE",
+  "name": "St. Alfons-Kirche",
+  "latLng": "urxnHadw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "0vPNH1O6Cw",
+  "name": "St. Lioba-Kirche",
+  "latLng": "o{}nHon|{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "NGmUH-1ax1",
+  "name": "Stauferstraße",
+  "latLng": "in~nH{b~{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "vFveGnscJE",
+  "name": "Steigerfurtweg",
+  "latLng": "}zunH{gv{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "cr82eeRWU2",
+  "name": "Steinbachtal",
+  "latLng": "wjwnHk{k{@",
+  "isWaypoint": true
+ },
+ {
+  "key": "le6PRCXcBu",
+  "name": "Steinburgstraße",
+  "latLng": "wy_oHgrp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "7zVa-O_jvq",
+  "name": "Steinlein",
+  "latLng": "ko`oH}vx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "qBFZrHcA5T",
+  "name": "Steinlein",
+  "latLng": "yi`oHqwx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "aH1BtU6iFR",
+  "name": "Sterntalerweg",
+  "latLng": "wlunHcos{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "KpDJvu1gPL",
+  "name": "Strauberg",
+  "latLng": "q{_oHgdy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "nIM_5OXqvo",
+  "name": "Strauberg",
+  "latLng": "q{_oHoby{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "IPseWngQPy",
+  "name": "Straubmühlweg",
+  "latLng": "st_oH}zw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "EUfISpVFwJ",
+  "name": "Studentenhaus",
+  "latLng": "uxznHgks{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "rlKkUN4aBA",
+  "name": "Studentenhaus",
+  "latLng": "svznHmls{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "8hbTwbBMHO",
+  "name": "Südbahnhof",
+  "latLng": "_b{nHyvt{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "GYWkrvK5JU",
+  "name": "Talavera",
+  "latLng": "ac}nHuwp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "zWTK0K4oua",
+  "name": "Taschenäckerweg",
+  "latLng": "o~unH}rx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "mevxZM-J3J",
+  "name": "Thüringerstraße",
+  "latLng": "a}~nHipy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "0Nsdray1Ot",
+  "name": "Toräckerweg",
+  "latLng": "sbvnHsxw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Jy58pudAbI",
+  "name": "Trautenauer Straße",
+  "latLng": "ggznHmyw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "MD2JE68D37",
+  "name": "Trautenauer Straße",
+  "latLng": "obznH}uw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "NJxkJexX9e",
+  "name": "Trautenauer Straße",
+  "latLng": "{iynHefw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "YuADUUxY1P",
+  "name": "Ulmer Hof",
+  "latLng": "m{|nHocr{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "571wzuuUq1",
+  "name": "Uni-Klinikum Bereich A",
+  "latLng": "cs~nHyww{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "SMIZszvm2R",
+  "name": "Unterdürrbach/Kirche",
+  "latLng": "ks_oH}lp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "c_Y8KGC_ar",
+  "name": "Unterdürrbach/Schule",
+  "latLng": "ak_oHqmo{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "lRiaxKZHwX",
+  "name": "Unterer Katzenbergweg",
+  "latLng": "ulunHejv{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "-kfg_KSBEG",
+  "name": "Unterer Kirchbergweg",
+  "latLng": "yrunHsjx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "dhSQDaYS35",
+  "name": "Unterer Schwarzenberg",
+  "latLng": "o|_oH{ux{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "nb40OCMmHQ",
+  "name": "Unterer Schwarzenberg",
+  "latLng": "ay_oHoux{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "GEC5ZNHaWm",
+  "name": "Valentin-Becker-Straße",
+  "latLng": "gx{nH_eu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "NEyXeqqAi6",
+  "name": "Valentin-Becker-Straße",
+  "latLng": "}r{nHwmu{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ulu28uWkIa",
+  "name": "Versorgungsamt",
+  "latLng": "{o}nHq~o{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "osec-zVGjJ",
+  "name": "Vogelverlag",
+  "latLng": "}`}nHy{l{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "YOIMKHgjhN",
+  "name": "Waldesruh",
+  "latLng": "k}wnH_~l{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "EsVHa_RLf7",
+  "name": "Waldfriedhof Nord",
+  "latLng": "irvnHgqp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "yUUse1oXf1",
+  "name": "Waldfriedhof Süd",
+  "latLng": "qavnHoap{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "Ds-Z2kZ7D9",
+  "name": "Waldhaus",
+  "latLng": "ozwnHomo{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "rj1cqkXW2d",
+  "name": "Walther-Schule",
+  "latLng": "_hvnHe`w{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "905n6Dv03f",
+  "name": "Wandweg",
+  "latLng": "}~`oHqtp{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "9jxucc0Tvq",
+  "name": "Waypoint 1",
+  "latLng": "kt{nHuep{@",
+  "isWaypoint": true
+ },
+ {
+  "key": "KkLo7F3OW2",
+  "name": "Waypoint 12",
+  "latLng": "arxnH}et{@",
+  "isWaypoint": true
+ },
+ {
+  "key": "dtMtz8_qHc",
+  "name": "Waypoint 2",
+  "latLng": "wx}nH}hs{@",
+  "isWaypoint": true
+ },
+ {
+  "key": "v6E66nrj3v",
+  "name": "Waypoint 5",
+  "latLng": "coaoHke|{@",
+  "isWaypoint": true
+ },
+ {
+  "key": "5FDFL3TGkk",
+  "name": "Waypoint 6",
+  "latLng": "ixaoHqd}{@",
+  "isWaypoint": true
+ },
+ {
+  "key": "Sk-4G4zUG2",
+  "name": "Waypoint 7",
+  "latLng": "iaboH_`}{@",
+  "isWaypoint": true
+ },
+ {
+  "key": "Nb4JV_jaxE",
+  "name": "Waypoint 8",
+  "latLng": "__boHsr|{@",
+  "isWaypoint": true
+ },
+ {
+  "key": "wSLMuU1RWD",
+  "name": "Wellhöferweg",
+  "latLng": "kiunHsru{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "tkUeHqKL57",
+  "name": "Wendelweg",
+  "latLng": "gqvnHoxt{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "uxkhrbiCX6",
+  "name": "Wendelweg",
+  "latLng": "invnHgzt{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "aDLHwoRCgP",
+  "name": "Werk Noell",
+  "latLng": "gv_oHmij{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "LtrC10-CUw",
+  "name": "Wiesenweg",
+  "latLng": "whwnH{mt{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "pSuZHYa3Fl",
+  "name": "Winterhäuser Straße",
+  "latLng": "s_unHg~z{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "XFBQsp26UN",
+  "name": "Wittelsbacherplatz",
+  "latLng": "ob{nHouv{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "X94iRJ3Kr2",
+  "name": "Wittelsbacherstraße",
+  "latLng": "kt{nHc~v{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "g8Hwv7JOmK",
+  "name": "Wolfskeelschule",
+  "latLng": "g~_oHcmy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "nXfZvgL_6l",
+  "name": "Wolfskeelschule",
+  "latLng": "o_`oHcoy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "XjQkVc60C2",
+  "name": "Wredestraße",
+  "latLng": "on|nHo_o{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ZZKEyeYZKY",
+  "name": "Wöllriederhöhe",
+  "latLng": "uw|nHka`|@",
+  "isWaypoint": false
+ },
+ {
+  "key": "3mU26U5ejG",
+  "name": "Wörthstraße",
+  "latLng": "ml|nH{}o{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "5hQR8TnGUy",
+  "name": "Wörthstraße",
+  "latLng": "sl|nH{{o{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "hLqpOM5a9s",
+  "name": "Würzburger Straße",
+  "latLng": "{}znH{mk{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "U7iT5csyOC",
+  "name": "Zehnthofstraße",
+  "latLng": "uuboHcaq{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "KZWCfUAaGc",
+  "name": "Zeppelinstraße",
+  "latLng": "ysznHadv{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "KoBTUmTMH6",
+  "name": "Zeppelinstraße",
+  "latLng": "utznH{dv{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "5MHy1h9w1O",
+  "name": "Zollhaus Galgenberg",
+  "latLng": "sy{nHs|w{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "8H7VdaDGq2",
+  "name": "Zollhaus Steinbachtal",
+  "latLng": "wrxnHw_r{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "ebZDyBcKyl",
+  "name": "Zollhaus Steinbachtal",
+  "latLng": "{sxnHw~q{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "mnrUJMC7DU",
+  "name": "Zum Tännig",
+  "latLng": "soaoHwtx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "puzmLSJkCa",
+  "name": "Zum Tännig",
+  "latLng": "umaoHswx{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "RUhBY49dHN",
+  "name": "Zweierweg",
+  "latLng": "gc|nHm|x{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "iHEQCfMxqi",
+  "name": "Zwerchgraben",
+  "latLng": "ea{nHw|v{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "udNyngEz0N",
+  "name": "Zwerchgraben",
+  "latLng": "_~znHecw{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "kGGS6AMYZx",
+  "name": "var-Q-Tec",
+  "latLng": "_n`oHgoi{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "9jfnRlhO7j",
+  "name": "Äußeres Hubland",
+  "latLng": "svynHumy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "nOfTQTDN9R",
+  "name": "Äußeres Hubland",
+  "latLng": "cwynHyjy{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "A2cIhIQIvn",
+  "name": "Ökumenisches Zentrum",
+  "latLng": "ar_oHuj}{@",
+  "isWaypoint": false
+ },
+ {
+  "key": "qrP4oMd27w",
+  "name": "Ökumenisches Zentrum",
+  "latLng": "aq_oHqi}{@",
+  "isWaypoint": false
+ }
+]

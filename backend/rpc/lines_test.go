@@ -11,7 +11,7 @@ import (
 )
 
 func TestLineHandler_SaveLine(t *testing.T) {
-	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, _ := scenario.LoadScenario(filepath.Join("..", "testdata"))
 	count := len(manager.Lines())
 	handler := newLineHandler(manager, "")
 	t.Run("success", func(t *testing.T) {
@@ -89,7 +89,7 @@ func TestLineHandler_SaveLine(t *testing.T) {
 }
 
 func TestLineHandler_QueryLine(t *testing.T) {
-	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, _ := scenario.LoadScenario(filepath.Join("..", "testdata"))
 	handler := newLineHandler(manager, "")
 	t.Run("success", func(t *testing.T) {
 		request := types.LineIdentifier{Key: "7BNJI4rUT6"}
@@ -127,7 +127,7 @@ func TestLineHandler_QueryLine(t *testing.T) {
 }
 
 func TestLineHandler_GetLinePaths(t *testing.T) {
-	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, _ := scenario.LoadScenario(filepath.Join("..", "testdata"))
 	handler := newLineHandler(manager, "")
 
 	response, err := handler.getLinePaths(nil)
@@ -151,7 +151,7 @@ func TestLineHandler_GetLinePaths(t *testing.T) {
 }
 
 func TestLineHandler_DeleteLine(t *testing.T) {
-	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, _ := scenario.LoadScenario(filepath.Join("..", "testdata"))
 	handler := newLineHandler(manager, "")
 	count := len(manager.Lines())
 	t.Run("success", func(t *testing.T) {

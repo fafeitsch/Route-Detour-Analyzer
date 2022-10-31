@@ -1,0 +1,55 @@
+{
+ "key": "5uYFIGfwhf",
+ "line": "GO5wpP7zmn",
+ "name": "Working Day",
+ "tours": [
+  {
+   "intervalMinutes": 30,
+   "lastTour": "18:28",
+   "events": [
+    {
+     "departure": "9:58"
+    },
+    {
+     "departure": "9:59"
+    },
+    {
+     "departure": "10:00"
+    },
+    {
+     "departure": "10:03"
+    },
+    {
+     "departure": "10:05"
+    },
+    {
+     "departure": "10:06"
+    },
+    {
+     "departure": "10:08"
+    },
+    {
+     "departure": "10:10"
+    },
+    {
+     "departure": "10:13"
+    },
+    {
+     "arrival": "10:14"
+    }
+   ]
+  }
+ ],
+ "stations": [
+  "4xWkW9Hbp6",
+  "9jxucc0Tvq",
+  "ZQ8RNFUKlN",
+  "3mU26U5ejG",
+  "ulu28uWkIa",
+  "tkOg0yQ3Xe",
+  "YuADUUxY1P",
+  "SlDNPMuPMf",
+  "sFuxxGc5BJ",
+  "O6tVLpjfs4"
+ ]
+}

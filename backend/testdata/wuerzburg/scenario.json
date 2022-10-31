@@ -1,0 +1,10 @@
+{
+ "stations": null,
+ "lines": null,
+ "vehicles": null,
+ "center": {
+  "lat": 49.789,
+  "lng": 9.9254,
+  "zoom": 14
+ }
+}

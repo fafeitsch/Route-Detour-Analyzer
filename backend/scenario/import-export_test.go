@@ -2,17 +2,16 @@ package scenario
 
 import (
 	"backend/persistence"
-	"encoding/json"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"os"
 	"path/filepath"
+	"sync"
 	"testing"
 )
 
 func TestLoadFile(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
-		manager, err := LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
+		manager, err := LoadScenario(filepath.Join("..", "testdata", "wuerzburg"))
 		require.NoError(t, err)
 		assert.Equal(t, 40, len(manager.lines))
 
@@ -44,17 +43,17 @@ func TestLoadFile(t *testing.T) {
 		assert.Equal(t, "19:11", tour.LastTour)
 		assert.Equal(t, 8, tour.IntervalMinutes)
 
-		assert.Equal(t, 312, len(manager.stations))
+		assert.Equal(t, 313, len(manager.stations))
 		assert.Equal(t, 21, len(manager.timetables))
 
 		assert.Equal(t, 14, manager.Center.Zoom)
 		assert.Equal(t, 49.789, manager.Center.Lat)
 		assert.Equal(t, 9.9254, manager.Center.Lng)
 
-		assert.Equal(t, filepath.Join("..", "testdata", "wuerzburg.json"), manager.filePath)
+		assert.Equal(t, filepath.Join("..", "testdata", "wuerzburg"), manager.filePath)
 	})
 	t.Run("does not exist, should create new scenario", func(t *testing.T) {
-		manager, err := LoadFile("non_existing")
+		manager, err := LoadScenario("non_existing")
 		require.NoError(t, err)
 		assert.Equal(t, map[string]Line{}, manager.lines)
 		assert.Equal(t, map[string]Timetable{}, manager.timetables)
@@ -63,68 +62,40 @@ func TestLoadFile(t *testing.T) {
 	})
 }
 
-func TestManager_Export(t *testing.T) {
-	var raw persistence.Scenario
-	{
-		file, err := os.Open(filepath.Join("..", "testdata", "wuerzburg.json"))
-		require.NoError(t, err)
-		defer func() { _ = file.Close() }()
-		err = json.NewDecoder(file).Decode(&raw)
-		require.NoError(t, err)
-		require.Equal(t, 312, len(raw.Stations))
-	}
-	loaded, err := LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
-	require.NoError(t, err)
-	got := loaded.Export()
-	assert.Equal(t, raw.Lines, got.Lines)
-	assert.Equal(t, raw.Stations, got.Stations)
-	assert.Equal(t, len(raw.Timetables), len(got.Timetables))
-	for index, got := range raw.Timetables {
-		assert.Equal(t, raw.Timetables[index], got)
-	}
-}
-
-func Test_convertVehiclesFromPersistence(t *testing.T) {
+func Test_convertVehicleFromPersistence(t *testing.T) {
 	timetableKey := "tt1"
 	pathIndex := 110
 	t.Run("success", func(t *testing.T) {
-		vehicles := []persistence.Vehicle{
-			{
-				Name:     "Vehicle 1",
-				Key:      "v1",
-				Position: "_c`|@_mcbA",
-				Tasks: []persistence.Task{
-					{
-						Start: "10:00",
-						Type:  "roaming",
-						Path: &persistence.Path{
-							Geometry: "_c`|@_mcbA~po]~hbE",
-							Meta: []persistence.MetaCoord{
-								{
-									Dist: 9,
-									Dur:  8,
-								}, {
-									Dist: 0,
-									Dur:  0,
-								},
+		vehicle := persistence.Vehicle{
+			Name:     "Vehicle 1",
+			Key:      "v1",
+			Position: "_c`|@_mcbA",
+			Tasks: []persistence.Task{
+				{
+					Start: "10:00",
+					Type:  "roaming",
+					Path: &persistence.Path{
+						Geometry: "_c`|@_mcbA~po]~hbE",
+						Meta: []persistence.MetaCoord{
+							{
+								Dist: 9,
+								Dur:  8,
+							}, {
+								Dist: 0,
+								Dur:  0,
 							},
 						},
-					}, {
-						Start:        "12:00",
-						Type:         "line",
-						TimetableKey: &timetableKey,
-						PathIndex:    &pathIndex,
 					},
+				}, {
+					Start:        "12:00",
+					Type:         "line",
+					TimetableKey: &timetableKey,
+					PathIndex:    &pathIndex,
 				},
-			}, {
-				Name:     "Vehicle 2",
-				Key:      "v2",
-				Position: "_ajnA_kmtA",
-				Tasks:    []persistence.Task{},
 			},
 		}
 		m := Empty()
-		converted, err := convertVehiclesFromPersistence(m, vehicles)
+		converted, err := convertVehicleFromPersistence(m, vehicle)
 		vehicle1 := Vehicle{
 			Name:     "Vehicle 1",
 			Key:      "v1",
@@ -149,66 +120,49 @@ func Test_convertVehiclesFromPersistence(t *testing.T) {
 				},
 			},
 		}
-		vehicle2 := Vehicle{
-			Name:     "Vehicle 2",
-			Key:      "v2",
-			Position: []float64{13, 14},
-			Tasks:    []Task{},
-			manager:  m,
-		}
-		wanted := map[string]Vehicle{
-			vehicle1.Key: vehicle1,
-			vehicle2.Key: vehicle2,
-		}
 		require.NoError(t, err)
-		assert.Equal(t, wanted, converted)
+		assert.Equal(t, vehicle1, converted)
 	})
 	t.Run("invalid coordinates", func(t *testing.T) {
-		vehicles := []persistence.Vehicle{
-			{
-				Name:     "Vehicle 1",
-				Key:      "v1",
-				Position: "_c`|@_mcbA",
-				Tasks: []persistence.Task{
-					{
-						Start: "10:00",
-						Type:  "roaming",
-						Path: &persistence.Path{
-							Geometry: "invalid",
-						},
+		vehicle := persistence.Vehicle{
+			Name:     "Vehicle 1",
+			Key:      "v1",
+			Position: "_c`|@_mcbA",
+			Tasks: []persistence.Task{
+				{
+					Start: "10:00",
+					Type:  "roaming",
+					Path: &persistence.Path{
+						Geometry: "invalid",
 					},
 				},
 			},
 		}
 		m := Empty()
-		_, err := convertVehiclesFromPersistence(m, vehicles)
+		_, err := convertVehicleFromPersistence(m, vehicle)
 		require.EqualError(t, err, "could not read waypoints of task 0 of vehicle \"v1\": could not parse path geometry: unterminated sequence")
 	})
 	t.Run("invalid position", func(t *testing.T) {
-		vehicles := []persistence.Vehicle{
-			{
-				Name:     "Vehicle 1",
-				Key:      "v1",
-				Position: "invalid",
-				Tasks:    []persistence.Task{},
-			},
+		vehicle := persistence.Vehicle{
+			Name:     "Vehicle 1",
+			Key:      "v1",
+			Position: "invalid",
+			Tasks:    []persistence.Task{},
 		}
 		m := Empty()
-		_, err := convertVehiclesFromPersistence(m, vehicles)
+		_, err := convertVehicleFromPersistence(m, vehicle)
 		require.EqualError(t, err, "could not read position of vehicle \"v1\": unterminated sequence")
 	})
 	t.Run("invalid type", func(t *testing.T) {
-		vehicles := []persistence.Vehicle{
-			{
-				Name:     "Vehicle 1",
-				Key:      "v1",
-				Position: "_c`|@_mcbA",
-				Tasks:    []persistence.Task{{Type: "invalid"}},
-			},
+		vehicle := persistence.Vehicle{
+			Name:     "Vehicle 1",
+			Key:      "v1",
+			Position: "_c`|@_mcbA",
+			Tasks:    []persistence.Task{{Type: "invalid"}},
 		}
 		m := Empty()
-		_, err := convertVehiclesFromPersistence(m, vehicles)
-		require.EqualError(t, err, "could not undertand type of task 0: allowed are \"roaming\" and \"line\", got \"invalid\"")
+		_, err := convertVehicleFromPersistence(m, vehicle)
+		require.EqualError(t, err, "could not undertand type of task 0 of vehicle v1: allowed are \"roaming\" and \"line\", got \"invalid\"")
 	})
 }
 
@@ -283,4 +237,37 @@ func TestManager_convertVehiclesToPersistence(t *testing.T) {
 			Tasks:    []persistence.Task{},
 		},
 	}, got)
+}
+
+func TestManager_Export1(t *testing.T) {
+	type fields struct {
+		filePath   string
+		lines      map[string]Line
+		stations   map[string]Station
+		timetables map[string]Timetable
+		vehicles   map[string]Vehicle
+		mutex      sync.RWMutex
+		Center     Center
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   map[string][]byte
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			m := &Manager{
+				filePath:   tt.fields.filePath,
+				lines:      tt.fields.lines,
+				stations:   tt.fields.stations,
+				timetables: tt.fields.timetables,
+				vehicles:   tt.fields.vehicles,
+				mutex:      tt.fields.mutex,
+				Center:     tt.fields.Center,
+			}
+			assert.Equalf(t, tt.want, m.Export(), "Export()")
+		})
+	}
 }

@@ -2,16 +2,13 @@ package scenario
 
 import (
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-	"path/filepath"
 	"strings"
 	"sync"
 	"testing"
 )
 
 func TestManager_DeleteLine(t *testing.T) {
-	manager, err := LoadFile(filepath.Join("../testdata/wuerzburg.json"))
-	require.NoError(t, err)
+	manager := Manager{lines: map[string]Line{"7BNJI4rUT6": {}}}
 	t.Run("delete existing line", func(t *testing.T) {
 		t.Parallel()
 		_, ok := manager.Line("7BNJI4rUT6")
@@ -31,8 +28,7 @@ func TestManager_DeleteLine(t *testing.T) {
 }
 
 func TestManager_DeleteStation(t *testing.T) {
-	manager, err := LoadFile(filepath.Join("../testdata/wuerzburg.json"))
-	require.NoError(t, err)
+	manager := Manager{stations: map[string]Station{"zmdfh1U3G6": {}}}
 	t.Run("delete existing station", func(t *testing.T) {
 		t.Parallel()
 		_, ok := manager.Station("zmdfh1U3G6")
@@ -52,8 +48,13 @@ func TestManager_DeleteStation(t *testing.T) {
 }
 
 func TestManager_SaveLine(t *testing.T) {
-	manager, err := LoadFile(filepath.Join("../testdata/wuerzburg.json"))
-	require.NoError(t, err)
+	manager := Manager{
+		lines: map[string]Line{},
+		stations: map[string]Station{
+			"zmdfh1U3G6": {Name: "Belvedere"},
+			"ZcA9vNW4Da": {Name: "Brunnenstraße"},
+		},
+	}
 	t.Run("save new line", func(t *testing.T) {
 		t.Parallel()
 		_, ok := manager.Line("randomKey")
@@ -132,34 +133,53 @@ func TestManager_SaveStation(t *testing.T) {
 }
 
 func TestStation_Lines(t *testing.T) {
-	t.Parallel()
-	manager, err := LoadFile(filepath.Join("../testdata/wuerzburg.json"))
-	require.NoError(t, err)
+	manager := Manager{
+		mutex: sync.RWMutex{},
+	}
+	manager.stations = map[string]Station{
+		"jubhF5kI2k": {
+			manager: &manager,
+			Key:     "jubhF5kI2k",
+		},
+	}
+	manager.lines = map[string]Line{
+		"1": {
+			Name:  "Linie 28: Busbahnhof → Mönchberg",
+			Stops: []string{"jubhF5kI2k"},
+		},
+		"2": {
+			Name:  "Linie 28: Mönchberg → Busbahnhof",
+			Stops: []string{"jubhF5kI2k"},
+		},
+		"3": {Name: "Linie 8: Steinbachtal", Stops: []string{}},
+		"4": {
+			Name:  "Linie 29: Busbahnhof → Hubland Nord",
+			Stops: []string{"jubhF5kI2k"},
+		},
+	}
 
 	station, ok := manager.Station("jubhF5kI2k")
 	assert.True(t, ok)
 	lines := station.Lines()
-	assert.Equal(t, 6, len(lines))
+	assert.Equal(t, 3, len(lines))
 	names := make([]string, 0, len(lines))
 	for _, line := range lines {
 		names = append(names, line.Name)
 	}
-	assert.Equal(t, "Linie 28: Busbahnhof → Mönchberg,Linie 28: Mönchberg → Busbahnhof,Linie 29: Busbahnhof → Hubland Nord,Linie 29: Campus Nord → Busbahnhof,Linie 214: Busbahnhof → Hubland,Linie 214: Hubland → Busbahnhof", strings.Join(names, ","))
+	assert.Equal(t, "Linie 28: Busbahnhof → Mönchberg,Linie 28: Mönchberg → Busbahnhof,Linie 29: Busbahnhof → Hubland Nord", strings.Join(names, ","))
 }
 
 func TestLine_Stations(t *testing.T) {
-	manager, err := LoadFile(filepath.Join("../testdata/wuerzburg.json"))
-	require.NoError(t, err)
+	manager := Manager{stations: map[string]Station{"1": {}, "2": {}}}
 
 	stations := manager.Stations()
-	assert.Equal(t, 312, len(stations))
+	assert.Equal(t, 2, len(stations))
 }
 
 func TestManager_Lines(t *testing.T) {
-	manager, err := LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
-	require.NoError(t, err)
+	manager := Manager{lines: map[string]Line{"1": {}, "2": {}}}
 	lines := manager.Lines()
-	assert.Equal(t, 40, len(lines))
+	assert.Equal(t, 2, len(lines))
 }
 
 func TestEmpty(t *testing.T) {

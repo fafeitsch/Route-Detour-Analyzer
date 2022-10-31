@@ -1,15 +1,17 @@
 package main
 
 import (
+	"archive/zip"
 	"backend/rpc"
 	"backend/scenario"
-	"encoding/json"
 	"fmt"
 	"github.com/urfave/cli/v2"
 	"io"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -33,20 +35,30 @@ var tileServerFlag = &cli.StringFlag{
 }
 var scenarioFileFlag = &cli.StringFlag{
 	Name:     "scenario",
-	Usage:    "Path where the scenario file lives",
+	Usage:    "Path where the scenario files live. Must be relative.",
 	Required: true,
 }
 
 var manager *scenario.Manager
+var directory string
 var osrmUrl = osrmServerFlag.Value
 var tileServer = tileServerFlag.Value
 
 func main() {
 	app := cli.App{
-		Flags: []cli.Flag{portFlag, osrmServerFlag, scenarioFileFlag, tileServerFlag},
+		Flags: []cli.Flag{
+			portFlag,
+			osrmServerFlag,
+			scenarioFileFlag,
+			tileServerFlag,
+		},
 		Action: func(ctx *cli.Context) error {
 			var err error
-			manager, err = scenario.LoadFile(ctx.String(scenarioFileFlag.Name))
+			directory = ctx.String(scenarioFileFlag.Name)
+			if filepath.IsAbs(directory) {
+				return fmt.Errorf("the file path \"%s\" is not relative", directory)
+			}
+			manager, err = scenario.LoadScenario(ctx.String(scenarioFileFlag.Name))
 			if err != nil {
 				return fmt.Errorf("could not read scenario file: %v", err)
 			}
@@ -67,9 +79,37 @@ func globalHandler() http.HandlerFunc {
 			rpc.HandleFunc(manager, osrmUrl).ServeHTTP(resp, req)
 			return
 		} else if strings.HasPrefix(req.URL.RequestURI(), "/export") {
-			resp.Header().Set("Content-Type", "text/json")
-			resp.Header().Set("Content-Disposition", "attachment; filename=\"scenario.json\"")
-			_ = json.NewEncoder(resp).Encode(manager.Export())
+			resp.Header().Set("Content-Type", "application/zip")
+			resp.Header().Set("Content-Disposition", "attachment; filename=\"scenario.zip\"")
+			w := zip.NewWriter(resp)
+			err := filepath.WalkDir(directory, func(path string, d fs.DirEntry, err error) error {
+				if err != nil {
+					return err
+				}
+				if d.IsDir() {
+					return nil
+				}
+				file, err := os.Open(path)
+				if err != nil {
+					return err
+				}
+				defer func() {
+					_ = file.Close()
+				}()
+				f, err := w.Create(path)
+				if err != nil {
+					return err
+				}
+				_, err = io.Copy(f, file)
+				if err != nil {
+					return err
+				}
+				return nil
+			})
+			if err != nil {
+				resp.WriteHeader(500)
+			}
+			_ = w.Close()
 			return
 		} else if strings.HasPrefix(req.URL.RequestURI(), "/tile") {
 			tileId := req.URL.RequestURI()[strings.LastIndex(req.URL.String(), "tile")+4:]

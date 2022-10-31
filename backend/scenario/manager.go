@@ -1,10 +1,8 @@
 package scenario
 
 import (
-	"encoding/json"
 	"fmt"
 	gonanoid "github.com/matoous/go-nanoid"
-	"os"
 	"sort"
 	"sync"
 )
@@ -97,16 +95,6 @@ func Empty() *Manager {
 		vehicles:   make(map[string]Vehicle),
 		mutex:      sync.RWMutex{},
 	}
-}
-
-func (m *Manager) Persist() error {
-	file, err := os.OpenFile(m.filePath, os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0755)
-	if err != nil {
-		return fmt.Errorf("could not open file \"%s\": %v", m.filePath, err)
-	}
-	defer func() { _ = file.Close() }()
-	scenario := m.Export()
-	return json.NewEncoder(file).Encode(scenario)
 }
 
 func (m *Manager) Line(key string) (Line, bool) {

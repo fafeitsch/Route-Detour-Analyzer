@@ -130,7 +130,7 @@ func TestOsrmHandler_QueryAddress(t *testing.T) {
 }
 
 func TestOsrmHandler_computeDetour(t *testing.T) {
-	manager, _ := scenario.LoadFile(filepath.Join("..", "testdata", "wuerzburg.json"))
+	manager, _ := scenario.LoadScenario(filepath.Join("..", "testdata"))
 	mockRouteLengths := map[string]float64{
 		"s_unHg~z{@scFhgF": 6210.972846000002,
 		"s_unHg~z{@wjFzcF": 6359.7029760000005,
