@@ -1,5 +1,13 @@
 import "leaflet/dist/leaflet.css";
-import { latLng, map as LFMap, tileLayer } from "leaflet";
+import {
+  divIcon,
+  latLng,
+  map as LFMap,
+  Marker,
+  marker as createMarker,
+  tileLayer,
+} from "leaflet";
+// @ts-ignore
 import * as mqtt from "mqtt/dist/mqtt.min.js";
 
 const mapElement = document.getElementById("map") as HTMLDivElement;
@@ -22,9 +30,24 @@ fetch(centerRequest, {
       { animate: false }
     );
   });
-
+const markers: { [key: string]: Marker } = {};
 const client = mqtt.connect("ws://localhost:9001");
-client.subscribe("test/today");
-client.on("message", (_: string, message: any) =>
-  console.log("message " + message)
-);
+client.subscribe("vehicles/+/location");
+client.on("message", (topic: string, message: string) => {
+  const position: number[] = JSON.parse(message);
+  const latLng = { lat: position[0], lng: position[1] };
+  const key = topic.split("/")[1];
+  let marker = markers[key];
+  if (!marker) {
+    marker = createMarker(latLng, { opacity: 1 });
+    markers[key] = marker.addTo(leafletMap);
+  }
+  const icon = divIcon({
+    className: "driving-bus",
+    iconAnchor: [25, 10],
+    iconSize: undefined,
+    html: key,
+  });
+  marker.setIcon(icon);
+  marker.setLatLng(latLng);
+});
