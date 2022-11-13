@@ -1,0 +1,33 @@
+{
+ "name": "WÜ-ZU-1234",
+ "key": "AjCyaccE-q",
+ "position": "kd|nH}us{@",
+ "tasks": [
+  {
+   "start": "9:58",
+   "type": "line",
+   "timetableKey": "5uYFIGfwhf",
+   "pathIndex": 0
+  },
+  {
+   "start": "10:30",
+   "type": "line",
+   "timetableKey": "aoqXblJ6YF",
+   "pathIndex": 0
+  },
+  {
+   "start": "10:35",
+   "type": "roaming",
+   "path": {
+    "geometry": "",
+    "meta": []
+   }
+  },
+  {
+   "start": "10:51",
+   "type": "line",
+   "timetableKey": "JFEmQJI2Lr",
+   "pathIndex": 0
+  }
+ ]
+}
