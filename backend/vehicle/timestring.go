@@ -31,5 +31,17 @@ func (t timeString) parseTime() (int, int) {
 	split := strings.Split(string(t), ":")
 	hours, _ := strconv.Atoi(split[0])
 	minutes, _ := strconv.Atoi(split[1])
-	return minutes, hours
+	return hours, minutes
+}
+
+func (t timeString) toMinutes() int {
+	hours, minutes := t.parseTime()
+	return hours*60 + minutes
+}
+
+func (t timeString) add(minutes int) timeString {
+	minutes = t.toMinutes() + minutes
+	hours := minutes / 60
+	minutes = minutes - hours*60
+	return timeString(fmt.Sprintf("%02d:%02d", hours, minutes))
 }

@@ -16,10 +16,11 @@ type latLng struct {
 
 type waypoint struct {
 	latLng
-	dist  float64
-	dur   float64
-	stop  bool
-	start string
+	dist       float64
+	dur        float64
+	stop       bool
+	departure  timeString
+	stationKey string
 }
 
 type Vehicle struct {
@@ -56,6 +57,7 @@ func NewVehicle(path string, key string) (*Vehicle, error) {
 		taskIndex: 0,
 		tasks:     persisted.Tasks,
 	}
+	result.loadNextTask()
 	return &result, nil
 }
 
@@ -64,18 +66,15 @@ func (v *Vehicle) loadNextTask() error {
 		return fmt.Errorf("no more tasks available")
 	}
 	if v.tasks[0].Type == "roaming" {
-		path, _, err := polyline.DecodeCoords([]byte(v.tasks[0].Path.Geometry))
-		if err != nil {
-			return fmt.Errorf("cannot decode roaming currentTask")
-		}
+		path, _, _ := polyline.DecodeCoords([]byte(v.tasks[0].Path.Geometry))
 		waypoints := make([]waypoint, 0, len(path))
 		for index, wp := range path {
 			waypoints = append(waypoints, waypoint{
-				latLng: latLng{lat: wp[0], lng: wp[1]},
-				dist:   v.tasks[0].Path.Meta[index].Dist,
-				dur:    v.tasks[0].Path.Meta[index].Dur,
-				stop:   false,
-				start:  "0:00",
+				latLng:    latLng{lat: wp[0], lng: wp[1]},
+				dist:      v.tasks[0].Path.Meta[index].Dist,
+				dur:       v.tasks[0].Path.Meta[index].Dur,
+				stop:      false,
+				departure: "0:00",
 			})
 		}
 		v.currentTask = waypoints
@@ -103,23 +102,28 @@ func (v *Vehicle) loadNextTask() error {
 	if err != nil {
 		return fmt.Errorf("could not read line file \"%s\": %v", linePath, err)
 	}
-	path, _, err := polyline.DecodeCoords([]byte(line.Path.Geometry))
-	if err != nil {
-		return fmt.Errorf("could not decode path of line \"%s\": %v", line.Key, err)
-	}
+	path, _, _ := polyline.DecodeCoords([]byte(line.Path.Geometry))
 	waypoints := make([]waypoint, 0, len(path))
 	stopIndex := 0
+	tour := findNextTourAfter(timetable.Tours, timeString(v.tasks[0].Start))
 	for index, point := range path {
 		wp := waypoint{
-			latLng: latLng{lat: point[0], lng: point[1]},
-			dist:   line.Path.Meta[index].Dist,
-			dur:    line.Path.Meta[index].Dur,
-			stop:   line.Path.Meta[index].Stop,
-			start:  "0:00",
+			latLng:    latLng{lat: point[0], lng: point[1]},
+			dist:      line.Path.Meta[index].Dist,
+			dur:       line.Path.Meta[index].Dur,
+			stop:      line.Path.Meta[index].Stop,
+			departure: "0:00",
+		}
+		if wp.stop && stopIndex < len(tour) {
+			wp.departure = tour[stopIndex]
+			stopIndex = stopIndex + 1
 		}
 		if wp.stop {
-			timetable.Tours[0].
+			wp.stationKey = timetable.Stations[stopIndex]
 		}
+		waypoints = append(waypoints, wp)
 	}
+	v.currentTask = waypoints
+	v.tasks = v.tasks[1:len(v.tasks)]
 	return nil
 }
