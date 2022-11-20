@@ -1,17 +1,19 @@
 package vehicle
 
 import (
+	"backend/mqtt"
 	"backend/persistence"
 	"encoding/json"
 	"fmt"
 	"github.com/twpayne/go-polyline"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 type latLng struct {
-	lat float64
-	lng float64
+	Lat float64
+	Lng float64
 }
 
 type waypoint struct {
@@ -53,7 +55,7 @@ func NewVehicle(path string, key string) (*Vehicle, error) {
 	result := Vehicle{
 		Path:      path,
 		Key:       key,
-		position:  latLng{lat: position[0], lng: position[1]},
+		position:  latLng{Lat: position[0], Lng: position[1]},
 		taskIndex: 0,
 		tasks:     persisted.Tasks,
 	}
@@ -70,7 +72,7 @@ func (v *Vehicle) loadNextTask() error {
 		waypoints := make([]waypoint, 0, len(path))
 		for index, wp := range path {
 			waypoints = append(waypoints, waypoint{
-				latLng:    latLng{lat: wp[0], lng: wp[1]},
+				latLng:    latLng{Lat: wp[0], Lng: wp[1]},
 				dist:      v.tasks[0].Path.Meta[index].Dist,
 				dur:       v.tasks[0].Path.Meta[index].Dur,
 				stop:      false,
@@ -108,7 +110,7 @@ func (v *Vehicle) loadNextTask() error {
 	tour := findNextTourAfter(timetable.Tours, timeString(v.tasks[0].Start))
 	for index, point := range path {
 		wp := waypoint{
-			latLng:    latLng{lat: point[0], lng: point[1]},
+			latLng:    latLng{Lat: point[0], Lng: point[1]},
 			dist:      line.Path.Meta[index].Dist,
 			dur:       line.Path.Meta[index].Dur,
 			stop:      line.Path.Meta[index].Stop,
@@ -126,4 +128,55 @@ func (v *Vehicle) loadNextTask() error {
 	v.currentTask = waypoints
 	v.tasks = v.tasks[1:len(v.tasks)]
 	return nil
+}
+
+type SimulationOptions struct {
+	TimeResolution int
+	Sender         mqtt.Sender
+	StartTime      timeString
+	Speed          int
+}
+
+func (v *Vehicle) Simulate(options SimulationOptions) {
+	for len(v.tasks) > 0 {
+		distance := 0.0
+		err := v.loadNextTask()
+		if err != nil {
+			return
+		}
+		position := v.currentTask[0].latLng
+		for position.Lng != v.currentTask[len(v.currentTask)-1].Lng && position.Lat != v.currentTask[len(v.currentTask)-1].Lat {
+			then := time.Now().UnixMilli()
+			time.Sleep(time.Duration(1000/options.TimeResolution) * time.Millisecond)
+			delta := float64((time.Now().UnixMilli() - then) / 1000)
+			distance = distance + delta*float64(options.Speed)
+			position = findPosition(distance, v.currentTask)
+			options.Sender(mqtt.Message{
+				Topic:   "position",
+				Payload: [2]float64{position.Lat, position.Lng},
+				Retain:  true,
+			})
+		}
+	}
+}
+
+func findPosition(distance float64, waypoints []waypoint) latLng {
+	if distance == 0 {
+		return waypoints[0].latLng
+	}
+	sum := 0.0
+	index := 0
+	for sum < distance && index < len(waypoints) {
+		sum = sum + waypoints[index].dist
+		index = index + 1
+	}
+	if index == len(waypoints) {
+		return waypoints[index-1].latLng
+	}
+	remaining := distance - (sum - waypoints[index-1].dist)
+	p1x, p1y := waypoints[index-1].Lng, waypoints[index-1].Lat
+	p2x, p2y := waypoints[index].Lng, waypoints[index].Lat
+	directionX, directionY := p2x-p1x, p2y-p1y
+	lambda := remaining / waypoints[index-1].dist
+	return latLng{Lng: p1x + lambda*directionX, Lat: p1y + lambda*directionY}
 }

@@ -1,8 +1,11 @@
 package main
 
 import (
+	"backend/mqtt"
 	vehicle2 "backend/vehicle"
+	"encoding/json"
 	"fmt"
+	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
@@ -28,7 +31,7 @@ var startTimeFlag = &cli.StringFlag{
 
 var timeResolutionFlag = &cli.IntFlag{
 	Name:  "resolution",
-	Usage: "Number of milliseconds between to simulation events",
+	Usage: "Number of milliseconds between two simulation events",
 	Value: 1000,
 }
 
@@ -47,10 +50,29 @@ func main() {
 				return fmt.Errorf("the file path \"%s\" is not relative", directory)
 			}
 			vehicle, err := vehicle2.NewVehicle(directory, ctx.String(vehicleKeyFlag.Name))
+			mqttOptions := paho.NewClientOptions()
+			mqttOptions.AddBroker("ws://localhost:9001")
+			mqttOptions.SetClientID("anyid")
+			client := paho.NewClient(mqttOptions)
+			token := client.Connect()
+			if token.Wait() && token.Error() != nil {
+				return fmt.Errorf("could not connect to MQTT broker: %v", token.Error())
+			}
+			sender := func(message mqtt.Message) {
+				topic := fmt.Sprintf("vehicles/%s/%s", vehicle.Key, message.Topic)
+				payload, _ := json.Marshal(message.Payload)
+				token := client.Publish(topic, 0, message.Retain, string(payload))
+				token.Wait()
+			}
 			if err != nil {
 				return fmt.Errorf("could not create vehicle: %v", err)
 			}
-			_ = vehicle
+			vehicle.Simulate(vehicle2.SimulationOptions{
+				Sender:         sender,
+				Speed:          8,
+				TimeResolution: 1,
+				StartTime:      "8:00",
+			})
 			return nil
 		},
 	}

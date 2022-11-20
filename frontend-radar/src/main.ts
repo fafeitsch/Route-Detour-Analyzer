@@ -32,8 +32,9 @@ fetch(centerRequest, {
   });
 const markers: { [key: string]: Marker } = {};
 const client = mqtt.connect("ws://localhost:9001");
-client.subscribe("vehicles/+/location");
+client.subscribe("vehicles/+/position");
 client.on("message", (topic: string, message: string) => {
+  console.log(message)
   const position: number[] = JSON.parse(message);
   const latLng = { lat: position[0], lng: position[1] };
   const key = topic.split("/")[1];
